@@ -40,16 +40,16 @@ dependencies {
 
 // jitpack配置
 group('com.github.wxw-9527')
-version('0.0.6')
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            release(MavenPublication) {
-//                from components.release
-//                groupId = 'com.github.wxw-9527'
-//                artifactId = 'MvpArms'
-//                version('0.0.3')
-//            }
-//        }
-//    }
-//}
+version('0.0.7')
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.wxw-9527'
+                artifactId = 'MvpArms'
+                version('0.0.7')
+            }
+        }
+    }
+}
