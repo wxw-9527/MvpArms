@@ -37,19 +37,3 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
 }
-
-// jitpack配置
-group('com.github.wxw-9527')
-version('0.0.7')
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.github.wxw-9527'
-                artifactId = 'MvpArms'
-                version('0.0.7')
-            }
-        }
-    }
-}
