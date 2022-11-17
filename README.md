@@ -1,4 +1,4 @@
-<h2 align="center">Android MVP 快速集成框架[![](https://jitpack.io/v/wxw-9527/MvpArms.svg)](https://jitpack.io/#wxw-9527/MvpArms)</h2>
+<h2 align="center">Android MVP 快速集成框架</h2>
 
 ## 集成方式
 
