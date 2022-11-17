@@ -3,7 +3,6 @@ package com.rouxinpai.demo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.TextView
-import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
