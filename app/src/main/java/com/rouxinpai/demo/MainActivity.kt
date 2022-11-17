@@ -1,11 +1,26 @@
 package com.rouxinpai.demo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.TextView
+import com.rouxinpai.arms.base.activity.BaseActivity
+import com.rouxinpai.arms.base.activity.BaseMvpActivity
+import com.rouxinpai.demo.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+@AndroidEntryPoint
+class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
+    MainContract.View {
+
+    override fun onCreateViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(inflater)
+    }
+
+    override fun onInit(savedInstanceState: Bundle?) {
+        super.onInit(savedInstanceState)
+        findViewById<TextView>(R.id.tv).setOnClickListener {
+            // showProgress()
+            presenter.print("Hello World!")
+        }
     }
 }
