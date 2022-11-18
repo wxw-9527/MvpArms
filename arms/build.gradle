@@ -61,15 +61,17 @@ dependencies {
     api 'com.github.bumptech.glide:glide:4.14.2'
     kapt 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.14.2'
+    // 基于 mmap 的高性能通用 key-value 组件
+    api 'com.tencent:mmkv:1.2.14'
     // 日志打印
     api 'com.jakewharton.timber:timber:5.0.1'
     // RecyclerView相关
     implementation 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 对话框相关
+    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
     api 'com.afollestad.material-dialogs:core:3.3.0'
     api 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
-    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'
     // 缺省页

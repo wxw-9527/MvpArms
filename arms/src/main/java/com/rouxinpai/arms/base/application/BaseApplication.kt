@@ -3,6 +3,7 @@ package com.rouxinpai.arms.base.application
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.tencent.mmkv.MMKV
 import timber.log.Timber
 import java.util.*
 
@@ -24,6 +25,7 @@ abstract class BaseApplication : Application(), IApplication {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
         initTimber()
+        initMmkv()
     }
 
     override fun finishActivity(vararg cls: Class<*>) {
@@ -55,6 +57,12 @@ abstract class BaseApplication : Application(), IApplication {
 
     override fun onActivityDestroyed(activity: Activity) {
         removeActivity(activity)
+    }
+
+    // 初始化MMKV
+    private fun initMmkv() {
+        val rootDir = MMKV.initialize(this)
+        Timber.d("mmkv root：$rootDir")
     }
 
     // 初始化日志打印框架
