@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android' // Hilt
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     // 依赖注入：https://dagger.dev/hilt/
     compileOnly 'com.google.dagger:hilt-android:2.44.2'
+    kapt 'com.google.dagger:hilt-compiler:2.44.2'
     // 网络请求
     api 'com.squareup.okhttp3:okhttp:4.10.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
