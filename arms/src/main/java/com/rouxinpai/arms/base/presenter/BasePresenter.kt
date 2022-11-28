@@ -7,6 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 /**
  * author : Saxxhw
@@ -16,6 +18,9 @@ import kotlinx.coroutines.cancel
  */
 abstract class BasePresenter<V : IView> : IPresenter<V>,
     CoroutineScope by CoroutineScope(Job() + Dispatchers.Main) {
+
+    @Inject
+    lateinit var retrofit: Retrofit
 
     private var mLifecycle: Lifecycle? = null
 
