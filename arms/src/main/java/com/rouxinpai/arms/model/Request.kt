@@ -57,20 +57,11 @@ class Request<T> {
     }
 
     /**
-     * 接口返回实体数据脱壳
-     */
-    private var mProcess: ((ApiResponse<T>) -> T?) = { it.data }
-
-    fun process(process: (ApiResponse<T>) -> T?) {
-        mProcess = process
-    }
-
-    /**
      * 请求成功
      */
-    private var mSuccess: ((data: T?) -> Unit)? = null
+    private var mSuccess: ((response: ApiResponse<T>) -> Unit)? = null
 
-    fun success(success: (data: T?) -> Unit) {
+    fun success(success: (response: ApiResponse<T>) -> Unit) {
         mSuccess = success
     }
 
@@ -89,8 +80,7 @@ class Request<T> {
             try {
                 val response = mCall.invoke().await()
                 if (response.success) {
-                    val data = mProcess.invoke(response)
-                    mSuccess?.invoke(data)
+                    mSuccess?.invoke(response)
                 } else if (response.tokenTimeout) {
                     throw TokenTimeoutException(response.code, response.msg)
                 } else {
