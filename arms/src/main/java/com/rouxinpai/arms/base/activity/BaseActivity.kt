@@ -3,6 +3,7 @@ package com.rouxinpai.arms.base.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
@@ -11,12 +12,13 @@ import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
 import com.shashank.sony.fancytoastlib.FancyToast
-import com.view.multistatepage.MultiStateContainer
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
 import com.view.multistatepage.state.ErrorState
 import com.view.multistatepage.state.LoadingState
-import com.view.multistatepage.state.SuccessState
+import com.zy.multistatepage.MultiStateContainer
+import com.zy.multistatepage.bindMultiState
+import com.zy.multistatepage.state.SuccessState
 
 /**
  * author : Saxxhw
@@ -32,10 +34,13 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     // 加载进度对话框
     private var mKProgressHUD: KProgressHUD? = null
 
+    // 缺省页状态管理实例
+    private var mLoadState: MultiStateContainer? = null
+
     /**
-     * 缺省页实例
+     * 缺省页内容视图
      */
-    open val loadState: MultiStateContainer? = null
+    open val stateLayout: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +52,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
             onParseData(bundle)
         }
         initToolbar()
+        mLoadState = stateLayout?.bindMultiState()
         onInit(savedInstanceState)
     }
 
@@ -99,7 +105,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
         val loadingMsg = when {
             msgId != null -> getString(msgId)
@@ -122,7 +128,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun showEmptyPage(msgId: Int?, msg: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         val emptyMsg = when {
             msgId != null -> getString(msgId)
             msg != null -> msg
@@ -137,7 +143,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun showErrorPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         val errorMsg = when {
             msgId != null -> getString(msgId)
             msg != null -> msg
@@ -160,7 +166,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun showSuccessPage() {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
         loadState.show<SuccessState>()
     }

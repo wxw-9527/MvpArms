@@ -10,12 +10,13 @@ import com.kaopiz.kprogresshud.KProgressHUD
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
 import com.shashank.sony.fancytoastlib.FancyToast
-import com.view.multistatepage.MultiStateContainer
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
 import com.view.multistatepage.state.ErrorState
 import com.view.multistatepage.state.LoadingState
-import com.view.multistatepage.state.SuccessState
+import com.zy.multistatepage.MultiStateContainer
+import com.zy.multistatepage.bindMultiState
+import com.zy.multistatepage.state.SuccessState
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -36,10 +37,13 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     // 加载进度对话框
     private var mKProgressHUD: KProgressHUD? = null
 
+    // 缺省页状态管理实例
+    private var mLoadState: MultiStateContainer? = null
+
     /**
-     * 缺省页实例
+     * 缺省页内容视图
      */
-    abstract val loadState: MultiStateContainer?
+    open val stateLayout: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +65,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //
+        mLoadState = stateLayout?.bindMultiState()
         // 初始化
         onInit(savedInstanceState)
     }
@@ -110,7 +116,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     }
 
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
         val loadingMsg = when {
             msgId != null -> getString(msgId)
@@ -133,7 +139,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     }
 
     override fun showEmptyPage(msgId: Int?, msg: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         val emptyMsg = when {
             msgId != null -> getString(msgId)
             msg != null -> msg
@@ -148,7 +154,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     }
 
     override fun showErrorPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         val errorMsg = when {
             msgId != null -> getString(msgId)
             msg != null -> msg
@@ -171,7 +177,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     }
 
     override fun showSuccessPage() {
-        val loadState = this.loadState ?: return
+        val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
         loadState.show<SuccessState>()
     }

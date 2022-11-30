@@ -75,7 +75,7 @@ dependencies {
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'
     // 缺省页
-    api 'com.github.wxw-9527:MultiStatePage:1.0.1'
+    api 'com.github.wxw-9527:MultiStatePage:1.0.2'
     // 吐司框架
     api 'io.github.shashank02051997:FancyToast:2.0.2'
 }
