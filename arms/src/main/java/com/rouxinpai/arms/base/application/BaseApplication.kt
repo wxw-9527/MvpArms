@@ -51,6 +51,10 @@ abstract class BaseApplication : Application(), IApplication {
         }
     }
 
+    override fun finishAllActivities() {
+        mActivities.forEach { activity -> activity.finish() }
+    }
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         addActivity(activity)
     }

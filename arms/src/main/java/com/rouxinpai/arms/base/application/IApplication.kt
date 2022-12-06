@@ -33,6 +33,11 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
     fun finishToActivity(cls: Class<*>)
 
     /**
+     * 结束全部Activity
+     */
+    fun finishAllActivities()
+
+    /**
      * 登录超时
      */
     fun onTokenTimeout()
