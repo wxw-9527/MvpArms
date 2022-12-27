@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.base.activity
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.kaopiz.kprogresshud.KProgressHUD
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
+import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
@@ -37,6 +39,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     // 缺省页状态管理实例
     private var mLoadState: MultiStateContainer? = null
 
+    // 扫描结果解析广播
+    private lateinit var mReceiver: BarcodeScanningReceiver
+
     /**
      * 缺省页内容视图
      */
@@ -54,6 +59,20 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         initToolbar()
         mLoadState = stateLayout?.bindMultiState()
         onInit(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // 注册广播
+        val intentFilter = IntentFilter().apply { addAction(BarcodeScanningReceiver.ACTION) }
+        mReceiver = BarcodeScanningReceiver()
+        registerReceiver(mReceiver, intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // 取消注册广播
+        unregisterReceiver(mReceiver)
     }
 
     override fun onDestroy() {
