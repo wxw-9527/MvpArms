@@ -78,4 +78,6 @@ dependencies {
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 吐司框架
     api 'io.github.shashank02051997:FancyToast:2.0.2'
+    // 日历
+    api 'com.github.wxw-9527:CalendarView:1.0.3'
 }

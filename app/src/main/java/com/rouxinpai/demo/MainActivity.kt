@@ -2,19 +2,21 @@ package com.rouxinpai.demo
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
+import com.rouxinpai.arms.dialog.DateRangeDialog
+import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
     MainContract.View,
-    BarcodeScanningReceiver.OnScanListener {
+    BarcodeScanningReceiver.OnScanListener,
+    DateRangeDialog.OnDateRangeSelectedListener {
 
-    override val stateLayout: View
-        get() = binding.refreshLayout
+    private var mStartCalendar: Calendar? = null
+    private var mEndCalendar: Calendar? = null
 
     override fun onCreateViewBinding(inflater: LayoutInflater): ActivityMainBinding {
         return ActivityMainBinding.inflate(inflater)
@@ -22,31 +24,18 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-
         //
-//        showLoadingPage()
-//        Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//            showLoadingPage(msg = "测试标题", descId = R.string.app_name)
-//            Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//                showEmptyPage()
-//                Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//                    showEmptyPage(msgId = R.string.app_name)
-//                    Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//                        showErrorPage()
-//                        Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//                            showErrorPage(msg = "测试异常标题", descId = R.string.app_name)
-//                            Handler(Looper.getMainLooper()).postDelayed(2 * 1000) {
-//                                showSuccessPage()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
+        binding.btnShow.setOnClickListener {
+            DateRangeDialog.show(supportFragmentManager, mStartCalendar, mEndCalendar)
+        }
     }
 
     override fun onScanned(value: String) {
         showToast(value)
+    }
+
+    override fun onDateRangeSelected(startCalendar: Calendar?, endCalendar: Calendar?) {
+        mStartCalendar = startCalendar
+        mEndCalendar = endCalendar
     }
 }
