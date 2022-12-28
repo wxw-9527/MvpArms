@@ -59,25 +59,15 @@ class DateRangeDialog(
         binding.btnClear.setOnClickListener(this)
         binding.btnCancel.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
-        // 渲染界面
-        binding.tvYearMonth.text = getString(
-            R.string.date_range__year_month,
-            binding.calendarView.curYear,
-            binding.calendarView.curMonth
-        )
-        binding.calendarView.setRange(
-            2020, 1, 1,
-            binding.calendarView.curYear, binding.calendarView.curMonth, binding.calendarView.curDay
-        )
+        // 初始化界面
+        val year = binding.calendarView.curYear
+        val month = binding.calendarView.curMonth
+        binding.tvYearMonth.text = getString(R.string.date_range__year_month, year, month)
         if (startCalendar != null && endCalendar != null) {
             binding.calendarView.setSelectStartCalendar(startCalendar)
             binding.calendarView.setSelectEndCalendar(endCalendar)
             binding.calendarView.post {
                 binding.calendarView.scrollToSelectCalendar()
-            }
-        } else {
-            binding.calendarView.post {
-                binding.calendarView.scrollToCurrent()
             }
         }
     }
