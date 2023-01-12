@@ -1,6 +1,5 @@
 package com.rouxinpai.arms.dialog
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,8 @@ import com.shashank.sony.fancytoastlib.FancyToast
  */
 class DateRangeDialog(
     private val startCalendar: Calendar? = null,
-    private val endCalendar: Calendar? = null
+    private val endCalendar: Calendar? = null,
+    private var onDateRangeSelectedListener: OnDateRangeSelectedListener? = null
 ) : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     CalendarView.OnMonthChangeListener,
     OnClickListener {
@@ -38,18 +38,11 @@ class DateRangeDialog(
         }
     }
 
-    private lateinit var mOnDateRangeSelectedListener: OnDateRangeSelectedListener
-
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         parent: ViewGroup?
     ): DateRangeDialogBinding {
         return DateRangeDialogBinding.inflate(inflater, parent, false)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mOnDateRangeSelectedListener = context as OnDateRangeSelectedListener
     }
 
     override fun onInit(savedInstanceState: Bundle?) {
@@ -88,7 +81,7 @@ class DateRangeDialog(
      * 清除选中按钮点击事件
      */
     private fun onClearClick() {
-        mOnDateRangeSelectedListener.onDateRangeSelected(null, null)
+        onDateRangeSelectedListener?.onDateRangeSelected(null, null)
         dismiss()
     }
 
@@ -107,7 +100,7 @@ class DateRangeDialog(
         if (list.isNullOrEmpty()) {
             showWarningToast(R.string.date_range__please_select_the_correct_start_date)
         } else {
-            mOnDateRangeSelectedListener.onDateRangeSelected(list.first(), list.last())
+            onDateRangeSelectedListener?.onDateRangeSelected(list.first(), list.last())
             dismiss()
         }
     }
