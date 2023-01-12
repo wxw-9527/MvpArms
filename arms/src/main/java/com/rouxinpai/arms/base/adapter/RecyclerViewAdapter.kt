@@ -27,10 +27,25 @@ abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder
         return VbHolder(binding)
     }
 
-    protected abstract fun onCreateViewBinding(
-        inflater: LayoutInflater,
-        parent: ViewGroup,
-        viewType: Int
-    ): VB
+    override fun onBindViewHolder(holder: VbHolder<VB>, position: Int, item: T?) {
+        if (item == null) return
+        onBindView(holder.binding, position, item)
+    }
 
+    override fun onBindViewHolder(
+        holder: VbHolder<VB>,
+        position: Int,
+        item: T?,
+        payloads: List<Any>
+    ) {
+        super.onBindViewHolder(holder, position, item, payloads)
+        if (item == null) return
+        onBindView(holder.binding, position, item, payloads)
+    }
+
+    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
+
+    protected abstract fun onBindView(binding: VB, position: Int, item: T)
+
+    protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
 }
