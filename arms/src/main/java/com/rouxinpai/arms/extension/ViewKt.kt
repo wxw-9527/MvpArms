@@ -4,6 +4,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
 import com.rouxinpai.arms.R
 
 /**
@@ -34,4 +35,18 @@ fun EditText.setTextMoveSelection(text: String?) {
 fun TextView.clear() {
     text = null
     tag = null
+}
+
+/**
+ * 下一页
+ */
+fun ViewPager2.next() {
+    currentItem = ++currentItem
+}
+
+/**
+ * 上一页
+ */
+fun ViewPager2.previous() {
+    currentItem = --currentItem
 }
