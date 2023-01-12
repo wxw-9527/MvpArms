@@ -22,7 +22,6 @@ import com.shashank.sony.fancytoastlib.FancyToast
 class DateRangeDialog(
     private val startCalendar: Calendar? = null,
     private val endCalendar: Calendar? = null,
-    private var onDateRangeSelectedListener: OnDateRangeSelectedListener? = null
 ) : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     CalendarView.OnMonthChangeListener,
     OnClickListener {
@@ -32,11 +31,16 @@ class DateRangeDialog(
         /**
          * 展示
          */
-        fun show(manager: FragmentManager, startCalendar: Calendar?, endCalendar: Calendar?) {
-            val dialogFragment = DateRangeDialog(startCalendar, endCalendar)
+        fun show(manager: FragmentManager, startCalendar: Calendar?, endCalendar: Calendar?, listener: OnDateRangeSelectedListener) {
+            val dialogFragment = DateRangeDialog(startCalendar, endCalendar).apply {
+                setOnDateRangeSelectedListener(listener)
+            }
             dialogFragment.show(manager, DateRangeDialog::class.java.simpleName)
         }
     }
+
+
+    private var mOnDateRangeSelectedListener: OnDateRangeSelectedListener? = null
 
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
@@ -81,7 +85,7 @@ class DateRangeDialog(
      * 清除选中按钮点击事件
      */
     private fun onClearClick() {
-        onDateRangeSelectedListener?.onDateRangeSelected(null, null)
+        mOnDateRangeSelectedListener?.onDateRangeSelected(null, null)
         dismiss()
     }
 
@@ -100,7 +104,7 @@ class DateRangeDialog(
         if (list.isNullOrEmpty()) {
             showWarningToast(R.string.date_range__please_select_the_correct_start_date)
         } else {
-            onDateRangeSelectedListener?.onDateRangeSelected(list.first(), list.last())
+            mOnDateRangeSelectedListener?.onDateRangeSelected(list.first(), list.last())
             dismiss()
         }
     }
@@ -113,6 +117,13 @@ class DateRangeDialog(
         val duration = FancyToast.LENGTH_SHORT
         val type = FancyToast.WARNING
         FancyToast.makeText(requireContext(), message, duration, type, false).show()
+    }
+
+    /**
+     * 绑定监听事件
+     */
+    fun setOnDateRangeSelectedListener(listener: OnDateRangeSelectedListener) {
+        mOnDateRangeSelectedListener = listener
     }
 
     interface OnDateRangeSelectedListener {
