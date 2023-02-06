@@ -81,5 +81,5 @@ dependencies {
     // 日历
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 步进器
-    api 'com.github.wxw-9527:Stepper:1.0.2'
+    api 'com.github.wxw-9527:Stepper:1.0.3'
 }
