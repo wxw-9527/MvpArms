@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
-import com.rouxinpai.arms.base.adapter.VbHolder
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.rouxinpai.arms.view.OffsetDecoration
 import com.rouxinpai.demo.databinding.ActivityMainBinding
@@ -70,11 +69,7 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
             return MainRecycleItemBinding.inflate(inflater, parent, false)
         }
 
-        override fun onBindViewHolder(
-            holder: VbHolder<MainRecycleItemBinding>,
-            position: Int,
-            item: String?
-        ) {
+        override fun onBindView(binding: MainRecycleItemBinding, position: Int, item: String) {
 
         }
     }

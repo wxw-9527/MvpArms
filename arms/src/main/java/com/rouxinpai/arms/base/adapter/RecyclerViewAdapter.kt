@@ -51,7 +51,7 @@ abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder
     protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
 }
 
-abstract class OnMultiItemAdapterListener<T, VB : ViewBinding> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VbHolder<VB>> {
+abstract class OnItemTypeListener<T, VB : ViewBinding> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VbHolder<VB>> {
 
     override fun onCreate(context: Context, parent: ViewGroup, viewType: Int): VbHolder<VB> {
         val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
