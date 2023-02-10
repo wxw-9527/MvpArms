@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.chad.library.adapter.base.BaseMultiItemAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 
 /**
@@ -44,6 +45,35 @@ abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder
     }
 
     protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
+
+    protected abstract fun onBindView(binding: VB, position: Int, item: T)
+
+    protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
+}
+
+abstract class OnMultiItemAdapterListener<T, VB : ViewBinding> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VbHolder<VB>> {
+
+    override fun onCreate(context: Context, parent: ViewGroup, viewType: Int): VbHolder<VB> {
+        val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
+        return VbHolder(binding)
+    }
+
+    override fun onBind(holder: VbHolder<VB>, position: Int, item: T?) {
+        if (item == null) return
+        onBindView(holder.binding, position, item)
+    }
+
+    override fun onBind(holder: VbHolder<VB>, position: Int, item: T?, payloads: List<Any>) {
+        super.onBind(holder, position, item, payloads)
+        if (item == null) return
+        onBindView(holder.binding, position, item, payloads)
+    }
+
+    protected abstract fun onCreateViewBinding(
+        inflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
