@@ -51,29 +51,24 @@ abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder
     protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
 }
 
-abstract class OnItemTypeListener<T, VB : ViewBinding> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VbHolder<VB>> {
+abstract class OnItemTypeListener<T, VB: ViewBinding, VH : VbHolder<VB>> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VH> {
 
-    override fun onCreate(context: Context, parent: ViewGroup, viewType: Int): VbHolder<VB> {
-        val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
-        return VbHolder(binding)
+    override fun onCreate(context: Context, parent: ViewGroup, viewType: Int): VH {
+        return onCreateViewHolder(LayoutInflater.from(parent.context), parent, viewType)
     }
 
-    override fun onBind(holder: VbHolder<VB>, position: Int, item: T?) {
+    override fun onBind(holder: VH, position: Int, item: T?) {
         if (item == null) return
         onBindView(holder.binding, position, item)
     }
 
-    override fun onBind(holder: VbHolder<VB>, position: Int, item: T?, payloads: List<Any>) {
+    override fun onBind(holder: VH, position: Int, item: T?, payloads: List<Any>) {
         super.onBind(holder, position, item, payloads)
         if (item == null) return
         onBindView(holder.binding, position, item, payloads)
     }
 
-    protected abstract fun onCreateViewBinding(
-        inflater: LayoutInflater,
-        parent: ViewGroup,
-        viewType: Int
-    ): VB
+    protected abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VH
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
