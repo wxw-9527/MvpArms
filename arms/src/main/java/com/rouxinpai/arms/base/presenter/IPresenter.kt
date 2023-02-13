@@ -3,6 +3,7 @@ package com.rouxinpai.arms.base.presenter
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import com.rouxinpai.arms.base.view.IView
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * author : Saxxhw
@@ -13,4 +14,6 @@ import com.rouxinpai.arms.base.view.IView
 interface IPresenter<V : IView> : DefaultLifecycleObserver {
 
     fun bind(lifecycle: Lifecycle, v: V)
+
+    fun addDisposable(disposable: Disposable)
 }

@@ -1,4 +1,4 @@
-package com.rouxinpai.demo
+package com.rouxinpai.demo.main
 
 import android.os.Bundle
 import android.util.TypedValue
@@ -53,6 +53,7 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
                 ""
             )
         )
+        presenter.print("")
     }
 
     override fun onScanned(value: String) {
