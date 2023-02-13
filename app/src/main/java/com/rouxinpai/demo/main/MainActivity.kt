@@ -53,6 +53,7 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
                 ""
             )
         )
+        presenter.print("")
     }
 
     override fun onScanned(value: String) {
