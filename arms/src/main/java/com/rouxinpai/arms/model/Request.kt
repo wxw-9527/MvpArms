@@ -41,7 +41,7 @@ class Request<T> {
     /**
      * 请求开始
      */
-    private var mStart: (() -> Unit)? = null
+    private lateinit var mStart: (() -> Unit)
 
     fun start(start: () -> Unit) {
         mStart = start
@@ -59,29 +59,41 @@ class Request<T> {
     /**
      * 请求成功
      */
-    private lateinit var mSuccess: suspend ((total: Int, data: T?) -> Unit)
+    private lateinit var mSuccess: suspend ((total: Int, data: T) -> Unit)
 
-    fun success(success: suspend (total: Int, data: T?) -> Unit) {
+    fun success(success: suspend (total: Int, data: T) -> Unit) {
         mSuccess = success
+    }
+
+    /**
+     * 请求结束
+     */
+    private lateinit var mCompleted: (() -> Unit)
+
+    infix fun completed(completed: () -> Unit) {
+        mCompleted = completed
     }
 
     /**
      * 请求失败
      */
-    private var mFail: ((Exception) -> Unit)? = null
+    private lateinit var mFail: ((Exception) -> Unit)
 
     fun fail(fail: (Exception) -> Unit) {
         mFail = fail
     }
 
     fun request(scope: CoroutineScope, view: IView?) {
-        mStart?.invoke()
+        mStart.invoke()
         scope.launch {
             try {
                 val response = mCall.invoke().await()
                 if (response.success) {
                     val data = response.data
-                    mSuccess.invoke(response.total, data)
+                    if (data != null) {
+                        mSuccess.invoke(response.total, data)
+                    }
+                    mCompleted.invoke()
                 } else if (response.tokenTimeout) {
                     throw TokenTimeoutException(response.code, response.msg)
                 } else {
@@ -102,7 +114,7 @@ class Request<T> {
                         view?.showErrorPage()
                     }
                 }
-                mFail?.invoke(e)
+                mFail.invoke(e)
             }
         }
     }
