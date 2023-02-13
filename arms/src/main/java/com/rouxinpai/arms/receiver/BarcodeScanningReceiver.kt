@@ -24,9 +24,9 @@ class BarcodeScanningReceiver: BroadcastReceiver() {
             return
         }
         if (context is OnScanListener) {
-            val value = intent.getStringExtra(EXTRA)
-            if (value != null && value.isNotBlank()) {
-                context.onScanned(value)
+            val barcode = intent.getStringExtra(EXTRA)
+            if (barcode != null && barcode.isNotBlank()) {
+                context.onScanned(barcode)
             }
         }
     }
