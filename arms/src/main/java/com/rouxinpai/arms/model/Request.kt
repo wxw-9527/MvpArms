@@ -59,9 +59,9 @@ class Request<T> {
     /**
      * 请求成功
      */
-    private var mSuccess: ((response: ApiResponse<T>) -> Unit)? = null
+    private lateinit var mSuccess: suspend ((total: Int, data: T?) -> Unit)
 
-    fun success(success: (response: ApiResponse<T>) -> Unit) {
+    fun success(success: suspend (total: Int, data: T?) -> Unit) {
         mSuccess = success
     }
 
@@ -80,7 +80,8 @@ class Request<T> {
             try {
                 val response = mCall.invoke().await()
                 if (response.success) {
-                    mSuccess?.invoke(response)
+                    val data = response.data
+                    mSuccess.invoke(response.total, data)
                 } else if (response.tokenTimeout) {
                     throw TokenTimeoutException(response.code, response.msg)
                 } else {
