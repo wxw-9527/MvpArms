@@ -1,7 +1,6 @@
-package com.rouxinpai.demo
+package com.rouxinpai.demo.main
 
 import com.rouxinpai.arms.base.presenter.BasePresenter
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -14,6 +13,6 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
     MainContract.Presenter {
 
     override fun print(text: String) {
-        Timber.d("------> $text")
+
     }
 }

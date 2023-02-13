@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.di
+package com.rouxinpai.demo.http
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

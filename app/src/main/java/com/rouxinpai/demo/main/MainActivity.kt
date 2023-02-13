@@ -1,4 +1,4 @@
-package com.rouxinpai.demo
+package com.rouxinpai.demo.main
 
 import android.os.Bundle
 import android.util.TypedValue
