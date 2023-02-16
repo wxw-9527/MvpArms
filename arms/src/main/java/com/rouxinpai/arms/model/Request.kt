@@ -90,7 +90,7 @@ class Request<T> {
                 val response = mCall.invoke().await()
                 if (response.success) {
                     val data = response.data
-                    if (data != null) {
+                    if (data != null && ::mSuccess.isInitialized) {
                         mSuccess.invoke(response.total, data)
                     }
                     mCompleted?.invoke()
