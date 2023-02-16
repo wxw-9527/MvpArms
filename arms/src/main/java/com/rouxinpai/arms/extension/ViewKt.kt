@@ -51,12 +51,12 @@ fun EditText.setEnable(enable: Boolean) {
 /**
  * 启用[EditText]
  */
-fun EditText.enable(enable: Boolean) = setEnable(true)
+fun EditText.enable() = setEnable(true)
 
 /**
  * 禁用[EditText]
  */
-fun EditText.disabled(enable: Boolean) = setEnable(false)
+fun EditText.disabled() = setEnable(false)
 
 /**
  * 下一页
