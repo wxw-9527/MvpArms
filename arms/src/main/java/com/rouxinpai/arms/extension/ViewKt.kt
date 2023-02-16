@@ -38,6 +38,27 @@ fun TextView.clear() {
 }
 
 /**
+ * 设置[EditText]是否启用/禁用
+ */
+fun EditText.setEnable(enable: Boolean) {
+    isEnabled = enable
+    isFocusable = enable
+    isFocusableInTouchMode = enable
+    isClickable = enable
+    isLongClickable = enable
+}
+
+/**
+ * 启用[EditText]
+ */
+fun EditText.enable(enable: Boolean) = setEnable(true)
+
+/**
+ * 禁用[EditText]
+ */
+fun EditText.disabled(enable: Boolean) = setEnable(false)
+
+/**
  * 下一页
  */
 fun ViewPager2.next() {

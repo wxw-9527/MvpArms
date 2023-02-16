@@ -32,6 +32,6 @@ class BarcodeScanningReceiver: BroadcastReceiver() {
     }
 
     interface OnScanListener {
-        fun onScanned(value: String)
+        fun onScanned(barcode: String)
     }
 }
