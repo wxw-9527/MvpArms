@@ -68,16 +68,19 @@ dependencies {
     // RecyclerView相关
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
-    // 对话框相关
-    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
-    api 'com.afollestad.material-dialogs:core:3.3.0'
-    api 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'
-    // 缺省页
-    api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 吐司框架
     api 'io.github.shashank02051997:FancyToast:2.0.2'
+    // 图片选择框架
+    api 'io.github.lucksiege:pictureselector:v3.10.7'
+    api 'io.github.lucksiege:compress:v3.10.7'
+    // 对话框相关
+    api 'com.afollestad.material-dialogs:core:3.3.0'
+    api 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
+    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
+    // 缺省页
+    api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 日历
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 步进器

@@ -7,9 +7,14 @@
     android:orientation="vertical"
     tools:context=".main.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_item"
+    <com.rouxinpai.arms.extension.NineGridView
+        android:id="@+id/nine_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:horizontalSpacing="8dp"
+        android:numColumns="5"
+        android:verticalSpacing="8dp"
+        app:ngv_editable="true"
+        app:ngv_maxItemCount="5" />
 </RelativeLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NineGridView">
+        <!-- 是否可编辑，默认值为 false -->
+        <attr name="ngv_editable" format="boolean" />
+        <!-- 可选择图片的总张数,默认值为 9 -->
+        <attr name="ngv_maxItemCount" format="integer" />
+    </declare-styleable>
+</resources>
