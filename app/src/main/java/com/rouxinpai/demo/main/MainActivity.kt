@@ -2,11 +2,8 @@ package com.rouxinpai.demo.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import com.luck.picture.lib.basic.PictureSelector
-import com.luck.picture.lib.entity.LocalMedia
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.extension.NineGridView
-import com.rouxinpai.arms.extension.takePhoto
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,19 +27,7 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
         showToast(barcode)
     }
 
-    private var mSelected = emptyList<LocalMedia>()
-
     override fun onAddClick() {
-//        PictureSelector
-//            .create(this)
-//            .selectPicture(5, mSelected) { list ->
-//                mSelected = list
-//                binding.nineGridView.addData(list.map { it.availablePath })
-//            }
-        PictureSelector
-            .create(this)
-            .takePhoto {
-                binding.nineGridView.addData(it.availablePath)
-            }
+
     }
 }

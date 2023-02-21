@@ -18,13 +18,13 @@ import com.rouxinpai.arms.databinding.NineGridViewItemBinding
  * time   : 2023/2/21 10:24
  * desc   :
  */
-class NineGridView @JvmOverloads constructor(
+class NineGridView<T: NineGridView.IEntity> @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = android.R.attr.gridViewStyle,
 ) : GridView(context, attrs, defStyleAttr),
     AdapterView.OnItemClickListener,
-    BaseAdapter.OnItemChildClickListener<String> {
+    BaseAdapter.OnItemChildClickListener<T> {
 
     companion object {
         private const val DEFAULT_EDITABLE = false
@@ -38,7 +38,7 @@ class NineGridView @JvmOverloads constructor(
     private var mMaxItemCount: Int = DEFAULT_MAX_ITEM_COUNT
 
     // 适配器
-    private val mAdapter: NineAdapter
+    private val mAdapter: NineAdapter<T>
 
     // 添加按钮点击事件监听
     private var mOnAddClickListener: OnAddClickListener? = null
@@ -54,7 +54,7 @@ class NineGridView @JvmOverloads constructor(
                 it.getInt(R.styleable.NineGridView_ngv_maxItemCount, DEFAULT_MAX_ITEM_COUNT)
         }
         // 绑定适配器
-        mAdapter = NineAdapter(mMaxItemCount).apply { editable = mEditable }
+        mAdapter = NineAdapter<T>(mMaxItemCount).apply { editable = mEditable }
         adapter = mAdapter
         // 绑定监听事件
         onItemClickListener = this
@@ -67,30 +67,33 @@ class NineGridView @JvmOverloads constructor(
         }
     }
 
-    override fun onItemChildClick(view: View, position: Int, item: String) {
+    override fun onItemChildClick(view: View, position: Int, item: T) {
         if (R.id.btn_delete == view.id) {
             mAdapter.removeAt(position)
             mOnDeleteClickListener?.onDeleteClick(position)
         }
     }
 
+    val maxItemCount: Int
+        get() = mMaxItemCount
+
     val missingCount: Int
         get() = mMaxItemCount - mAdapter.dataSize
 
-    val data: List<String>
+    val data: List<T>
         get() = mAdapter.getList()
 
-    fun addData(data: String?) {
-        if (data.isNullOrEmpty()) return
+    fun addData(data: T?) {
+        if (data == null) return
         mAdapter.addItem(data)
     }
 
-    fun addData(list: List<String>?) {
+    fun addData(list: List<T>?) {
         if (list.isNullOrEmpty()) return
         mAdapter.addItems(list)
     }
 
-    fun setNewList(list: List<String>?) {
+    fun setNewList(list: List<T>?) {
         if (list.isNullOrEmpty()) return
         mAdapter.setNewList(list)
     }
@@ -116,10 +119,16 @@ class NineGridView @JvmOverloads constructor(
     }
 
     /**
+     *
+     */
+    interface IEntity {
+        val path: String
+    }
+
+    /**
      * 适配器
      */
-    private class NineAdapter(val mMaxItemCount: Int) :
-        BaseAdapter<NineGridViewItemBinding, String>() {
+    private class NineAdapter<T: IEntity>(val mMaxItemCount: Int) : BaseAdapter<NineGridViewItemBinding, T>() {
 
         init {
             addChildClickViewIds(R.id.btn_delete)
@@ -153,7 +162,7 @@ class NineGridView @JvmOverloads constructor(
                     // 展示已添加图片
                     if (position < dataSize) {
                         binding.btnDelete.visibility = View.VISIBLE
-                        Glide.with(binding.ivImage).load(getItem(position)).into(binding.ivImage)
+                        Glide.with(binding.ivImage).load(getItem(position).path).into(binding.ivImage)
                     }
                     // 展示添加图片按钮
                     else {
@@ -165,11 +174,11 @@ class NineGridView @JvmOverloads constructor(
                 // 图片数量达到上限
                 else {
                     binding.btnDelete.visibility = View.VISIBLE
-                    Glide.with(binding.ivImage).load(getItem(position)).into(binding.ivImage)
+                    Glide.with(binding.ivImage).load(getItem(position).path).into(binding.ivImage)
                 }
             } else {
                 binding.btnDelete.visibility = View.INVISIBLE
-                Glide.with(binding.ivImage).load(getItem(position)).into(binding.ivImage)
+                Glide.with(binding.ivImage).load(getItem(position).path).into(binding.ivImage)
             }
         }
     }
