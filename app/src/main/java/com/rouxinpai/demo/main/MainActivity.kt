@@ -3,17 +3,13 @@ package com.rouxinpai.demo.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import com.luck.picture.lib.basic.PictureSelector
-import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
-import com.rouxinpai.arms.extension.GlideEngine
-import com.rouxinpai.arms.extension.LuBanCompressEngine
 import com.rouxinpai.arms.extension.NineGridView
+import com.rouxinpai.arms.extension.takePhoto
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
@@ -49,44 +45,4 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
                 binding.nineGridView.addData(it.availablePath)
             }
     }
-}
-
-fun PictureSelector.selectPicture(
-    maxSelectNum: Int,
-    selectedList: List<LocalMedia>? = null,
-    block: (List<LocalMedia>) -> Unit
-) {
-    this.openGallery(SelectMimeType.ofImage())
-        .setImageEngine(GlideEngine.instance)
-        .setCompressEngine(LuBanCompressEngine.instance)
-        .isMaxSelectEnabledMask(true)
-        .setMaxSelectNum(maxSelectNum) // 图片最大选择数量
-        .setSelectedData(selectedList)
-        .forResult(object : OnResultCallbackListener<LocalMedia> {
-
-            override fun onResult(result: ArrayList<LocalMedia>) {
-                block.invoke(result)
-            }
-
-            override fun onCancel() {
-
-            }
-        })
-}
-
-fun PictureSelector.takePhoto(
-    block: (LocalMedia) -> Unit
-) {
-    this.openCamera(SelectMimeType.ofImage())
-        .setCompressEngine(LuBanCompressEngine.instance)
-        .forResult(object : OnResultCallbackListener<LocalMedia> {
-
-            override fun onResult(result: ArrayList<LocalMedia>) {
-                block.invoke(result.first())
-            }
-
-            override fun onCancel() {
-
-            }
-        })
 }

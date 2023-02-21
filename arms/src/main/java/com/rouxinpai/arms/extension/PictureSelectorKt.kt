@@ -9,12 +9,63 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.luck.picture.lib.engine.ImageEngine
 import com.luck.picture.lib.utils.ActivityCompatHelper
 import com.luck.picture.lib.R
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.engine.CompressFileEngine
+import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnKeyValueResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import top.zibin.luban.Luban
 import top.zibin.luban.OnNewCompressListener
 import java.io.File
 import java.util.ArrayList
+
+
+/**
+ *
+ */
+fun PictureSelector.selectPicture(
+    maxSelectNum: Int,
+    selectedList: List<LocalMedia>? = null,
+    block: (List<LocalMedia>) -> Unit
+) {
+    this.openGallery(SelectMimeType.ofImage())
+        .setImageEngine(GlideEngine.instance)
+        .setCompressEngine(LuBanCompressEngine.instance)
+        .isMaxSelectEnabledMask(true)
+        .setMaxSelectNum(maxSelectNum) // 图片最大选择数量
+        .setSelectedData(selectedList)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+
+            override fun onResult(result: ArrayList<LocalMedia>) {
+                block.invoke(result)
+            }
+
+            override fun onCancel() {
+
+            }
+        })
+}
+
+/**
+ *
+ */
+fun PictureSelector.takePhoto(
+    block: (LocalMedia) -> Unit
+) {
+    this.openCamera(SelectMimeType.ofImage())
+        .setCompressEngine(LuBanCompressEngine.instance)
+        .forResult(object : OnResultCallbackListener<LocalMedia> {
+
+            override fun onResult(result: ArrayList<LocalMedia>) {
+                block.invoke(result.first())
+            }
+
+            override fun onCancel() {
+
+            }
+        })
+}
 
 /**
  * author : Saxxhw
