@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
+import androidx.core.content.res.use
 import com.bumptech.glide.Glide
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.adapter.BaseAdapter
@@ -18,7 +19,7 @@ import com.rouxinpai.arms.databinding.NineGridViewItemBinding
  * time   : 2023/2/21 10:24
  * desc   :
  */
-class NineGridView<T: NineGridView.IEntity> @JvmOverloads constructor(
+class NineGridView<T : NineGridView.IEntity> @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = android.R.attr.gridViewStyle,
@@ -128,7 +129,7 @@ class NineGridView<T: NineGridView.IEntity> @JvmOverloads constructor(
     /**
      * 适配器
      */
-    private class NineAdapter<T: IEntity>(val mMaxItemCount: Int) : BaseAdapter<NineGridViewItemBinding, T>() {
+    private class NineAdapter<T : IEntity>(val mMaxItemCount: Int) : BaseAdapter<NineGridViewItemBinding, T>() {
 
         init {
             addChildClickViewIds(R.id.btn_delete)
