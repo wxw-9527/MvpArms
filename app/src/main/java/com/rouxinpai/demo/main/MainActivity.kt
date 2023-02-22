@@ -2,8 +2,10 @@ package com.rouxinpai.demo.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.luck.picture.lib.basic.PictureSelector
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.extension.NineGridView
+import com.rouxinpai.arms.extension.selectPicture
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,10 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
     }
 
     override fun onAddClick() {
-
+        PictureSelector
+            .create(this)
+            .selectPicture(3) {
+                println()
+            }
     }
 }

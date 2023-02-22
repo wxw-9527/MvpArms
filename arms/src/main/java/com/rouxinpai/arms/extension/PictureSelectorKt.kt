@@ -15,11 +15,11 @@ import com.luck.picture.lib.engine.CompressFileEngine
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnKeyValueResultCallbackListener
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import com.luck.picture.lib.utils.SandboxTransformUtils
 import top.zibin.luban.Luban
 import top.zibin.luban.OnNewCompressListener
 import java.io.File
 import java.util.ArrayList
-
 
 /**
  *
@@ -32,6 +32,8 @@ fun PictureSelector.selectPicture(
     this.openGallery(SelectMimeType.ofImage())
         .setImageEngine(GlideEngine.instance)
         .setCompressEngine(LuBanCompressEngine.instance)
+        .setSandboxFileEngine(UriToFileTransformEngine.instance)
+        .isCameraForegroundService(true)
         .isMaxSelectEnabledMask(true)
         .setMaxSelectNum(maxSelectNum) // 图片最大选择数量
         .setSelectedData(selectedList)
@@ -55,6 +57,8 @@ fun PictureSelector.takePhoto(
 ) {
     this.openCamera(SelectMimeType.ofImage())
         .setCompressEngine(LuBanCompressEngine.instance)
+        .setSandboxFileEngine(UriToFileTransformEngine.instance)
+        .isCameraForegroundService(true)
         .forResult(object : OnResultCallbackListener<LocalMedia> {
 
             override fun onResult(result: ArrayList<LocalMedia>) {
@@ -207,5 +211,34 @@ class LuBanCompressEngine : CompressFileEngine {
                 }
             })
             .launch()
+    }
+}
+
+/**
+ * author : Saxxhw
+ * email  : xingwangwang@cloudinnov.com
+ * time   : 2023/2/22 10:29
+ * desc   :
+ */
+class UriToFileTransformEngine : com.luck.picture.lib.engine.UriToFileTransformEngine {
+
+    companion object {
+        /**
+         * 返回[GlideEngine]单例对象
+         */
+        val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { UriToFileTransformEngine() }
+    }
+
+
+    override fun onUriToFileAsyncTransform(
+        context: Context,
+        srcPath: String?,
+        mineType: String?,
+        call: OnKeyValueResultCallbackListener?
+    ) {
+        if (call != null) {
+            val sandboxPath = SandboxTransformUtils.copyPathToSandbox(context, srcPath, mineType)
+            call.onCallback(srcPath, sandboxPath)
+        }
     }
 }
