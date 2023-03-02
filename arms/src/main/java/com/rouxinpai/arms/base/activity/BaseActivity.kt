@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.rouxinpai.arms.R
+import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
@@ -21,6 +22,7 @@ import com.view.multistatepage.state.LoadingState
 import com.zy.multistatepage.MultiStateContainer
 import com.zy.multistatepage.bindMultiState
 import com.zy.multistatepage.state.SuccessState
+import org.greenrobot.eventbus.EventBus
 
 /**
  * author : Saxxhw
@@ -32,6 +34,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     lateinit var binding: VB
         private set
+
+    // 是否使用事件发布-订阅总线
+    private var mEventBusEnabled: Boolean = false
 
     // 加载进度对话框
     private var mKProgressHUD: KProgressHUD? = null
@@ -63,6 +68,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     override fun onStart() {
         super.onStart()
+        //
+        mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
+        if (mEventBusEnabled) {
+            EventBus.getDefault().register(this)
+        }
         // 注册广播
         val intentFilter = IntentFilter().apply { addAction(BarcodeScanningReceiver.ACTION) }
         mReceiver = BarcodeScanningReceiver()
@@ -71,6 +81,10 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     override fun onStop() {
         super.onStop()
+        //
+        if (mEventBusEnabled) {
+            EventBus.getDefault().unregister(this)
+        }
         // 取消注册广播
         unregisterReceiver(mReceiver)
     }

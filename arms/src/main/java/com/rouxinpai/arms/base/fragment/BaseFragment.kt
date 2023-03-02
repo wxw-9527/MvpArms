@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.kaopiz.kprogresshud.KProgressHUD
+import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -17,6 +18,7 @@ import com.view.multistatepage.state.LoadingState
 import com.zy.multistatepage.MultiStateContainer
 import com.zy.multistatepage.bindMultiState
 import com.zy.multistatepage.state.SuccessState
+import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -33,6 +35,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     // 初始化标识
     private val mInitialized = AtomicBoolean(false)
     val initialized get() = mInitialized
+
+    // 是否使用事件发布-订阅总线
+    private var mUseEventBus: Boolean = false
 
     // 加载进度对话框
     private var mKProgressHUD: KProgressHUD? = null
@@ -75,6 +80,18 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         super.onResume()
         if (mInitialized.compareAndSet(false, true)) {
             onLazyInit()
+        }
+        // 事件发布-订阅总线
+        mUseEventBus = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
+        if (mUseEventBus) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mUseEventBus) {
+            EventBus.getDefault().unregister(this)
         }
     }
 
