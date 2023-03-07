@@ -49,8 +49,8 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.2.1'
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     // 依赖注入：https://dagger.dev/hilt/
-    implementation 'com.google.dagger:hilt-android:2.44.2'
-    kapt 'com.google.dagger:hilt-compiler:2.44.2'
+    implementation 'com.google.dagger:hilt-android:2.45'
+    kapt 'com.google.dagger:hilt-compiler:2.45'
     // 网络请求
     api 'com.squareup.okhttp3:okhttp:4.10.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
@@ -86,5 +86,5 @@ dependencies {
     // 日历
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 步进器
-    api 'com.github.wxw-9527:Stepper:1.0.3'
+    api 'com.github.wxw-9527:Stepper:1.0.4'
 }
