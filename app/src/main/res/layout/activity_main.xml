@@ -7,14 +7,19 @@
     android:orientation="vertical"
     tools:context=".main.MainActivity">
 
-    <com.rouxinpai.arms.extension.NineGridView
-        android:id="@+id/nine_grid_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_items"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/main_recycle_item" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:horizontalSpacing="8dp"
-        android:numColumns="5"
-        android:verticalSpacing="8dp"
-        app:ngv_editable="true"
-        app:ngv_maxItemCount="5" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="Add" />
 </RelativeLayout>

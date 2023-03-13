@@ -1,14 +1,11 @@
 package com.rouxinpai.arms.base.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.BaseDifferAdapter
-import com.chad.library.adapter.base.BaseMultiItemAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.provider.BaseItemProvider
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**
  * author : Saxxhw
@@ -17,94 +14,68 @@ import com.chad.library.adapter.base.BaseQuickAdapter
  * desc   :
  */
 
-open class VbHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
+open class VbHolder<VB : ViewBinding>(val binding: VB) : BaseViewHolder(binding.root)
 
-abstract class BaseVbAdapter<VB : ViewBinding, T>(items: List<T> = emptyList()) : BaseQuickAdapter<T, VbHolder<VB>>(items) {
+abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder<VB>>(0) {
 
-    override fun onCreateViewHolder(
-        context: Context,
-        parent: ViewGroup,
-        viewType: Int
-    ): VbHolder<VB> {
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VbHolder<VB> {
         val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
         return VbHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: VbHolder<VB>, position: Int, item: T?) {
-        if (item == null) return
-        onBindView(holder.binding, position, item)
+    override fun convert(holder: VbHolder<VB>, item: T) {
+        onBindView(holder.binding, holder.layoutPosition, item)
     }
 
-    override fun onBindViewHolder(
-        holder: VbHolder<VB>,
-        position: Int,
-        item: T?,
-        payloads: List<Any>
-    ) {
-        super.onBindViewHolder(holder, position, item, payloads)
-        if (item == null) return
-        onBindView(holder.binding, position, item, payloads)
+    override fun convert(holder: VbHolder<VB>, item: T, payloads: List<Any>) {
+        super.convert(holder, item, payloads)
+        onBindView(holder.binding, holder.layoutPosition, item, payloads)
     }
 
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
+    protected abstract fun onCreateViewBinding(
+        inflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int,
+    ): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
     protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
 }
 
-abstract class BaseVbDifferAdapter<VB: ViewBinding, T>(diffCallback: DiffUtil.ItemCallback<T>, items: List<T> = emptyList()) : BaseDifferAdapter<T, VbHolder<VB>>(diffCallback, items) {
+/**
+ *
+ */
+abstract class BaseVBItemProvider<T, VB : ViewBinding> : BaseItemProvider<T>() {
 
-    override fun onCreateViewHolder(
-        context: Context,
-        parent: ViewGroup,
-        viewType: Int
-    ): VbHolder<VB> {
+    override val layoutId: Int
+        get() = 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
         return VbHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: VbHolder<VB>, position: Int, item: T?) {
-        if (item == null) return
-        onBindView(holder.binding, position, item)
+    override fun convert(helper: BaseViewHolder, item: T) {
+        if (helper is VbHolder<*>) {
+            val binding = helper.binding as? VB ?: return
+            onBindView(binding, helper.layoutPosition, item)
+        }
     }
 
-    override fun onBindViewHolder(
-        holder: VbHolder<VB>,
-        position: Int,
-        item: T?,
-        payloads: List<Any>
-    ) {
-        super.onBindViewHolder(holder, position, item, payloads)
-        if (item == null) return
-        onBindView(holder.binding, position, item, payloads)
+    override fun convert(helper: BaseViewHolder, item: T, payloads: List<Any>) {
+        super.convert(helper, item, payloads)
+        if (helper is VbHolder<*>) {
+            val binding = helper.binding as? VB ?: return
+            onBindView(binding, helper.layoutPosition, item, payloads)
+        }
     }
 
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
-
-    protected abstract fun onBindView(binding: VB, position: Int, item: T)
-
-    protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
-}
-
-abstract class OnItemTypeListener<T, VB: ViewBinding, VH : VbHolder<VB>> : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, VH> {
-
-    override fun onCreate(context: Context, parent: ViewGroup, viewType: Int): VH {
-        return onCreateViewHolder(LayoutInflater.from(parent.context), parent, viewType)
-    }
-
-    override fun onBind(holder: VH, position: Int, item: T?) {
-        if (item == null) return
-        onBindView(holder.binding, position, item)
-    }
-
-    override fun onBind(holder: VH, position: Int, item: T?, payloads: List<Any>) {
-        super.onBind(holder, position, item, payloads)
-        if (item == null) return
-        onBindView(holder.binding, position, item, payloads)
-    }
-
-    protected abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VH
+    protected abstract fun onCreateViewBinding(
+        inflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int,
+    ): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
