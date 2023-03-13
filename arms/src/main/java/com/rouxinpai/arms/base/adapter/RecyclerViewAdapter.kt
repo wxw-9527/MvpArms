@@ -3,7 +3,7 @@ package com.rouxinpai.arms.base.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseDifferAdapter
@@ -19,7 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 
 open class VbHolder<VB : ViewBinding>(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 
-abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder<VB>>() {
+abstract class BaseVbAdapter<VB : ViewBinding, T>(items: List<T> = emptyList()) : BaseQuickAdapter<T, VbHolder<VB>>(items) {
 
     override fun onCreateViewHolder(
         context: Context,
@@ -53,7 +53,7 @@ abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder
     protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
 }
 
-abstract class BaseVbDifferAdapter<VB: ViewBinding, T>(config: AsyncDifferConfig<T>) : BaseDifferAdapter<T, VbHolder<VB>>(config) {
+abstract class BaseVbDifferAdapter<VB: ViewBinding, T>(diffCallback: DiffUtil.ItemCallback<T>, items: List<T> = emptyList()) : BaseDifferAdapter<T, VbHolder<VB>>(diffCallback, items) {
 
     override fun onCreateViewHolder(
         context: Context,
