@@ -28,7 +28,7 @@ infix fun String.between(that: String): JsonObject {
 infix fun String.`in`(that: String): JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("fieldName", this)
-    jsonObject.addProperty("operation", "between")
+    jsonObject.addProperty("operation", "in")
     jsonObject.addProperty("value", that)
     return jsonObject
 }
