@@ -32,3 +32,11 @@ infix fun String.`in`(that: String): JsonObject {
     jsonObject.addProperty("value", that)
     return jsonObject
 }
+
+infix fun String.like(that: String): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "like")
+    jsonObject.addProperty("value", that)
+    return jsonObject
+}
