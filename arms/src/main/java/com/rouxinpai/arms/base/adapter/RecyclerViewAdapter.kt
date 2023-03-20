@@ -16,7 +16,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 open class VbHolder<VB : ViewBinding>(val binding: VB) : BaseViewHolder(binding.root)
 
-abstract class BaseVbAdapter<VB : ViewBinding, T> : BaseQuickAdapter<T, VbHolder<VB>>(0) {
+abstract class BaseVbAdapter<VB : ViewBinding, T>(data: MutableList<T>? = null) : BaseQuickAdapter<T, VbHolder<VB>>(0, data) {
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VbHolder<VB> {
         val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)

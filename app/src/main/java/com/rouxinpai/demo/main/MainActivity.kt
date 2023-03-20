@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.fondesa.recyclerviewdivider.dividerBuilder
+import com.google.gson.Gson
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.demo.databinding.ActivityMainBinding
@@ -18,7 +19,9 @@ import kotlin.random.Random
 class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
     MainContract.View {
 
-    private val mAdapter = ItemAdapter()
+    private lateinit var mAdapter: ItemAdapter
+
+    private val mList = arrayListOf<ItemVO>()
 
     override fun onCreateViewBinding(inflater: LayoutInflater): ActivityMainBinding {
         return ActivityMainBinding.inflate(inflater)
@@ -26,6 +29,11 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
+        for (i in 0..1) {
+            val item = ItemVO(i.toString(), Random.Default.nextInt(120), Random.Default.nextFloat())
+            mList.add(item)
+        }
+        mAdapter = ItemAdapter(mList)
         // 绑定适配器
         binding.rvItems.adapter = mAdapter
         // 添加分割线
@@ -42,14 +50,21 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
             val item = adapter.getItemOrNull(position) as? ItemVO ?: return@setOnItemClickListener
             item.float = 12.0f
             mAdapter.refresh(position)
+            println(Gson().toJson(mList))
+        }
+        mAdapter.setOnItemLongClickListener { adapter, _, position ->
+            adapter.removeAt(position)
+            println(Gson().toJson(mList))
+            return@setOnItemLongClickListener true
         }
         binding.btnAdd.setOnClickListener {
-            val item = ItemVO("", Random(120).nextInt(), Random(12).nextFloat())
+            val item = ItemVO("", Random.Default.nextInt(120), Random.Default.nextFloat())
             mAdapter.addData(item)
+            println(Gson().toJson(mList))
         }
     }
 
-    private class ItemAdapter : BaseVbAdapter<MainRecycleItemBinding, ItemVO>() {
+    private class ItemAdapter(list: ArrayList<ItemVO>) : BaseVbAdapter<MainRecycleItemBinding, ItemVO>(list) {
 
         companion object {
             // 局部刷新标志
