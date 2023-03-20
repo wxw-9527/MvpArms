@@ -204,6 +204,12 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         loadState.show<SuccessState>()
     }
 
+    override fun loadMoreComplete() {}
+
+    override fun loadMoreEnd(gone: Boolean) {}
+
+    override fun loadMoreFail() {}
+
     override fun tokenTimeout() {
         val application = application as? IApplication ?: return
         application.onTokenTimeout()

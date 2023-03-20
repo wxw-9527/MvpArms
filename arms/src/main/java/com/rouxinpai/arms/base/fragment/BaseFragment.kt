@@ -62,7 +62,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         mBinding = onCreateViewBinding(inflater, container)
         return mBinding?.root
@@ -198,6 +198,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         if (loadState.currentState is SuccessState) return
         loadState.show<SuccessState>()
     }
+
+    override fun loadMoreComplete() {}
+
+    override fun loadMoreEnd(gone: Boolean) {}
+
+    override fun loadMoreFail() {}
 
     override fun tokenTimeout() {
         val application = requireActivity().application as? IApplication ?: return
