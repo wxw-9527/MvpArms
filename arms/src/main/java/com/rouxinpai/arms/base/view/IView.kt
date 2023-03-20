@@ -67,6 +67,21 @@ interface IView {
     fun showSuccessPage()
 
     /**
+     * 本次数据加载完毕
+     */
+    fun loadMoreComplete()
+
+    /**
+     * 所有数据加载完成
+     */
+    fun loadMoreEnd(gone: Boolean = false)
+
+    /**
+     * 本次数据加载错误
+     */
+    fun loadMoreFail()
+
+    /**
      * token超时
      */
     fun tokenTimeout()
