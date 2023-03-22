@@ -94,10 +94,13 @@ class Request<T> {
                         mSuccess.invoke(response.total, data)
                     }
                     mCompleted?.invoke()
-                } else if (response.tokenTimeout) {
-                    throw TokenTimeoutException(response.code, response.msg)
                 } else {
-                    throw ApiException(response.code, response.msg)
+                    val errMsg = response.msg ?: "errorCode = ${response.code}"
+                    if (response.tokenTimeout) {
+                        throw TokenTimeoutException(response.code, errMsg)
+                    } else {
+                        throw ApiException(response.code, errMsg)
+                    }
                 }
             } catch (e: CancellationException) {
                 Timber.e(e)

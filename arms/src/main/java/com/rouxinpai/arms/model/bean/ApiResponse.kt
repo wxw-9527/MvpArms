@@ -9,7 +9,7 @@ import androidx.annotation.Keep
  * desc   :
  */
 @Keep
-class ApiResponse<out T>(val code: Int, val msg: String, val total: Int, val data: T?) {
+class ApiResponse<out T>(val code: Int, val msg: String?, val total: Int, val data: T?) {
 
     companion object {
 
