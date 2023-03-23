@@ -68,9 +68,9 @@ class Request<T> {
     /**
      * 请求结束
      */
-    private var mCompleted: (() -> Unit)? = null
+    private lateinit var mCompleted: suspend (() -> Unit)
 
-    infix fun completed(completed: () -> Unit) {
+    infix fun completed(completed: suspend () -> Unit) {
         mCompleted = completed
     }
 
@@ -93,7 +93,9 @@ class Request<T> {
                     if (data != null && ::mSuccess.isInitialized) {
                         mSuccess.invoke(response.total, data)
                     }
-                    mCompleted?.invoke()
+                    if (::mCompleted.isInitialized) {
+                        mCompleted.invoke()
+                    }
                 } else {
                     val errMsg = response.msg ?: "errorCode = ${response.code}"
                     if (response.tokenTimeout) {
