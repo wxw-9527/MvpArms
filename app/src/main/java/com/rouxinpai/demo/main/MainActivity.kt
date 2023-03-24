@@ -61,6 +61,9 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
             val item = ItemVO("", Random.Default.nextInt(120), Random.Default.nextFloat())
             mAdapter.addData(item)
             println(Gson().toJson(mList))
+
+            presenter.print("")
+
         }
     }
 

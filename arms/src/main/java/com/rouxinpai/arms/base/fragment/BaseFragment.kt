@@ -110,22 +110,38 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         FancyToast.makeText(requireContext(), message, duration, type, false).show()
     }
 
-    override fun showProgress(messageId: Int) {
-        val message = getString(messageId)
-        showProgress(message)
+    override fun showProgress(labelId: Int, detailId: Int?) {
+        val message = getString(labelId)
+        val detailMessage = detailId?.let { getString(it) }
+        showProgress(message, detailMessage)
     }
 
-    override fun showProgress(message: CharSequence?) {
+    override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
         mKProgressHUD = KProgressHUD
             .create(requireContext(), KProgressHUD.Style.SPIN_INDETERMINATE)
             .apply {
-                if (message != null && message.isNotEmpty()) {
-                    setLabel(message.toString())
+                if (labelMsg != null && labelMsg.isNotEmpty()) {
+                    setLabel(labelMsg.toString())
+                }
+                if (detailMsg != null && detailMsg.isNotEmpty()) {
+                    setDetailsLabel(detailMsg)
                 }
             }
             .setCancellable(true)
             .setDimAmount(0.2f)
             .show()
+    }
+
+    override fun updateProgress(detailId: Int) {
+        val message = getString(detailId)
+        updateProgress(message)
+    }
+
+    override fun updateProgress(detailMsg: String?) {
+        if (detailMsg.isNullOrEmpty()) return
+        if (mKProgressHUD == null) return
+        if (false == mKProgressHUD?.isShowing) return
+        mKProgressHUD?.setDetailsLabel(detailMsg.toString())
     }
 
     override fun dismiss() {

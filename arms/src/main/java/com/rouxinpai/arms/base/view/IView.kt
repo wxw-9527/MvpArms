@@ -31,15 +31,25 @@ interface IView {
 
     /**
      * 弹出加载进度弹窗
-     * @param messageId
+     * @param labelId
      */
-    fun showProgress(@StringRes messageId: Int)
+    fun showProgress(@StringRes labelId: Int, @StringRes detailId: Int? = null)
 
     /**
      * 弹出加载进度弹窗
-     * @param message
+     * @param labelMsg
      */
-    fun showProgress(message: CharSequence? = null)
+    fun showProgress(labelMsg: CharSequence? = null, detailMsg: String? = null)
+
+    /**
+     * 更新进度弹窗内容
+     */
+    fun updateProgress(@StringRes detailId: Int)
+
+    /**
+     * 更新进度弹窗内容
+     */
+    fun updateProgress(detailMsg: String? = null)
 
     /**
      * 销毁加载进度弹窗
