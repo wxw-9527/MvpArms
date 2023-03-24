@@ -66,7 +66,16 @@ class Request<T> {
     }
 
     /**
-     * 请求结束
+     * 请求成功
+     */
+    private lateinit var mSuccessWithoutData: suspend (() -> Unit)
+
+    fun successWithoutData(successWithoutData: suspend () -> Unit) {
+        mSuccessWithoutData = successWithoutData
+    }
+
+    /**
+     * 请求完成
      */
     private lateinit var mCompleted: suspend (() -> Unit)
 
@@ -90,8 +99,14 @@ class Request<T> {
                 val response = mCall.invoke().await()
                 if (response.success) {
                     val data = response.data
-                    if (data != null && ::mSuccess.isInitialized) {
-                        mSuccess.invoke(response.total, data)
+                    if (data != null) {
+                        if (::mSuccess.isInitialized) {
+                            mSuccess.invoke(response.total, data)
+                        }
+                    } else {
+                        if (::mSuccessWithoutData.isInitialized) {
+                            mSuccessWithoutData.invoke()
+                        }
                     }
                     if (::mCompleted.isInitialized) {
                         mCompleted.invoke()
