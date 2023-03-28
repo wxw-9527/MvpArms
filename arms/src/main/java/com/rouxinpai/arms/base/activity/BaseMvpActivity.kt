@@ -44,8 +44,8 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         super.onInit(savedInstanceState)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         // 注册广播
         mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         if (mBarcodeScanningReceiverEnabled) {
@@ -55,8 +55,8 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         // 取消注册广播
         if (mBarcodeScanningReceiverEnabled) {
             unregisterReceiver(mReceiver)
