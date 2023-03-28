@@ -13,4 +13,18 @@ import com.rouxinpai.arms.base.view.IView
 interface IPresenter<V : IView> : DefaultLifecycleObserver {
 
     fun bind(lifecycle: Lifecycle, v: V)
+
+    /**
+     * 解析条码数据
+     * @param barcode 条码
+     */
+    fun getBarcodeInfo(barcode: String)
+
+    /**
+     * 获取版本更新信息
+     * @param clientType 客户端标志
+     * @param clientName 项目名称
+     * @param channel 渠道名
+     */
+    fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
 }

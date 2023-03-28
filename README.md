@@ -71,6 +71,39 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:1.6.0'
+    implementation 'com.github.wxw-9527:MvpArms:1.6.1'
 }
 ```
+
+四、使用版本更新功能
+
+在需要检测新版本的页面P层调用以下方法检查新版本
+```kotlin
+/**
+ * 获取版本更新信息
+ * @param clientType 客户端标志
+ * @param clientName 项目名称
+ * @param channel 渠道名
+ */
+fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
+```
+重写showUpdateInfo(updateInfo: UpdateInfo)方法可自定义版本更新处理逻辑
+
+
+五、条码解析服务
+
+1、必须：
+    在需要解析条码的Activity、Fragment的父Activity类增加@BarcodeScanningReceiverEnabled标记
+
+2、仅Activity中使用：
+    1)仅在该Activity上增加@EventBusEnabled标记
+    2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+
+3、仅Fragment中使用：
+    1)仅在该Fragment上增加@EventBusEnabled标记
+    2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+
+4、高阶使用
+    1)覆写Activity或Fragment中的onBarcodeEvent(event: BarcodeEvent)方法可自行处理条码内容
+    2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
+    3)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault().cancelEventDelivery(event)可取消事件继续传递

@@ -37,7 +37,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     val initialized get() = mInitialized
 
     // 是否使用事件发布-订阅总线
-    private var mUseEventBus: Boolean = false
+    private var mEventBusEnabled: Boolean = false
 
     // 加载进度对话框
     private var mKProgressHUD: KProgressHUD? = null
@@ -82,15 +82,15 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
             onLazyInit()
         }
         // 事件发布-订阅总线
-        mUseEventBus = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
-        if (mUseEventBus) {
+        mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
+        if (mEventBusEnabled) {
             EventBus.getDefault().register(this)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (mUseEventBus) {
+        if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
         }
     }
@@ -214,12 +214,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         if (loadState.currentState is SuccessState) return
         loadState.show<SuccessState>()
     }
-
-    override fun loadMoreComplete() {}
-
-    override fun loadMoreEnd(gone: Boolean) {}
-
-    override fun loadMoreFail() {}
 
     override fun tokenTimeout() {
         val application = requireActivity().application as? IApplication ?: return

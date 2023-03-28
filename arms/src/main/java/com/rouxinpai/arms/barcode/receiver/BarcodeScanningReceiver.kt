@@ -1,8 +1,9 @@
-package com.rouxinpai.arms.receiver
+package com.rouxinpai.arms.barcode.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.rouxinpai.arms.barcode.event.BarcodeEvent
 
 /**
  * author : Saxxhw
@@ -23,15 +24,9 @@ class BarcodeScanningReceiver: BroadcastReceiver() {
         if (context == null || intent == null) {
             return
         }
-        if (context is OnScanListener) {
-            val barcode = intent.getStringExtra(EXTRA)
-            if (barcode != null && barcode.isNotBlank()) {
-                context.onScanned(barcode)
-            }
+        val barcode = intent.getStringExtra(EXTRA)
+        if (barcode != null && barcode.isNotBlank()) {
+            BarcodeEvent.post(barcode)
         }
-    }
-
-    interface OnScanListener {
-        fun onScanned(barcode: String)
     }
 }

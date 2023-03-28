@@ -1,7 +1,6 @@
 package com.rouxinpai.arms.base.activity
 
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
-import com.rouxinpai.arms.receiver.BarcodeScanningReceiver
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
@@ -44,9 +42,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     // 缺省页状态管理实例
     private var mLoadState: MultiStateContainer? = null
 
-    // 扫描结果解析广播
-    private lateinit var mReceiver: BarcodeScanningReceiver
-
     /**
      * 缺省页内容视图
      */
@@ -73,10 +68,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         if (mEventBusEnabled) {
             EventBus.getDefault().register(this)
         }
-        // 注册广播
-        val intentFilter = IntentFilter().apply { addAction(BarcodeScanningReceiver.ACTION) }
-        mReceiver = BarcodeScanningReceiver()
-        registerReceiver(mReceiver, intentFilter)
     }
 
     override fun onStop() {
@@ -85,8 +76,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
         }
-        // 取消注册广播
-        unregisterReceiver(mReceiver)
     }
 
     override fun onDestroy() {
@@ -219,12 +208,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         if (loadState.currentState is SuccessState) return
         loadState.show<SuccessState>()
     }
-
-    override fun loadMoreComplete() {}
-
-    override fun loadMoreEnd(gone: Boolean) {}
-
-    override fun loadMoreFail() {}
 
     override fun tokenTimeout() {
         val application = application as? IApplication ?: return

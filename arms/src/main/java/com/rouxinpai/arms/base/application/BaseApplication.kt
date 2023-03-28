@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
+import update.UpdateAppUtils
 import java.util.*
 
 /**
@@ -26,6 +27,7 @@ abstract class BaseApplication : Application(), IApplication {
         registerActivityLifecycleCallbacks(this)
         initTimber()
         initMmkv()
+        initUpdater()
     }
 
     override fun finishActivity(vararg cls: Class<*>) {
@@ -63,17 +65,22 @@ abstract class BaseApplication : Application(), IApplication {
         removeActivity(activity)
     }
 
+    // 初始化日志打印框架
+    private fun initTimber() {
+        Timber.plant(object : Timber.DebugTree() {
+            override fun isLoggable(tag: String?, priority: Int): Boolean = loggable
+        })
+    }
+
     // 初始化MMKV
     private fun initMmkv() {
         val rootDir = MMKV.initialize(this)
         Timber.d("mmkv root：$rootDir")
     }
 
-    // 初始化日志打印框架
-    private fun initTimber() {
-        Timber.plant(object : Timber.DebugTree() {
-            override fun isLoggable(tag: String?, priority: Int): Boolean = loggable
-        })
+    // 初始化版本更新框架
+    private fun initUpdater() {
+        UpdateAppUtils.init(this)
     }
 
     // Activity入栈

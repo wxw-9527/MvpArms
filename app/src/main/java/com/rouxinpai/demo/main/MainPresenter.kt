@@ -1,5 +1,6 @@
 package com.rouxinpai.demo.main
 
+import androidx.lifecycle.LifecycleOwner
 import com.rouxinpai.arms.base.presenter.BasePresenter
 import com.rouxinpai.demo.R
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -15,6 +16,11 @@ import javax.inject.Inject
  */
 class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
     MainContract.Presenter {
+
+    override fun onCreate(owner: LifecycleOwner) {
+        super<BasePresenter>.onCreate(owner)
+        getUpdateInfo(clientName = "test", channel = "TestChannel")
+    }
 
     override fun print(text: String) {
 //        request<JsonObject> {

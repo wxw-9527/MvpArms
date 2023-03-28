@@ -1,6 +1,8 @@
 package com.rouxinpai.arms.base.view
 
 import androidx.annotation.StringRes
+import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
+import com.rouxinpai.arms.update.model.UpdateInfo
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.shashank.sony.fancytoastlib.FancyToast.Duration
 import com.shashank.sony.fancytoastlib.FancyToast.LayoutType
@@ -79,17 +81,27 @@ interface IView {
     /**
      * 本次数据加载完毕
      */
-    fun loadMoreComplete()
+    fun loadMoreComplete() {}
 
     /**
      * 所有数据加载完成
      */
-    fun loadMoreEnd(gone: Boolean = false)
+    fun loadMoreEnd(gone: Boolean = false) {}
 
     /**
      * 本次数据加载错误
      */
-    fun loadMoreFail()
+    fun loadMoreFail() {}
+
+    /**
+     *
+     */
+    fun showBarcodeInfo(barcodeInfo: BarcodeInfoVO) {}
+
+    /**
+     * 展示版本更新
+     */
+    fun showUpdateInfo(updateInfo: UpdateInfo) {}
 
     /**
      * token超时

@@ -87,4 +87,6 @@ dependencies {
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 步进器
     api 'com.github.wxw-9527:Stepper:1.0.4'
+    // 版本更新
+    implementation 'com.github.wxw-9527:UpdateAppUtils:2.3.1'
 }

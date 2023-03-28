@@ -1,27 +1,24 @@
 package com.rouxinpai.demo.main
 
 import android.os.Bundle
-import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.fondesa.recyclerviewdivider.dividerBuilder
-import com.google.gson.Gson
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
+import com.rouxinpai.arms.annotation.EventBusEnabled
+import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
-import com.rouxinpai.arms.base.adapter.BaseVbAdapter
+import com.rouxinpai.arms.base.adapter.BaseSimpleFragmentStateAdapter
 import com.rouxinpai.demo.databinding.ActivityMainBinding
-import com.rouxinpai.demo.databinding.MainRecycleItemBinding
-import com.rouxinpai.demo.model.ItemVO
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import kotlin.random.Random
 
 @AndroidEntryPoint
+@EventBusEnabled
+@BarcodeScanningReceiverEnabled
 class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
     MainContract.View {
-
-    private lateinit var mAdapter: ItemAdapter
-
-    private val mList = arrayListOf<ItemVO>()
 
     override fun onCreateViewBinding(inflater: LayoutInflater): ActivityMainBinding {
         return ActivityMainBinding.inflate(inflater)
@@ -29,85 +26,29 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        for (i in 0..1) {
-            val item = ItemVO(i.toString(), Random.Default.nextInt(120), Random.Default.nextFloat())
-            mList.add(item)
-        }
-        mAdapter = ItemAdapter(mList)
-        // 绑定适配器
-        binding.rvItems.adapter = mAdapter
-        // 添加分割线
-        dividerBuilder()
-            .asSpace()
-            .size(10, TypedValue.COMPLEX_UNIT_DIP)
-            .showFirstDivider()
-            .showSideDividers()
-            .showLastDivider()
-            .build()
-            .addTo(binding.rvItems)
-        // 绑定监听事件
-        mAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = adapter.getItemOrNull(position) as? ItemVO ?: return@setOnItemClickListener
-            item.float = 12.0f
-            mAdapter.refresh(position)
-            println(Gson().toJson(mList))
-        }
-        mAdapter.setOnItemLongClickListener { adapter, _, position ->
-            adapter.removeAt(position)
-            println(Gson().toJson(mList))
-            return@setOnItemLongClickListener true
-        }
-        binding.btnAdd.setOnClickListener {
-            val item = ItemVO("", Random.Default.nextInt(120), Random.Default.nextFloat())
-            mAdapter.addData(item)
-            println(Gson().toJson(mList))
-
-            presenter.print("")
-
-        }
+        binding.viewPager.adapter = PagerAdapter(this)
     }
 
-    private class ItemAdapter(list: ArrayList<ItemVO>) : BaseVbAdapter<MainRecycleItemBinding, ItemVO>(list) {
+    override fun onBarcodeEvent(event: BarcodeEvent) {
+        super.onBarcodeEvent(event)
+        Timber.d("------> Activity收到条码数据")
+    }
 
-        companion object {
-            // 局部刷新标志
-            private const val REFRESH_TAG = 12
+    override fun onKeyMultiple(keyCode: Int, repeatCount: Int, event: KeyEvent?): Boolean {
+        return super.onKeyMultiple(keyCode, repeatCount, event)
+    }
+
+    private class PagerAdapter(activity: AppCompatActivity) :
+        BaseSimpleFragmentStateAdapter(activity) {
+
+        override fun getItemCount(): Int {
+            return 1
         }
 
-        /**
-         * 局部刷新
-         */
-        fun refresh(position: Int) {
-            notifyItemChanged(position, REFRESH_TAG)
-        }
-
-        override fun onCreateViewBinding(
-            inflater: LayoutInflater,
-            parent: ViewGroup,
-            viewType: Int,
-        ): MainRecycleItemBinding {
-            return MainRecycleItemBinding.inflate(inflater, parent, false)
-        }
-
-        override fun onBindView(binding: MainRecycleItemBinding, position: Int, item: ItemVO) {
-            binding.tvStr.text = item.str
-            binding.tvInt.text = item.int.toString()
-            binding.tvFloat.text = item.float.toString()
-            Timber.d("************ 第${position}条数据触发全局刷新")
-        }
-
-        override fun onBindView(
-            binding: MainRecycleItemBinding,
-            position: Int,
-            item: ItemVO,
-            payloads: List<Any>,
-        ) {
-            super.onBindView(binding, position, item, payloads)
-            payloads.forEach { payload ->
-                if (payload is Int && REFRESH_TAG == payload) {
-                    Timber.d("============ 第${position}条数据触发局部刷新")
-                    binding.tvFloat.text = item.float.toString()
-                }
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> BarcodeFragment.newInstance()
+                else -> throw IndexOutOfBoundsException()
             }
         }
     }
