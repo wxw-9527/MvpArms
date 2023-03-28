@@ -61,8 +61,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         onInit(savedInstanceState)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         //
         mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
         if (mEventBusEnabled) {
@@ -70,8 +70,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         //
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
