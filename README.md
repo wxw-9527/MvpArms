@@ -71,7 +71,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:1.6.1'
+    implementation 'com.github.wxw-9527:MvpArms:1.6.2'
 }
 ```
 
@@ -106,4 +106,5 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
 4、高阶使用
     1)覆写Activity或Fragment中的onBarcodeEvent(event: BarcodeEvent)方法可自行处理条码内容
     2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
-    3)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault().cancelEventDelivery(event)可取消事件继续传递
+    3)覆写Presenter中的handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法可自行处理条码上下文数据
+    4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault().cancelEventDelivery(event)可取消事件继续传递

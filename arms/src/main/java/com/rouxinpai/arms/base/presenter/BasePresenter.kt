@@ -57,7 +57,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
             success { _, barcodeInfoDto ->
                 val barcodeInfo = BarcodeInfoVO.convertFromDTO(barcodeInfoDto)
                 view?.dismiss()
-                view?.showBarcodeInfo(barcodeInfo)
+                handleBarcodeInfo(barcodeInfo)
             }
         }
     }
@@ -86,5 +86,12 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
         mLifecycle = null
         view = null
         super.onDestroy(owner)
+    }
+
+    /**
+     * 处理条码上下文数据
+     */
+    open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
+        view?.showBarcodeInfo(barcodeInfo)
     }
 }
