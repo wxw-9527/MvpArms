@@ -3,6 +3,7 @@ package com.rouxinpai.arms.base.presenter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.blankj.utilcode.util.AppUtils
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoDTO
@@ -50,7 +51,10 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
                 view?.showProgress()
             }
             call {
-                val jsonObject = JsonObject().apply { addProperty("barCode", barcode) }
+                val jsonObject = JsonObject().apply {
+                    addProperty("barCode", barcode)
+                    add("billTypes", JsonArray().apply { add("quantity") })
+                }
                 val body = jsonObject.toRequestBody()
                 retrofit.create<BarcodeApi>().getBarcodeInfo(body)
             }

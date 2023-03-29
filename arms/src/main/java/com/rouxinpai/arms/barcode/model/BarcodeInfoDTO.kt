@@ -12,5 +12,6 @@ data class BarcodeInfoDTO(
     val barType: Int,
     val barContextDataList: List<BarContextDataDTO>?,
     val materialInfo: MaterialInfoDTO,
+    val materialStockDetail: MaterialStockDetailDTO,
     val warehouseInfo: WarehouseInfoDTO,
 )
