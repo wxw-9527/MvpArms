@@ -1,5 +1,7 @@
 package com.rouxinpai.arms.barcode.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
@@ -12,6 +14,6 @@ data class BarcodeInfoDTO(
     val barType: Int,
     val barContextDataList: List<BarContextDataDTO>?,
     val materialInfo: MaterialInfoDTO,
-    val materialStockDetail: MaterialStockDetailDTO,
+    @SerializedName("materialStockDetailVO") val materialStockDetail: MaterialStockDetailDTO,
     val warehouseInfo: WarehouseInfoDTO,
 )
