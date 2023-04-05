@@ -19,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import retrofit2.Retrofit
 import retrofit2.create
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -74,12 +75,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
                 retrofit.create<UpdateApi>().getUpdateInfo(clientType, clientName)
             }
             success { _, updateInfo ->
-                val versionCode = AppUtils.getAppVersionCode()
-                if (channel == updateInfo.channelFlag && versionCode < updateInfo.clientVersionCode) {
-                    if (updateInfo.sysClientFiles.isNotEmpty()) {
-                        view?.showUpdateInfo(updateInfo)
-                    }
-                }
+                handleUpgradeInfo(channel, updateInfo)
             }
         }
     }
@@ -97,5 +93,19 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
      */
     open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
         view?.showBarcodeInfo(barcodeInfo)
+    }
+
+    /**
+     * 处理版本更新数据
+     */
+    open fun handleUpgradeInfo(channel: String, updateInfo: UpdateInfo) {
+        Timber.d("------> 当前渠道号：${channel}")
+        val versionCode = AppUtils.getAppVersionCode()
+        Timber.d("------> 当前版本号：${versionCode}")
+        if (channel == updateInfo.channelFlag && versionCode < updateInfo.clientVersionCode) {
+            if (updateInfo.sysClientFiles.isNotEmpty()) {
+                view?.showUpdateInfo(updateInfo)
+            }
+        }
     }
 }
