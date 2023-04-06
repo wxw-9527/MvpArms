@@ -62,7 +62,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.14.2'
     // 基于 mmap 的高性能通用 key-value 组件
-    api 'com.tencent:mmkv:1.2.14'
+    api 'com.tencent:mmkv:1.2.15'
     // 通信
     api 'org.greenrobot:eventbus:3.3.1'
     // 日志打印
@@ -75,7 +75,7 @@ dependencies {
     // 吐司框架
     api 'io.github.shashank02051997:FancyToast:2.0.2'
     // 图片选择框架
-    api 'io.github.lucksiege:pictureselector:v3.10.7'
+    api 'io.github.lucksiege:pictureselector:v3.10.9'
     api 'io.github.lucksiege:compress:v3.10.7'
     // 对话框相关
     api 'com.afollestad.material-dialogs:core:3.3.0'
