@@ -36,6 +36,9 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
 
     private var mLifecycle: Lifecycle? = null
 
+    // 有条码未被消费
+    private var mHasUnconsumedBarcode = false
+
     var view: V? = null
         private set
 
@@ -46,6 +49,11 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
     }
 
     override fun getBarcodeInfo(barcode: String) {
+        if (mHasUnconsumedBarcode) {
+            Timber.d("------> 有条码未被消费")
+            return
+        }
+        mHasUnconsumedBarcode = true
         request<BarcodeInfoDTO> {
             donotShowErrorPage()
             start {
@@ -93,6 +101,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
      */
     open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
         view?.showBarcodeInfo(barcodeInfo)
+        mHasUnconsumedBarcode = false
     }
 
     /**

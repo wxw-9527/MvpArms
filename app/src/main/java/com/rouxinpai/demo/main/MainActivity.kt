@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
-import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseSimpleFragmentStateAdapter
@@ -15,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-@EventBusEnabled
 @BarcodeScanningReceiverEnabled
 class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, MainPresenter>(),
     MainContract.View {

@@ -24,6 +24,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    //
+    private const val TOKEN =
+        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ3eF9hcHBfc2Vzc2lvbl9rZXkiOm51bGwsImFkbWluX2ZsYWciOjEsInVzZXJfaWQiOjE2MzE0ODQ1MzkwNDA3OTY2NzMsInl1bl9jb25zb2xlX3Rva2VuIjpudWxsLCJ3eF9hcHBfb3BlbmlkIjpudWxsLCJ1c2VyX2tleSI6IjdhZWFmYWFlLWY5NmYtNGNkYS05MTgxLTdmNzdjNGEzNjJkNyIsImRlcHRfaWQiOjE2MzE0Nzk0MjEwNjI5NzU0OTAsImN1c3RvbWVyX2lkIjoxNjMxNDc5NDIwNTYzODUzMzE0LCJ3eF91bmlvbl9pZCI6bnVsbCwidXNlcm5hbWUiOiJERmFkbWluIn0.VF-3yCqIKENYBtepdD4C9856wV_ZAghZrxgLh2M4MY8HRyFoMQxFLIgmKTVQGzom6NeUdKtxYR5rb0miZVpVOA"
+
     @Provides
     @Singleton
     fun provideLogInterceptor(): HttpLoggingInterceptor {
@@ -39,6 +43,13 @@ object NetworkModule {
             .connectTimeout(12, TimeUnit.SECONDS)
             .readTimeout(12, TimeUnit.SECONDS)
             .writeTimeout(12, TimeUnit.SECONDS)
+            .addNetworkInterceptor { chain ->
+                val original = chain.request()
+                val request = original.newBuilder().apply {
+                    addHeader("Authorization", TOKEN)
+                }.build()
+                chain.proceed(request)
+            }
             .addInterceptor(loggingInterceptor).build()
     }
 
@@ -54,7 +65,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.118.125:55/stage-api/")
+            .baseUrl("http://192.168.118.160:55/stage-api/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
