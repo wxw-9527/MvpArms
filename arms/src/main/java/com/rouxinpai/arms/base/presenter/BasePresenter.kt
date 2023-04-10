@@ -104,6 +104,11 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
      * 处理条码上下文数据
      */
     open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
+        // 如果是库位条码，直接消费
+        if (barcodeInfo.isWarehouseLocationBarcode) {
+            consumeBarcode()
+        }
+        // 显示条码信息
         view?.showBarcodeInfo(barcodeInfo)
     }
 
