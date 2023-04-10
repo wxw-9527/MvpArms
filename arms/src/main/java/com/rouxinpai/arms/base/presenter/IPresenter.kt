@@ -21,6 +21,11 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
     fun getBarcodeInfo(barcode: String)
 
     /**
+     * 消费条码
+     */
+    fun consumeBarcode()
+
+    /**
      * 获取版本更新信息
      * @param clientType 客户端标志
      * @param clientName 项目名称

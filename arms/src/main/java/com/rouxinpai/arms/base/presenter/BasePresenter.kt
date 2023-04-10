@@ -50,7 +50,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
 
     override fun getBarcodeInfo(barcode: String) {
         if (mHasUnconsumedBarcode) {
-            Timber.d("------> 有条码未被消费")
+            Timber.d("------> 有条码未被消费，请勿重复扫描")
             return
         }
         mHasUnconsumedBarcode = true
@@ -73,6 +73,10 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
                 handleBarcodeInfo(barcodeInfo)
             }
         }
+    }
+
+    override fun consumeBarcode() {
+        mHasUnconsumedBarcode = false
     }
 
     override fun getUpdateInfo(clientType: String, clientName: String, channel: String) {
@@ -101,7 +105,6 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
      */
     open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
         view?.showBarcodeInfo(barcodeInfo)
-        mHasUnconsumedBarcode = false
     }
 
     /**
