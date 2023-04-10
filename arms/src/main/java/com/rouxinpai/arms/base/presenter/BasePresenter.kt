@@ -72,6 +72,9 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
                 view?.dismiss()
                 handleBarcodeInfo(barcodeInfo)
             }
+            fail {
+                consumeBarcode()
+            }
         }
     }
 
