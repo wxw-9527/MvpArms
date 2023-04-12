@@ -15,7 +15,7 @@ class MaterialInfoVO(
     val spec: String,
     val unit: String,
     val batchCode: String?,
-    val bomVersionId: String?,
+    val bomCode: String?,
     val quantity: Float,
     val stockQuantity: Float,
     val basicPackagingQuantity: Float,
