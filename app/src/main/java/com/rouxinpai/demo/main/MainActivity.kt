@@ -25,6 +25,9 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         binding.viewPager.adapter = PagerAdapter(this)
+        binding.btnRequest.setOnClickListener {
+            presenter.print("")
+        }
     }
 
     override fun onBarcodeEvent(event: BarcodeEvent) {

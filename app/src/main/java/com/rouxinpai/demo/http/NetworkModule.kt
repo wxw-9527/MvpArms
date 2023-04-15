@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -26,7 +27,7 @@ object NetworkModule {
 
     //
     private const val TOKEN =
-        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ3eF9hcHBfc2Vzc2lvbl9rZXkiOm51bGwsImFkbWluX2ZsYWciOjEsInVzZXJfaWQiOjE2MzE0ODQ1MzkwNDA3OTY2NzMsInl1bl9jb25zb2xlX3Rva2VuIjpudWxsLCJ3eF9hcHBfb3BlbmlkIjpudWxsLCJ1c2VyX2tleSI6IjdhZWFmYWFlLWY5NmYtNGNkYS05MTgxLTdmNzdjNGEzNjJkNyIsImRlcHRfaWQiOjE2MzE0Nzk0MjEwNjI5NzU0OTAsImN1c3RvbWVyX2lkIjoxNjMxNDc5NDIwNTYzODUzMzE0LCJ3eF91bmlvbl9pZCI6bnVsbCwidXNlcm5hbWUiOiJERmFkbWluIn0.VF-3yCqIKENYBtepdD4C9856wV_ZAghZrxgLh2M4MY8HRyFoMQxFLIgmKTVQGzom6NeUdKtxYR5rb0miZVpVOA"
+        "eyJhbGciOiJIUzUxMiJ9.eyJ3eF9hcHBfc2Vzc2lvbl9rZXkiOm51bGwsImFkbWluX2ZsYWciOjEsInVzZXJfaWQiOjE2MzE0ODQ1MzkwNDA3OTY2NzMsInl1bl9jb25zb2xlX3Rva2VuIjpudWxsLCJ3eF9hcHBfb3BlbmlkIjpudWxsLCJ1c2VyX2tleSI6IjM0Mzc0MDUxLWE5OTgtNGE1YS05YWZiLWFkMzQ4YmVjMjVmYSIsImRlcHRfaWQiOjE2MzE0Nzk0MjEwNjI5NzU0OTAsImN1c3RvbWVyX2lkIjoxNjMxNDc5NDIwNTYzODUzMzE0LCJ3eF91bmlvbl9pZCI6bnVsbCwidXNlcm5hbWUiOiJERmFkbWluIn0.fBQqNmKVmyV3D5JHkUf6bt6gEA0Ms1VHSJUrxDWysa6Pi1UVtj6Jvis9w-k3I7nESxyYv81IeFKseYaNWSm6-g"
 
     @Provides
     @Singleton
@@ -68,6 +69,7 @@ object NetworkModule {
             .baseUrl("http://192.168.118.160:55/stage-api/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
     }
 }

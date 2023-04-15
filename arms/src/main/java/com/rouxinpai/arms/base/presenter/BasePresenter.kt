@@ -6,17 +6,16 @@ import com.blankj.utilcode.util.AppUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rouxinpai.arms.barcode.api.BarcodeApi
-import com.rouxinpai.arms.barcode.model.BarcodeInfoDTO
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.extension.toRequestBody
-import com.rouxinpai.arms.model.request
+import com.rouxinpai.arms.model.DefaultSubscriber
+import com.rouxinpai.arms.model.responseTransformer
+import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.update.api.UpdateApi
 import com.rouxinpai.arms.update.model.UpdateInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import retrofit2.Retrofit
 import retrofit2.create
 import timber.log.Timber
@@ -28,13 +27,14 @@ import javax.inject.Inject
  * time   : 2022/11/17 14:53
  * desc   :
  */
-abstract class BasePresenter<V : IView> : IPresenter<V>,
-    CoroutineScope by CoroutineScope(Job() + Dispatchers.Main) {
+abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     @Inject
     lateinit var retrofit: Retrofit
 
     private var mLifecycle: Lifecycle? = null
+
+    private val mDisposable = CompositeDisposable()
 
     // 有条码未被消费
     private var mHasUnconsumedBarcode = false
@@ -48,34 +48,40 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
         this.mLifecycle?.addObserver(this)
     }
 
+    override fun addDisposable(disposable: Disposable) {
+        mDisposable.add(disposable)
+    }
+
     override fun getBarcodeInfo(barcode: String) {
         if (mHasUnconsumedBarcode) {
             Timber.d("------> 有条码未被消费，请勿重复扫描")
             return
         }
+        view?.showProgress()
         mHasUnconsumedBarcode = true
-        request<BarcodeInfoDTO> {
-            donotShowErrorPage()
-            start {
-                view?.showProgress()
-            }
-            call {
-                val jsonObject = JsonObject().apply {
-                    addProperty("barCode", barcode)
-                    add("billTypes", JsonArray().apply { add("quantity") })
-                }
-                val body = jsonObject.toRequestBody()
-                retrofit.create<BarcodeApi>().getBarcodeInfo(body)
-            }
-            success { _, barcodeInfoDto ->
-                val barcodeInfo = BarcodeInfoVO.convertFromDTO(barcodeInfoDto)
-                view?.dismiss()
-                handleBarcodeInfo(barcodeInfo)
-            }
-            fail {
-                consumeBarcode()
-            }
+        val jsonObject = JsonObject().apply {
+            addProperty("barCode", barcode)
+            add("billTypes", JsonArray().apply { add("quantity") })
         }
+        val body = jsonObject.toRequestBody()
+        val disposable = retrofit.create<BarcodeApi>().getBarcodeInfo(body)
+            .compose(schedulersTransformer())
+            .compose(responseTransformer())
+            .map { BarcodeInfoVO.convertFromDTO(it) }
+            .subscribeWith(object : DefaultSubscriber<BarcodeInfoVO>(view, false) {
+
+                override fun onNext(t: BarcodeInfoVO) {
+                    super.onNext(t)
+                    view?.dismiss()
+                    handleBarcodeInfo(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    super.onError(e)
+                    consumeBarcode()
+                }
+            })
+        addDisposable(disposable)
     }
 
     override fun consumeBarcode() {
@@ -83,20 +89,25 @@ abstract class BasePresenter<V : IView> : IPresenter<V>,
     }
 
     override fun getUpdateInfo(clientType: String, clientName: String, channel: String) {
-        request<UpdateInfo> {
-            skipDefaultErrorLogic()
-            donotShowErrorPage()
-            call {
-                retrofit.create<UpdateApi>().getUpdateInfo(clientType, clientName)
-            }
-            success { _, updateInfo ->
-                handleUpgradeInfo(channel, updateInfo)
-            }
-        }
+        val disposable = retrofit.create<UpdateApi>().getUpdateInfo(clientType, clientName)
+            .compose(schedulersTransformer())
+            .compose(responseTransformer())
+            .subscribeWith(object : DefaultSubscriber<UpdateInfo>(view, false) {
+
+                override fun onNext(t: UpdateInfo) {
+                    super.onNext(t)
+                    handleUpgradeInfo(channel, t)
+                }
+
+                override fun onError(e: Throwable) {
+                    Timber.d("------> 获取更新信息失败")
+                }
+            })
+        addDisposable(disposable)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        cancel()
+        mDisposable.clear()
         mLifecycle?.removeObserver(this)
         mLifecycle = null
         view = null

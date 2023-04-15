@@ -3,7 +3,7 @@ package com.rouxinpai.arms.model.bean
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
- * time   : 2022/11/17 15:06
+ * time   : 2023/4/14 11:46
  * desc   :
  */
-open class ApiException(val code: Int, message: String) : RuntimeException(message)
+data class PagingData<T : Collection<*>>(val total: Int, val list: T)

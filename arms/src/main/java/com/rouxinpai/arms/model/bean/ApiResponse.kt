@@ -1,14 +1,11 @@
 package com.rouxinpai.arms.model.bean
 
-import androidx.annotation.Keep
-
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
  * time   : 2022/11/17 15:07
  * desc   :
  */
-@Keep
 class ApiResponse<out T>(val code: Int, val msg: String?, val total: Int, val data: T?) {
 
     companion object {
@@ -31,4 +28,17 @@ class ApiResponse<out T>(val code: Int, val msg: String?, val total: Int, val da
      */
     val tokenTimeout: Boolean
         get() = FLAG_TOKEN_TIMEOUT == code
+
+
+    /**
+     *
+     */
+    val apiException: ApiException
+        get() = if (tokenTimeout) TokenTimeoutException(code, errMsg) else ApiException(code, errMsg)
+
+    /**
+     *
+     */
+    private val errMsg: String
+        get() = msg ?: "发生异常，errCode = $code"
 }

@@ -2,7 +2,7 @@ package com.rouxinpai.arms.update.api
 
 import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.update.model.UpdateInfo
-import retrofit2.Call
+import io.reactivex.rxjava3.core.Flowable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,5 +18,5 @@ interface UpdateApi {
      * 获取更新信息
      */
     @GET("system/client/info")
-    fun getUpdateInfo(@Query("clientType") clientType: String, @Query("clientName") clientName: String): Call<ApiResponse<UpdateInfo>>
+    fun getUpdateInfo(@Query("clientType") clientType: String, @Query("clientName") clientName: String): Flowable<ApiResponse<UpdateInfo>>
 }
