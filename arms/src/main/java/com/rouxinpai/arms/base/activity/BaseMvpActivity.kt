@@ -47,9 +47,12 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     override fun onResume() {
         super.onResume()
         // 注册广播
-        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
+        mBarcodeScanningReceiverEnabled =
+            javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         if (mBarcodeScanningReceiverEnabled) {
-            val intentFilter = IntentFilter().apply { addAction(BarcodeScanningReceiver.ACTION) }
+            val intentFilter = IntentFilter().apply {
+                BarcodeScanningReceiver.sActions.forEach { action -> addAction(action) }
+            }
             mReceiver = BarcodeScanningReceiver()
             registerReceiver(mReceiver, intentFilter)
         }

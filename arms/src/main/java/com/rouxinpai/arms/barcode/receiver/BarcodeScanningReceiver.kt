@@ -11,22 +11,25 @@ import com.rouxinpai.arms.barcode.event.BarcodeEvent
  * time   : 2022/12/27 17:25
  * desc   :
  */
-class BarcodeScanningReceiver: BroadcastReceiver() {
+class BarcodeScanningReceiver : BroadcastReceiver() {
 
     companion object {
         // 广播动作
-        const val ACTION = "com.android.scanner.broadcast"
+        val sActions = arrayOf("com.android.scanner.broadcast", "com.kte.scan.result")
         //
-        private const val EXTRA = "scandata"
+        private val sExtras = arrayOf("scandata", "code")
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) {
             return
         }
-        val barcode = intent.getStringExtra(EXTRA)
-        if (barcode != null && barcode.isNotBlank()) {
-            BarcodeEvent.post(barcode)
+        sExtras.forEach { extra ->
+            val barcode = intent.getStringExtra(extra)
+            if (!barcode.isNullOrBlank()) {
+                BarcodeEvent.post(barcode)
+                return
+            }
         }
     }
 }
