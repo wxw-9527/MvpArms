@@ -12,8 +12,8 @@ android {
         applicationId "com.rouxinpai.demo"
         minSdk 21
         targetSdk 33
-        versionCode 176
-        versionName "1.7.6"
+        versionCode 177
+        versionName "1.7.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
