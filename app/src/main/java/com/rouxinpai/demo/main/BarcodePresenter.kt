@@ -10,5 +10,4 @@ import javax.inject.Inject
  * desc   :
  */
 class BarcodePresenter @Inject constructor() : BasePresenter<BarcodeContract.View>(),
-    BarcodeContract.Presenter {
-}
+    BarcodeContract.Presenter

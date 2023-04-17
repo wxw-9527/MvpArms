@@ -1,5 +1,8 @@
 package com.rouxinpai.arms.model.bean
 
+import com.rouxinpai.arms.model.bean.exception.ApiException
+import com.rouxinpai.arms.model.bean.exception.TokenTimeoutException
+
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
@@ -28,7 +31,6 @@ class ApiResponse<out T>(val code: Int, val msg: String?, val total: Int, val da
      */
     val tokenTimeout: Boolean
         get() = FLAG_TOKEN_TIMEOUT == code
-
 
     /**
      *

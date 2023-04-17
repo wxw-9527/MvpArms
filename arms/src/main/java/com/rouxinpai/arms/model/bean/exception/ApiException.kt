@@ -1,4 +1,4 @@
-package com.rouxinpai.arms.model.bean
+package com.rouxinpai.arms.model.bean.exception
 
 /**
  * author : Saxxhw

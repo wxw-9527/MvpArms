@@ -30,7 +30,7 @@ interface Api {
     /**
      * 获取更新信息
      */
-    @GET("system/client/info?clientName=test1&clientType=android")
+    @GET("system/client/info?clientName=test&clientType=android")
     fun getUpgradeInfo(): Flowable<ApiResponse<UpdateInfo>>
 
     /**

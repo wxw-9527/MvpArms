@@ -2,6 +2,7 @@ package com.rouxinpai.arms.model
 
 import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.model.bean.PagingData
+import com.rouxinpai.arms.model.bean.exception.EmptyException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.FlowableTransformer
@@ -25,7 +26,7 @@ fun <T : Any> responseTransformer() = FlowableTransformer<ApiResponse<T>, T> { u
             if (data != null) {
                 Flowable.just(data)
             } else {
-                Flowable.empty()
+                Flowable.error(EmptyException())
             }
         } else {
             Flowable.error(response.apiException)
@@ -41,7 +42,7 @@ fun <T : Collection<*>> pagingResponseTransformer() =
                 if (data != null) {
                     Flowable.just(PagingData(response.total, data))
                 } else {
-                    Flowable.empty()
+                    Flowable.error(EmptyException())
                 }
             } else {
                 Flowable.error(response.apiException)

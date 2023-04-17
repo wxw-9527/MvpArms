@@ -6,12 +6,8 @@ import com.google.gson.JsonObject
 import com.rouxinpai.arms.base.presenter.BasePresenter
 import com.rouxinpai.arms.extension.*
 import com.rouxinpai.arms.model.*
-import com.rouxinpai.arms.model.bean.PagingData
-import com.rouxinpai.arms.model.bean.Quadruple
 import com.rouxinpai.demo.http.Api
-import com.rouxinpai.demo.model.ArrivalOrderDTO
 import com.rouxinpai.demo.model.CustomerDictDataDTO
-import io.reactivex.rxjava3.core.Flowable
 import okhttp3.RequestBody
 import retrofit2.create
 import timber.log.Timber
@@ -35,8 +31,8 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
         val start = System.currentTimeMillis()
         //
         val service = retrofit.create<Api>()
-        // 今日生产数量
-        val flowA = service.getCaptcha().compose(responseTransformer())
+        // 获取升级信息
+        val flowA = service.getUpgradeInfo().compose(responseTransformer())
         // 客户自定义字典数据
         val jsonObjectB = JsonObject().apply {
             val queryFields = JsonArray().apply {
@@ -55,40 +51,69 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
         }
         val bodyC = jsonObjectC.toRequestBody()
         val flowC = service.listCustomerDictData(bodyC).compose(responseTransformer())
-        // 生产任务单列表
-        // val flowD = service.listProductions().compose(responseTransformer())
+        // 到货单列表
         val flowD = service.listArrivalOrders(getBody()).compose(pagingResponseTransformer())
         //
-        val disposable = Flowable.zip(flowA, flowB, flowC, flowD) { a, b, c, d ->
-            Timber.d("1 ---> 合并数据")
-            Quadruple(a, b, c, d)
-        }
+//        val disposable = Flowable.zip(flowA, flowB, flowC, flowD) { a, b, c, d ->
+//            Timber.d("1 ---> 合并数据")
+//            Quadruple(a, b, c, d)
+//        }
+//            .compose(schedulersTransformer())
+//            .flatMap {
+//                Timber.d("2 ---> 处理数据")
+//                Flowable.just(it)
+//            }
+//            .subscribeWith(object :
+//                BaseSubscriber<Quadruple<UpdateInfo, List<CustomerDictDataDTO>, List<CustomerDictDataDTO>, PagingData<List<ArrivalOrderDTO>>>>(view) {
+//
+//                override fun onData(t: Quadruple<UpdateInfo, List<CustomerDictDataDTO>, List<CustomerDictDataDTO>, PagingData<List<ArrivalOrderDTO>>>) {
+//                    val first = t.first
+//                    Timber.d("3 ------> 获取升级信息：$first")
+//                    val second = t.second
+//                    Timber.d("4 ------> 客户自定义字典数据：$second")
+//                    val third = t.third
+//                    Timber.d("5 ------> 客户自定义字典数据：$third")
+//                    val fourth = t.fourth
+//                    Timber.d("6 ------> 到货单列表：$fourth")
+//                }
+//
+//                override fun onEmpty() {
+//                    super.onEmpty()
+//                    Timber.d("7 ------> 某接口请求成功但返回数据为空")
+//                }
+//
+//                override fun onComplete() {
+//                    super.onComplete()
+//                    Timber.d("8 ------> 所有接口请求完成")
+//                }
+//
+//                override fun onError(e: Throwable) {
+//                    super.onError(e)
+//                    Timber.d("9 ------> 请求失败：$e")
+//                }
+//            })
+//        addDisposable(disposable)
+
+        val disposable = service.getUpgradeInfo()
             .compose(schedulersTransformer())
+            .compose(responseTransformer())
             .flatMap {
-                Timber.d("2 ---> 处理数据")
-                Flowable.just(it)
+                Timber.d("1 ---> 处理数据")
+                service.listCustomerDictData(bodyC).compose(responseTransformer())
             }
-            .subscribeWith(object :
-                DefaultSubscriber<Quadruple<JsonObject, List<CustomerDictDataDTO>, List<CustomerDictDataDTO>, PagingData<List<ArrivalOrderDTO>>>>(
-                    view
-                ) {
-
-                override fun onNext(t: Quadruple<JsonObject, List<CustomerDictDataDTO>, List<CustomerDictDataDTO>, PagingData<List<ArrivalOrderDTO>>>) {
-                    Timber.d("2 ---> 请求成功：${t.first}")
-                    Timber.d("2 ---> 请求成功：${t.second}")
-                    Timber.d("2 ---> 请求成功：${t.third}")
-                    Timber.d("2 ---> 请求成功：${t.fourth}")
-                    Timber.d("2 ---> 请求成功：${System.currentTimeMillis() - start}")
+            .subscribeWith(object : BaseSubscriber<List<CustomerDictDataDTO>>(view) {
+                override fun onData(t: List<CustomerDictDataDTO>) {
+                    Timber.d("1 ------> 获取升级信息：$t")
                 }
 
-                override fun onError(e: Throwable) {
-                    super.onError(e)
-                    Timber.d("请求失败：${e.message}")
+                override fun onEmpty() {
+                    super.onEmpty()
+                    Timber.d("2 ------> 获取升级信息：数据为空")
                 }
 
-                override fun onComplete() {
-                    super.onComplete()
-                    Timber.d("请求完成")
+                override fun onFail(e: Throwable) {
+                    super.onFail(e)
+                    Timber.d("3 ------> 获取升级信息：请求失败：$e")
                 }
             })
         addDisposable(disposable)
