@@ -50,7 +50,7 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         if (mBarcodeScanningReceiverEnabled) {
             val intentFilter = IntentFilter().apply {
-                BarcodeScanningReceiver.sActions.forEach { addAction(it) }
+                BarcodeScanningReceiver.sActions.forEach { action -> addAction(action) }
             }
             mReceiver = BarcodeScanningReceiver()
             registerReceiver(mReceiver, intentFilter)
