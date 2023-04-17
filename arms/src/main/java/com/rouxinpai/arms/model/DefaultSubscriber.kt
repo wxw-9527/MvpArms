@@ -14,11 +14,10 @@ import timber.log.Timber
  * desc   :
  */
 
-abstract class BaseSubscriber<T>(
+abstract class DefaultSubscriber<T>(
     private val view: IView?,
     private val showErrorPage: Boolean = true
-) :
-    DisposableSubscriber<T>() {
+) : DisposableSubscriber<T>() {
 
     override fun onNext(t: T) {
         onData(t)
@@ -33,7 +32,7 @@ abstract class BaseSubscriber<T>(
         }
     }
 
-    abstract fun onData(t: T)
+    open fun onData(t: T) {}
 
     open fun onEmpty() {}
 

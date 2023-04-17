@@ -7,10 +7,8 @@ import com.rouxinpai.arms.base.presenter.BasePresenter
 import com.rouxinpai.arms.extension.*
 import com.rouxinpai.arms.model.*
 import com.rouxinpai.demo.http.Api
-import com.rouxinpai.demo.model.CustomerDictDataDTO
 import okhttp3.RequestBody
 import retrofit2.create
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -45,7 +43,7 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
         // 客户自定义字典数据
         val jsonObjectC = JsonObject().apply {
             val queryFields = JsonArray().apply {
-                add("code" eq "material_unit")
+                add("code" `in` "is_advent_date,material_unit,warehouse_type,material_type,material_classification")
             }
             add("queryFields", queryFields)
         }
@@ -94,42 +92,74 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
 //            })
 //        addDisposable(disposable)
 
-        val disposable = service.getUpgradeInfo()
-            .compose(schedulersTransformer())
-            .compose(responseTransformer())
-            .flatMap {
-                Timber.d("1 ---> 处理数据")
-                service.listCustomerDictData(bodyC).compose(responseTransformer())
-            }
-            .subscribeWith(object : BaseSubscriber<List<CustomerDictDataDTO>>(view) {
-                override fun onData(t: List<CustomerDictDataDTO>) {
-                    Timber.d("1 ------> 获取升级信息：$t")
-                }
+//        val disposable = service.getUpgradeInfo()
+//            .compose(schedulersTransformer())
+//            .compose(responseTransformer())
+//            .flatMap {
+//                Timber.d("1 ---> 处理数据")
+//                service.listCustomerDictData(bodyC).compose(responseTransformer())
+//            }
+//            .subscribeWith(object : BaseSubscriber<List<CustomerDictDataDTO>>(view) {
+//                override fun onData(t: List<CustomerDictDataDTO>) {
+//                    Timber.d("1 ------> 获取升级信息：$t")
+//                }
+//
+//                override fun onEmpty() {
+//                    super.onEmpty()
+//                    Timber.d("2 ------> 获取升级信息：数据为空")
+//                }
+//
+//                override fun onFail(e: Throwable) {
+//                    super.onFail(e)
+//                    Timber.d("3 ------> 获取升级信息：请求失败：$e")
+//                }
+//            })
+//        addDisposable(disposable)
 
-                override fun onEmpty() {
-                    super.onEmpty()
-                    Timber.d("2 ------> 获取升级信息：数据为空")
-                }
-
-                override fun onFail(e: Throwable) {
-                    super.onFail(e)
-                    Timber.d("3 ------> 获取升级信息：请求失败：$e")
-                }
-            })
-        addDisposable(disposable)
+//        val disposable = flowC
+//            .compose(schedulersTransformer())
+//            .map { data -> data.map { CustomerDictItemVO.convertFromDto(it) } }
+//            .flatMap {
+//                val start1 = System.currentTimeMillis()
+//                dictBox.removeAll()
+//                dictBox.put(it)
+//                Timber.d("1 ---> 处理数据耗时：${System.currentTimeMillis() - start1}ms")
+//                Flowable.just(it)
+//            }
+//            .subscribeWith(object : BaseSubscriber<List<CustomerDictItemVO>>(view) {
+//                override fun onData(t: List<CustomerDictItemVO>) {
+//
+//                    val start2 = System.currentTimeMillis()
+//                    val data = dictBox.all
+//                    // 打印data
+//                    Timber.d("2 ---> 查询数据：$data")
+//                    Timber.d("3 ---> 查询数据耗时：${System.currentTimeMillis() - start2}ms")
+//                }
+//
+//                override fun onEmpty() {
+//                    super.onEmpty()
+//
+//                }
+//
+//                override fun onFail(e: Throwable) {
+//                    super.onFail(e)
+//
+//                }
+//            })
+//        addDisposable(disposable)
     }
+}
 
-    private fun getBody(): RequestBody {
-        val jsonObject = JsonObject().apply {
-            addProperty("orderBy", "createTime")
-            addProperty("isAsc", false)
-            addProperty("pageSize", 10.toString())
-            addProperty("pageNum", 1.toString())
-            val queryFields = JsonArray().apply {
-                add("type" eq "0") // 0-原材料入库  1-生产入库 2-生产退料入库
-            }
-            add("queryFields", queryFields)
+private fun getBody(): RequestBody {
+    val jsonObject = JsonObject().apply {
+        addProperty("orderBy", "createTime")
+        addProperty("isAsc", false)
+        addProperty("pageSize", 10.toString())
+        addProperty("pageNum", 1.toString())
+        val queryFields = JsonArray().apply {
+            add("type" eq "0") // 0-原材料入库  1-生产入库 2-生产退料入库
         }
-        return jsonObject.toRequestBody()
+        add("queryFields", queryFields)
     }
+    return jsonObject.toRequestBody()
 }
