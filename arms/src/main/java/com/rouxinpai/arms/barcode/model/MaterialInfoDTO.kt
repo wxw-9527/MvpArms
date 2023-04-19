@@ -9,8 +9,8 @@ package com.rouxinpai.arms.barcode.model
 data class MaterialInfoDTO(
     val materialId: String,
     val materialCode: String,
-    val materialName: String,
-    val materialSpec: String,
-    val materialUnit: String,
+    val materialName: String?,
+    val materialSpec: String?,
+    val materialUnit: String?,
     val basicPackagingQuantity: Float,
 )
