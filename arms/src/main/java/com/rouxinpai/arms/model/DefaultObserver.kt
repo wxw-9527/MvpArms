@@ -4,7 +4,7 @@ import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.model.bean.exception.EmptyException
 import com.rouxinpai.arms.model.bean.exception.TokenTimeoutException
 import com.shashank.sony.fancytoastlib.FancyToast
-import io.reactivex.rxjava3.subscribers.DisposableSubscriber
+import io.reactivex.rxjava3.observers.DisposableObserver
 import timber.log.Timber
 
 /**
@@ -14,20 +14,17 @@ import timber.log.Timber
  * desc   :
  */
 
-abstract class DefaultSubscriber<T>(
-    private val view: IView?,
-    private val showErrorPage: Boolean = true
-) : DisposableSubscriber<T>() {
+abstract class DefaultObserver<T>(private val view: IView?, private val showErrorPage: Boolean = true) : DisposableObserver<T>() {
 
     override fun onNext(t: T) {
         onData(t)
     }
 
     override fun onError(e: Throwable) {
-        Timber.e(e)
         if (e is EmptyException) {
             onEmpty()
         } else {
+            Timber.e(e)
             onFail(e)
         }
     }

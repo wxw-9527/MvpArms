@@ -43,7 +43,7 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
         // 客户自定义字典数据
         val jsonObjectC = JsonObject().apply {
             val queryFields = JsonArray().apply {
-                add("code" `in` "is_advent_date,material_unit,warehouse_type,material_type,material_classification")
+                add("code" oneOf "is_advent_date,material_unit,warehouse_type,material_type,material_classification")
             }
             add("queryFields", queryFields)
         }
@@ -99,19 +99,14 @@ class MainPresenter @Inject constructor() : BasePresenter<MainContract.View>(),
 //                Timber.d("1 ---> 处理数据")
 //                service.listCustomerDictData(bodyC).compose(responseTransformer())
 //            }
-//            .subscribeWith(object : BaseSubscriber<List<CustomerDictDataDTO>>(view) {
+//            .subscribeWith(object : DefaultObserver<List<CustomerDictDataDTO>>(view) {
+//
 //                override fun onData(t: List<CustomerDictDataDTO>) {
-//                    Timber.d("1 ------> 获取升级信息：$t")
+//                    super.onData(t)
 //                }
 //
 //                override fun onEmpty() {
 //                    super.onEmpty()
-//                    Timber.d("2 ------> 获取升级信息：数据为空")
-//                }
-//
-//                override fun onFail(e: Throwable) {
-//                    super.onFail(e)
-//                    Timber.d("3 ------> 获取升级信息：请求失败：$e")
 //                }
 //            })
 //        addDisposable(disposable)

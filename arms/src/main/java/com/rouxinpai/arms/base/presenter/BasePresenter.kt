@@ -9,7 +9,7 @@ import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.extension.toRequestBody
-import com.rouxinpai.arms.model.DefaultSubscriber
+import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.update.api.UpdateApi
@@ -68,7 +68,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { BarcodeInfoVO.convertFromDTO(it) }
-            .subscribeWith(object : DefaultSubscriber<BarcodeInfoVO>(view, false) {
+            .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
 
                 override fun onData(t: BarcodeInfoVO) {
                     view?.dismiss()
@@ -91,7 +91,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         val disposable = retrofit.create<UpdateApi>().getUpdateInfo(clientType, clientName)
             .compose(schedulersTransformer())
             .compose(responseTransformer())
-            .subscribeWith(object : DefaultSubscriber<UpdateInfo>(view, false) {
+            .subscribeWith(object : DefaultObserver<UpdateInfo>(view, false) {
 
                 override fun onData(t: UpdateInfo) {
                     handleUpgradeInfo(channel, t)

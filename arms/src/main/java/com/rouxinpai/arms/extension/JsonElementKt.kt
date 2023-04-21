@@ -25,7 +25,7 @@ infix fun String.between(that: String): JsonObject {
     return jsonObject
 }
 
-infix fun String.`in`(that: String): JsonObject {
+infix fun String.oneOf(that: String): JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("fieldName", this)
     jsonObject.addProperty("operation", "in")

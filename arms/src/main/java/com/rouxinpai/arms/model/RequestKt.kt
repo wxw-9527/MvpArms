@@ -4,8 +4,8 @@ import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.model.bean.PagingData
 import com.rouxinpai.arms.model.bean.exception.EmptyException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.FlowableTransformer
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -15,37 +15,36 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * desc   :
  */
 
-fun <T : Any> schedulersTransformer() = FlowableTransformer<T, T> { upstream ->
+fun <T : Any> schedulersTransformer() = ObservableTransformer<T, T> { upstream ->
     upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 }
 
-fun <T : Any> responseTransformer() = FlowableTransformer<ApiResponse<T>, T> { upstream ->
+fun <T : Any> responseTransformer() = ObservableTransformer<ApiResponse<T>, T> { upstream ->
     upstream.flatMap { response ->
         if (response.success) {
             val data = response.data
             if (data != null) {
-                Flowable.just(data)
+                Observable.just(data)
             } else {
-                Flowable.error(EmptyException())
+                Observable.error(EmptyException())
             }
         } else {
-            Flowable.error(response.apiException)
+            Observable.error(response.apiException)
         }
     }
 }
 
-fun <T : Collection<*>> pagingResponseTransformer() =
-    FlowableTransformer<ApiResponse<T>, PagingData<T>> { upstream ->
+fun <T : Collection<*>> pagingResponseTransformer() = ObservableTransformer<ApiResponse<T>, PagingData<T>> { upstream ->
         upstream.flatMap { response ->
             if (response.success) {
                 val data = response.data
                 if (data != null) {
-                    Flowable.just(PagingData(response.total, data))
+                    Observable.just(PagingData(response.total, data))
                 } else {
-                    Flowable.error(EmptyException())
+                    Observable.error(EmptyException())
                 }
             } else {
-                Flowable.error(response.apiException)
+                Observable.error(response.apiException)
             }
         }
     }
