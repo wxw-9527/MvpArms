@@ -10,5 +10,8 @@ data class MaterialStockDetailDTO(
     val barCode: String,
     val materialId: String,
     val materialCode: String,
-    val storageQuantity: Float
+    val storageQuantity: Float,
+    val warehouseId: String,
+    val warehouseCode: String,
+    val warehouseName: String?,
 )

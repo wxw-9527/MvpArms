@@ -19,4 +19,7 @@ class MaterialInfoVO(
     val quantity: Float,
     val stockQuantity: Float,
     val basicPackagingQuantity: Float,
+    val warehouseId: String,
+    val warehouseCode: String,
+    val warehouseName: String?,
 )

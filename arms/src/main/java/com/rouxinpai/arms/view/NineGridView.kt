@@ -1,4 +1,4 @@
-package com.rouxinpai.arms.extension
+package com.rouxinpai.arms.view
 
 import android.content.Context
 import android.util.AttributeSet

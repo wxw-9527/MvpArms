@@ -45,7 +45,10 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                         bomCode = bomCode,
                         quantity = quantity,
                         stockQuantity = dto.materialStockDetail?.storageQuantity ?: 0f,
-                        basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity
+                        basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity,
+                        warehouseId= dto.materialStockDetail?.warehouseId.orEmpty(),
+                        warehouseCode= dto.materialStockDetail?.warehouseCode.orEmpty(),
+                        warehouseName= dto.materialStockDetail?.warehouseName,
                     )
                 } else if (isWarehouseLocationBarcode) {
                     warehouse = WarehouseInfoVO(
