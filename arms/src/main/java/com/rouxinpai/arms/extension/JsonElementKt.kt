@@ -33,10 +33,24 @@ infix fun String.oneOf(that: String): JsonObject {
     return jsonObject
 }
 
-infix fun String.like(that: String): JsonObject {
+fun String.like(that: String): JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("fieldName", this)
     jsonObject.addProperty("operation", "like")
     jsonObject.addProperty("value", that)
+    return jsonObject
+}
+
+fun String.isNull(): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "isNull")
+    return jsonObject
+}
+
+fun String.isNotNull(): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "isNotNull")
     return jsonObject
 }

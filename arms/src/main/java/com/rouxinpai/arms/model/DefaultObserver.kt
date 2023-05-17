@@ -6,6 +6,7 @@ import com.rouxinpai.arms.model.bean.exception.TokenTimeoutException
 import com.shashank.sony.fancytoastlib.FancyToast
 import io.reactivex.rxjava3.observers.DisposableObserver
 import timber.log.Timber
+import java.net.UnknownHostException
 
 /**
  * author : Saxxhw
@@ -14,7 +15,10 @@ import timber.log.Timber
  * desc   :
  */
 
-abstract class DefaultObserver<T>(private val view: IView?, private val showErrorPage: Boolean = true) : DisposableObserver<T>() {
+abstract class DefaultObserver<T>(
+    private val view: IView?,
+    private val showErrorPage: Boolean = true
+) : DisposableObserver<T>() {
 
     override fun onNext(t: T) {
         onData(t)
@@ -35,7 +39,11 @@ abstract class DefaultObserver<T>(private val view: IView?, private val showErro
 
     open fun onFail(e: Throwable) {
         view?.dismiss()
-        view?.showToast(message = e.message, type = FancyToast.ERROR)
+        val errorMsg = when (e) {
+            is UnknownHostException -> "无法解析主机名称对应的IP地址，请检查网络"
+            else -> e.message
+        }
+        view?.showToast(message = errorMsg, type = FancyToast.ERROR)
         if (e is TokenTimeoutException) {
             view?.tokenTimeout()
             return

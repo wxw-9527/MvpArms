@@ -96,6 +96,8 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                 override fun onData(t: UpdateInfo) {
                     handleUpgradeInfo(channel, t)
                 }
+
+                override fun onFail(e: Throwable) {}
             })
         addDisposable(disposable)
     }
