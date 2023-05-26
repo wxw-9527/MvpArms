@@ -25,6 +25,14 @@ infix fun String.between(that: String): JsonObject {
     return jsonObject
 }
 
+infix fun String.notBetween(that: String): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "notBetween")
+    jsonObject.addProperty("value", that)
+    return jsonObject
+}
+
 infix fun String.oneOf(that: String): JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("fieldName", this)
@@ -33,10 +41,26 @@ infix fun String.oneOf(that: String): JsonObject {
     return jsonObject
 }
 
-fun String.like(that: String): JsonObject {
+infix fun String.notIn(that: String): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "notIn")
+    jsonObject.addProperty("value", that)
+    return jsonObject
+}
+
+infix fun String.like(that: String): JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("fieldName", this)
     jsonObject.addProperty("operation", "like")
+    jsonObject.addProperty("value", that)
+    return jsonObject
+}
+
+infix fun String.notLike(that: String): JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "notLike")
     jsonObject.addProperty("value", that)
     return jsonObject
 }

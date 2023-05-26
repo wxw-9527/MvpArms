@@ -16,7 +16,7 @@ import java.lang.reflect.Type
 /**
  *
  */
-val <T> T.type: Type
+val <T : Any> T.type: Type
     get() = object : TypeToken<List<T>>() {}.type
 
 /**
