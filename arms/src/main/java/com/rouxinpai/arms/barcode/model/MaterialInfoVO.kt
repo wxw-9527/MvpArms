@@ -9,6 +9,7 @@ package com.rouxinpai.arms.barcode.model
 class MaterialInfoVO(
     val inboundOrderCode: String,
     val inboundOrderDetailId: String,
+    val purchaseOrderNo: String,
     val id: String,
     val code: String,
     val name: String,
@@ -22,4 +23,5 @@ class MaterialInfoVO(
     val warehouseId: String,
     val warehouseCode: String,
     val warehouseName: String?,
+    val supplier: SupplierVO?
 )

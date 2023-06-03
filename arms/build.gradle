@@ -41,8 +41,8 @@ dependencies {
     api 'com.google.android.material:material:1.7.0'
     // 官方扩展程序
     api 'androidx.core:core-ktx:1.9.0'
-    api 'androidx.activity:activity-ktx:1.6.1'
-    api 'androidx.fragment:fragment-ktx:1.5.4'
+    api 'androidx.activity:activity-ktx:1.7.0'
+    api 'androidx.fragment:fragment-ktx:1.5.5'
     api 'androidx.work:work-runtime-ktx:2.7.1'
     // 官方控件
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -55,28 +55,24 @@ dependencies {
     api 'io.reactivex.rxjava3:rxandroid:3.0.2'
     api 'io.reactivex.rxjava3:rxjava:3.1.6'
     // 网络请求
-    api 'com.squareup.okhttp3:okhttp:4.10.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    api 'com.squareup.okhttp3:okhttp:4.11.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.11.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
     api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     api 'com.google.code.gson:gson:2.10.1'
-    // 数据库
-    api 'androidx.room:room-runtime:2.5.0'
-    kapt 'androidx.room:room-compiler:2.5.0'
-    api 'androidx.room:room-rxjava3:2.5.0'
     // 图片缓存
     api 'com.github.bumptech.glide:glide:4.15.1'
     kapt 'com.github.bumptech.glide:compiler:4.15.1'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.15.1'
     // 基于 mmap 的高性能通用 key-value 组件
-    api 'com.tencent:mmkv:1.2.15'
+    api 'com.tencent:mmkv:1.2.16'
     // 通信
     api 'org.greenrobot:eventbus:3.3.1'
     // 日志打印
     api 'com.jakewharton.timber:timber:5.0.1'
     // RecyclerView相关
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.11'
+    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'

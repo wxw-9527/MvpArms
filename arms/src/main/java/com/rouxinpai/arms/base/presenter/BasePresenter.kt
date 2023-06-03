@@ -61,7 +61,10 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         mHasUnconsumedBarcode = true
         val jsonObject = JsonObject().apply {
             addProperty("barCode", barcode)
-            add("billTypes", JsonArray().apply { add("quantity") })
+            add("billTypes", JsonArray().apply {
+                add("quantity")
+                add("supplierCode")
+            })
         }
         val body = jsonObject.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>().getBarcodeInfo(body)

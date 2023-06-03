@@ -19,6 +19,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                 barType = dto.barType
             ).apply {
                 if (isMaterialBarcode) {
+                    var purchaseOrderNo = ""
                     var inboundNo = ""
                     var inboundOrderDetailId = ""
                     var batchCode: String? = null
@@ -26,6 +27,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                     var quantity = 0f
                     dto.barContextDataList?.forEach {
                         when (it.billTypeCode) {
+                            "purchaseOrderNo" -> purchaseOrderNo = it.billCode
                             "inboundNo" -> inboundNo = it.billCode
                             "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
                             "batchCode" -> batchCode = it.billCode
@@ -36,6 +38,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                     material = MaterialInfoVO(
                         inboundOrderCode = inboundNo,
                         inboundOrderDetailId = inboundOrderDetailId,
+                        purchaseOrderNo = purchaseOrderNo,
                         id = dto.materialInfo.materialId,
                         code = dto.materialInfo.materialCode,
                         name = dto.materialInfo.materialName.orEmpty(),
@@ -49,6 +52,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                         warehouseId= dto.materialStockDetail?.warehouseId.orEmpty(),
                         warehouseCode= dto.materialStockDetail?.warehouseCode.orEmpty(),
                         warehouseName= dto.materialStockDetail?.warehouseName,
+                        supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
                     )
                 } else if (isWarehouseLocationBarcode) {
                     warehouse = WarehouseInfoVO(
