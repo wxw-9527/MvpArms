@@ -18,50 +18,53 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                 barcode = dto.barCode,
                 barType = dto.barType
             ).apply {
-                if (isMaterialBarcode) {
-                    var purchaseOrderNo = ""
-                    var inboundNo = ""
-                    var inboundOrderDetailId = ""
-                    var batchCode: String? = null
-                    var bomCode: String? = null
-                    var quantity = 0f
-                    dto.barContextDataList?.forEach {
-                        when (it.billTypeCode) {
-                            "purchaseOrderNo" -> purchaseOrderNo = it.billCode
-                            "inboundNo" -> inboundNo = it.billCode
-                            "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
-                            "batchCode" -> batchCode = it.billCode
-                            "bomCode" -> bomCode = it.billCode
-                            "quantity" -> quantity = it.billCode.toFloat()
+                when {
+                    isMaterialBarcode -> {
+                        var purchaseOrderNo = ""
+                        var inboundNo = ""
+                        var inboundOrderDetailId = ""
+                        var batchCode: String? = null
+                        var bomCode: String? = null
+                        var quantity = 0f
+                        dto.barContextDataList?.forEach {
+                            when (it.billTypeCode) {
+                                "purchaseOrderNo" -> purchaseOrderNo = it.billCode
+                                "inboundNo" -> inboundNo = it.billCode
+                                "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
+                                "batchCode" -> batchCode = it.billCode
+                                "bomCode" -> bomCode = it.billCode
+                                "quantity" -> quantity = it.billCode.toFloat()
+                            }
                         }
+                        material = MaterialInfoVO(
+                            inboundOrderCode = inboundNo,
+                            inboundOrderDetailId = inboundOrderDetailId,
+                            purchaseOrderNo = purchaseOrderNo,
+                            id = dto.materialInfo.materialId,
+                            code = dto.materialInfo.materialCode,
+                            name = dto.materialInfo.materialName.orEmpty(),
+                            spec = dto.materialInfo.materialSpec.orEmpty(),
+                            unit = dto.materialInfo.materialUnit.orEmpty(),
+                            batchCode = batchCode,
+                            bomCode = bomCode,
+                            quantity = quantity,
+                            stockQuantity = dto.materialStockDetail?.storageQuantity,
+                            basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity,
+                            warehouseId= dto.materialStockDetail?.warehouseId.orEmpty(),
+                            warehouseCode= dto.materialStockDetail?.warehouseCode.orEmpty(),
+                            warehouseName= dto.materialStockDetail?.warehouseName,
+                            supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
+                        )
                     }
-                    material = MaterialInfoVO(
-                        inboundOrderCode = inboundNo,
-                        inboundOrderDetailId = inboundOrderDetailId,
-                        purchaseOrderNo = purchaseOrderNo,
-                        id = dto.materialInfo.materialId,
-                        code = dto.materialInfo.materialCode,
-                        name = dto.materialInfo.materialName.orEmpty(),
-                        spec = dto.materialInfo.materialSpec.orEmpty(),
-                        unit = dto.materialInfo.materialUnit.orEmpty(),
-                        batchCode = batchCode,
-                        bomCode = bomCode,
-                        quantity = quantity,
-                        stockQuantity = dto.materialStockDetail?.storageQuantity ?: 0f,
-                        basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity,
-                        warehouseId= dto.materialStockDetail?.warehouseId.orEmpty(),
-                        warehouseCode= dto.materialStockDetail?.warehouseCode.orEmpty(),
-                        warehouseName= dto.materialStockDetail?.warehouseName,
-                        supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
-                    )
-                } else if (isWarehouseLocationBarcode) {
-                    warehouse = WarehouseInfoVO(
-                        id = dto.warehouseInfo.id,
-                        code = dto.warehouseInfo.code,
-                        name = dto.warehouseInfo.name,
-                        purpose = dto.warehouseInfo.purpose,
-                        type = dto.warehouseInfo.type
-                    )
+                    isWarehouseLocationBarcode -> {
+                        warehouse = WarehouseInfoVO(
+                            id = dto.warehouseInfo.id,
+                            code = dto.warehouseInfo.code,
+                            name = dto.warehouseInfo.name,
+                            purpose = dto.warehouseInfo.purpose,
+                            type = dto.warehouseInfo.type
+                        )
+                    }
                 }
             }
         }
@@ -75,7 +78,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
      * 物料条码
      */
     val isMaterialBarcode: Boolean
-        get() = TYPE_MATERIAL == barType
+        get() = (TYPE_MATERIAL == barType)
 
     /**
      * 物料信息
@@ -86,7 +89,7 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
      * 库位码
      */
     val isWarehouseLocationBarcode: Boolean
-        get() = TYPE_WAREHOUSE_LOCATION == barType
+        get() = (TYPE_WAREHOUSE_LOCATION == barType)
 
     /**
      * 库位信息

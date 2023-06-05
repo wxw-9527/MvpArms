@@ -12,5 +12,5 @@ data class MaterialInfoDTO(
     val materialName: String?,
     val materialSpec: String?,
     val materialUnit: String?,
-    val basicPackagingQuantity: Float,
+    val basicPackagingQuantity: Float?,
 )
