@@ -10,8 +10,8 @@ class SupplierVO(
     val supplierId: String,
     val supplierCode: String,
     val supplierName: String,
-    val contact: String,
-    val contactTel: String,
+    val contact: String?,
+    val contactTel: String?,
     val contactAddress: String?,
 ) {
 
