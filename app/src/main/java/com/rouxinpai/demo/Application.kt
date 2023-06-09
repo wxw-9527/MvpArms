@@ -15,6 +15,11 @@ class Application : BaseApplication() {
     override val loggable: Boolean
         get() = true
 
+    override fun onCreate() {
+        super.onCreate()
+        initUmeng("64828b4ea1a164591b2ea15f", "Common")
+    }
+
     override fun onTokenTimeout() {
 
     }

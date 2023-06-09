@@ -93,4 +93,8 @@ dependencies {
     api 'com.github.wxw-9527:Stepper:1.0.4'
     // 版本更新
     implementation 'com.github.wxw-9527:UpdateAppUtils:2.3.1'
+    // 友盟
+    implementation  'com.umeng.umsdk:common:9.6.1'// (必选)
+    implementation  'com.umeng.umsdk:asms:1.8.0'// 必选
+    implementation 'com.umeng.umsdk:apm:1.9.2'// U-APM产品包依赖(必选)
 }
