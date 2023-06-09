@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.tencent.mmkv.MMKV
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 import timber.log.Timber
 import update.UpdateAppUtils
 import java.util.*
@@ -62,6 +64,9 @@ abstract class BaseApplication : Application(), IApplication {
     }
 
     override fun onActivityDestroyed(activity: Activity) {
+        if (1 == mActivities.size) {
+            MobclickAgent.onKillProcess(this)
+        }
         removeActivity(activity)
     }
 
@@ -96,6 +101,20 @@ abstract class BaseApplication : Application(), IApplication {
     // 结束指定activity
     private fun finishActivity(activity: Activity) {
         activity.finish()
+    }
+
+    /**
+     * 预初始化友盟SDK
+     * @param appKey 友盟AppKey
+     * @param channel 渠道
+     */
+    fun initUmeng(appKey: String, channel: String) {
+        // 初始化组件化基础库, 必须在调用任何统计SDK接口之前调用
+        UMConfigure.preInit(this, appKey, channel)
+        // 设置日志
+        UMConfigure.setLogEnabled(loggable)
+        // 初始化友盟
+        UMConfigure.init(this, appKey, channel, UMConfigure.DEVICE_TYPE_PHONE, "")
     }
 }
 
