@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url 'https://developer.huawei.com/repo/' } // 华为
     }
 }
 dependencyResolutionManagement {
@@ -11,6 +12,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' } // JitPack
+        maven { url 'https://developer.huawei.com/repo/' } // 华为
     }
 }
 rootProject.name = "MvpArms"

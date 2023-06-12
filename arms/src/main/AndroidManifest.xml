@@ -13,17 +13,6 @@
     <!-- 开启一个前台服务用于增强保活部分机型 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <!-- 友盟相关权限 -->
-    <!-- 检测联网方式，在网络异常状态下避免数据发送，节省流量和电量。 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!-- 获取用户设备的IMEI，通过IMEI对用户进行唯一标识，以便提供统计分析服务。 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- 获取WIFI mac地址，在平板设备或电视盒子上，无法通过IMEI标识设备，我们会将WIFI mac地址作为用户的唯一标识，以便正常提供统计分析服务。 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!-- 允许应用程序联网和发送统计数据的权限，以便提供统计分析服务。 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-
     <!-- Android 11 使用相机需要如下代码 -->
     <queries package="${applicationId}">
         <intent>
