@@ -3,7 +3,6 @@ package com.rouxinpai.arms.util
 import android.content.Context
 import com.huawei.agconnect.crash.AGConnectCrash
 import com.huawei.hms.analytics.HiAnalytics
-import com.huawei.hms.analytics.HiAnalyticsTools
 
 /**
  * author : Saxxhw
@@ -20,12 +19,10 @@ object HuaweiUtil {
      * @param context 上下文
      */
     internal fun initAnalytics(debug: Boolean, context: Context) {
-        // 如果debug为true，则开启Analytics Kit日志打印，用于调试和测试
-        if (debug) {
-            HiAnalyticsTools.enableLog()
+        // 初始化Analytics Kit
+        if (!debug) {
+            HiAnalytics.getInstance(context)
         }
-        // 获取当前应用实例，并初始化Analytics Kit
-        HiAnalytics.getInstance(context)
     }
 
     /**
