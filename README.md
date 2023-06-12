@@ -78,6 +78,7 @@ dependencies {
 四、使用版本更新功能
 
 在需要检测新版本的页面P层调用以下方法检查新版本
+
 ```kotlin
 /**
  * 获取版本更新信息
@@ -87,28 +88,79 @@ dependencies {
  */
 fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
 ```
-重写showUpdateInfo(updateInfo: UpdateInfo)方法可自定义版本更新处理逻辑
 
+重写showUpdateInfo(updateInfo: UpdateInfo)方法可自定义版本更新处理逻辑
 
 五、条码解析服务
 
 1、必须：
-    在需要解析条码的Activity、Fragment的父Activity类增加@BarcodeScanningReceiverEnabled标记
+在需要解析条码的Activity、Fragment的父Activity类增加@BarcodeScanningReceiverEnabled标记
 
 2、仅Activity中使用：
-    1)仅在该Activity上增加@EventBusEnabled标记
-    2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+1)仅在该Activity上增加@EventBusEnabled标记
+2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
 
 3、仅Fragment中使用：
-    1)仅在该Fragment上增加@EventBusEnabled标记
-    2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+1)仅在该Fragment上增加@EventBusEnabled标记
+2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
 
 4、高阶使用
-    1)覆写Activity或Fragment中的onBarcodeEvent(event: BarcodeEvent)方法可自行处理条码内容
-    2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
-    3)覆写Presenter中的handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法可自行处理条码上下文数据
-    4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault().cancelEventDelivery(event)可取消事件继续传递
+1)覆写Activity或Fragment中的onBarcodeEvent(event: BarcodeEvent)方法可自行处理条码内容
+2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
+3)覆写Presenter中的handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法可自行处理条码上下文数据
+4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault()
+.cancelEventDelivery(event)可取消事件继续传递
 
 六、华为崩溃信息收集服务、分析服务集成
 
 1、将“agconnect-services.json”文件拷贝到Android Studio项目的应用级根目录下
+
+2、在settings.gradle添加仓库地址
+
+```groovy
+pluginManagement {
+    repositories {
+        maven { url 'https://developer.huawei.com/repo/' } // 华为
+    }
+}
+dependencyResolutionManagement {
+    repositories {
+        maven { url 'https://developer.huawei.com/repo/' } // 华为
+    }
+}
+```
+
+3、在项目的build.gradle文件中添加以下依赖项
+
+```groovy
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.1' // 华为
+        classpath 'com.huawei.agconnect:agcp:1.9.0.300' // 华为
+    }
+}
+```
+
+4、在应用级build.gradle文件添加
+
+```groovy
+plugins {
+    id 'com.huawei.agconnect' // 华为
+}
+
+```
+
+5、在AndroidManifest.xml文件中<application>标签内添加渠道信息
+
+```xml
+<!-- 华为分析服务 -->
+<meta-data android:name="install_channel" android:value="${channel}" />
+```
+
+6、登录成功后调用以下方法上传用户信息
+
+```kotlin
+// 记录userId
+HuaweiUtil.setUserId(userId)
+```
