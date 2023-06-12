@@ -13,7 +13,7 @@ import com.shashank.sony.fancytoastlib.FancyToast.LayoutType
  * time   : 2022/11/16 9:51
  * desc   :
  */
-interface IView {
+interface IView: ILoadMore {
 
     /**
      * 显示 Toast 提示
