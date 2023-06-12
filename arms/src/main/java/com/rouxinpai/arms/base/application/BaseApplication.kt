@@ -3,9 +3,7 @@ package com.rouxinpai.arms.base.application
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import com.huawei.agconnect.crash.AGConnectCrash
-import com.huawei.hms.analytics.HiAnalytics
-import com.huawei.hms.analytics.HiAnalyticsTools
+import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
 import update.UpdateAppUtils
@@ -28,7 +26,7 @@ abstract class BaseApplication : Application(), IApplication {
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
-        initHwCrashHandler()
+        HuaweiUtil.initHwCrashHandler(debug)
         initTimber()
         initMmkv()
         initUpdater()
@@ -64,28 +62,13 @@ abstract class BaseApplication : Application(), IApplication {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         // 第一个Activity的onCreate中初始化Analytics SDK
         if (mActivities.isEmpty()) {
-            initAnalytics()
+            HuaweiUtil.initAnalytics(debug, activity)
         }
         addActivity(activity)
     }
 
     override fun onActivityDestroyed(activity: Activity) {
         removeActivity(activity)
-    }
-
-    // 初始化华为崩溃信息收集服务
-    private fun initHwCrashHandler() {
-        AGConnectCrash.getInstance().enableCrashCollection(!debug)
-    }
-
-    // 初始化Analytics SDK
-    private fun initAnalytics() {
-        // 开启Analytics Kit日志打印
-        if (debug) {
-            HiAnalyticsTools.enableLog()
-        }
-        // 初始化Analytics Kit
-        HiAnalytics.getInstance(this)
     }
 
     // 初始化日志打印框架
