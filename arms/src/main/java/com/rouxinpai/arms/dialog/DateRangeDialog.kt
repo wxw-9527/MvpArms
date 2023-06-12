@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.rouxinpai.arms.dialog
 
 import android.os.Bundle
@@ -5,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.fragment.BaseBottomSheetDialogFragment
@@ -19,28 +22,52 @@ import com.shashank.sony.fancytoastlib.FancyToast
  * time   : 2022/12/28 14:44
  * desc   :
  */
-class DateRangeDialog(
-    private val startCalendar: Calendar? = null,
-    private val endCalendar: Calendar? = null,
-) : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
+class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     CalendarView.OnMonthChangeListener,
     OnClickListener {
 
     companion object {
 
+        // 参数传递标志
+        private const val ARG_START_CALENDAR = "arg_start_calendar" // 开始日期
+        private const val ARG_END_CALENDAR = "arg_end_calendar" // 结束日期
+
         /**
          * 展示
          */
-        fun show(manager: FragmentManager, startCalendar: Calendar?, endCalendar: Calendar?, listener: OnDateRangeSelectedListener) {
-            val dialogFragment = DateRangeDialog(startCalendar, endCalendar).apply {
-                setOnDateRangeSelectedListener(listener)
+        fun show(
+            manager: FragmentManager,
+            startCalendar: Calendar? = null,
+            endCalendar: Calendar? = null,
+            listener: OnDateRangeSelectedListener? = null
+        ) {
+            val dialogFragment = DateRangeDialog().apply {
+                arguments = bundleOf(
+                    ARG_START_CALENDAR to startCalendar,
+                    ARG_END_CALENDAR to endCalendar
+                )
+                if (listener != null) {
+                    setOnDateRangeSelectedListener(listener)
+                }
             }
             dialogFragment.show(manager, DateRangeDialog::class.java.simpleName)
         }
     }
 
+    // 开始日期
+    private var mStartCalendar: Calendar? = null
 
+    // 结束日期
+    private var mEndCalendar: Calendar? = null
+
+    // 监听事件
     private var mOnDateRangeSelectedListener: OnDateRangeSelectedListener? = null
+
+    override fun onParseData(bundle: Bundle) {
+        super.onParseData(bundle)
+        mStartCalendar = bundle.getSerializable(ARG_START_CALENDAR) as? Calendar
+        mEndCalendar = bundle.getSerializable(ARG_END_CALENDAR) as? Calendar
+    }
 
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
@@ -60,9 +87,9 @@ class DateRangeDialog(
         val year = binding.calendarView.curYear
         val month = binding.calendarView.curMonth
         binding.tvYearMonth.text = getString(R.string.date_range__year_month, year, month)
-        if (startCalendar != null && endCalendar != null) {
-            binding.calendarView.setSelectStartCalendar(startCalendar)
-            binding.calendarView.setSelectEndCalendar(endCalendar)
+        if (mStartCalendar != null && mEndCalendar != null) {
+            binding.calendarView.setSelectStartCalendar(mStartCalendar)
+            binding.calendarView.setSelectEndCalendar(mEndCalendar)
             binding.calendarView.post {
                 binding.calendarView.scrollToSelectCalendar()
             }
@@ -102,21 +129,16 @@ class DateRangeDialog(
     private fun onConfirmClick() {
         val list = binding.calendarView.selectCalendarRange
         if (list.isNullOrEmpty()) {
-            showWarningToast(R.string.date_range__please_select_the_correct_start_date)
+            showToast(
+                R.string.date_range__please_select_the_correct_start_date,
+                type = FancyToast.WARNING
+            )
         } else {
-            mOnDateRangeSelectedListener?.onDateRangeSelected(list.first(), list.last())
+            val startCalendar = list.first()
+            val endCalendar = list.last()
+            mOnDateRangeSelectedListener?.onDateRangeSelected(startCalendar, endCalendar)
             dismiss()
         }
-    }
-
-    /**
-     * 提示异常信息
-     */
-    private fun showWarningToast(messageId: Int) {
-        val message = getString(messageId)
-        val duration = FancyToast.LENGTH_SHORT
-        val type = FancyToast.WARNING
-        FancyToast.makeText(requireContext(), message, duration, type, false).show()
     }
 
     /**

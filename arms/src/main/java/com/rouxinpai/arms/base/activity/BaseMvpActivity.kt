@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.rouxinpai.arms.base.activity
 
 import android.content.IntentFilter
@@ -8,7 +10,9 @@ import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.barcode.receiver.BarcodeScanningReceiver
 import com.rouxinpai.arms.base.presenter.IPresenter
+import com.rouxinpai.arms.base.view.ILoadMore
 import com.rouxinpai.arms.base.view.IView
+import com.rouxinpai.arms.base.view.LoadMoreDelegate
 import com.rouxinpai.arms.update.model.UpdateInfo
 import constant.UiType
 import model.UiConfig
@@ -25,12 +29,10 @@ import javax.inject.Inject
  * desc   :
  */
 abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
-    BaseActivity<VB>() {
+    BaseActivity<VB>(), ILoadMore {
 
     @Inject
     lateinit var presenter: P
-
-    open val mLoadMoreModule: BaseLoadMoreModule? = null
 
     // 是否使用条码解析
     private var mBarcodeScanningReceiverEnabled: Boolean = false
@@ -38,10 +40,15 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     // 扫描结果解析广播
     private lateinit var mReceiver: BarcodeScanningReceiver
 
+    // 加载更多代理类实例
+    private lateinit var mLoadMoreDelegate: LoadMoreDelegate
+
+    open val mLoadMoreModule: BaseLoadMoreModule? = null
+
     override fun onInit(savedInstanceState: Bundle?) {
-        @Suppress("UNCHECKED_CAST")
         presenter.bind(lifecycle, this as V)
         super.onInit(savedInstanceState)
+        mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
     override fun onResume() {
@@ -71,18 +78,15 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     }
 
     override fun loadMoreComplete() {
-        super.loadMoreComplete()
-        mLoadMoreModule?.loadMoreComplete()
+        mLoadMoreDelegate.loadMoreComplete()
     }
 
     override fun loadMoreEnd(gone: Boolean) {
-        super.loadMoreEnd(gone)
-        mLoadMoreModule?.loadMoreEnd(gone)
+        mLoadMoreDelegate.loadMoreEnd(gone)
     }
 
     override fun loadMoreFail() {
-        super.loadMoreFail()
-        mLoadMoreModule?.loadMoreFail()
+        mLoadMoreDelegate.loadMoreFail()
     }
 
     override fun showUpdateInfo(updateInfo: UpdateInfo) {

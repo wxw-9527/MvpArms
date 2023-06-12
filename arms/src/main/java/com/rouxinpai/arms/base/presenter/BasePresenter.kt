@@ -74,7 +74,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
 
                 override fun onData(t: BarcodeInfoVO) {
-                    view?.dismiss()
+                    view?.dismissProgress()
                     handleBarcodeInfo(t)
                 }
 
