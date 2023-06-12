@@ -17,11 +17,11 @@ import javax.inject.Inject
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
- * time   : 2022/11/17 16:26
+ * time   : 2023/6/12 14:38
  * desc   :
  */
-abstract class BaseMvpFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
-    BaseFragment<VB>(), ILoadMore {
+abstract class BaseMvpDialogFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
+    BaseDialogFragment<VB>(), ILoadMore {
 
     @Inject
     lateinit var presenter: P

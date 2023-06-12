@@ -7,19 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
-import com.kaopiz.kprogresshud.KProgressHUD
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.EventBusEnabled
-import com.rouxinpai.arms.base.application.IApplication
 import com.rouxinpai.arms.base.view.IView
-import com.shashank.sony.fancytoastlib.FancyToast
+import com.rouxinpai.arms.base.view.ViewDelegate
 import com.view.multistatepage.intf.OnRetryClickListener
-import com.view.multistatepage.state.EmptyState
-import com.view.multistatepage.state.ErrorState
-import com.view.multistatepage.state.LoadingState
-import com.zy.multistatepage.MultiStateContainer
-import com.zy.multistatepage.bindMultiState
-import com.zy.multistatepage.state.SuccessState
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -36,11 +28,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     // 是否使用事件发布-订阅总线
     private var mEventBusEnabled: Boolean = false
 
-    // 加载进度对话框
-    private var mKProgressHUD: KProgressHUD? = null
-
-    // 缺省页状态管理实例
-    private var mLoadState: MultiStateContainer? = null
+    // 代理类实例，用于协助处理 IView 接口中定义的各种方法。
+    private lateinit var mViewDelegate: ViewDelegate
 
     /**
      * 缺省页内容视图
@@ -57,7 +46,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
             onParseData(bundle)
         }
         initToolbar()
-        mLoadState = stateLayout?.bindMultiState()
+        mViewDelegate = ViewDelegate(this, stateLayout, this)
         onInit(savedInstanceState)
     }
 
@@ -80,7 +69,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     override fun onDestroy() {
         super.onDestroy()
-        dismiss()
+        dismissProgress()
     }
 
     // 初始化标题栏
@@ -95,123 +84,51 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun showToast(messageId: Int, duration: Int, type: Int) {
-        val message = getString(messageId)
-        showToast(message, duration, type)
+        mViewDelegate.showToast(messageId, duration, type)
     }
 
     override fun showToast(message: CharSequence?, duration: Int, type: Int) {
-        if (message.isNullOrEmpty()) return
-        FancyToast.makeText(this, message, duration, type, false).show()
+        mViewDelegate.showToast(message, duration, type)
     }
 
     override fun showProgress(labelId: Int, detailId: Int?) {
-        val message = getString(labelId)
-        val detailMessage = detailId?.let { getString(it) }
-        showProgress(message, detailMessage)
+        mViewDelegate.showProgress(labelId, detailId)
     }
 
     override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
-        mKProgressHUD = KProgressHUD
-            .create(this, KProgressHUD.Style.SPIN_INDETERMINATE)
-            .apply {
-                if (labelMsg != null && labelMsg.isNotEmpty()) {
-                    setLabel(labelMsg.toString())
-                }
-                if (detailMsg != null && detailMsg.isNotEmpty()) {
-                    setDetailsLabel(detailMsg)
-                }
-            }
-            .setCancellable(true)
-            .setDimAmount(0.2f)
-            .show()
+        mViewDelegate.showProgress(labelMsg, detailMsg)
     }
 
     override fun updateProgress(detailId: Int) {
-        val message = getString(detailId)
-        updateProgress(message)
+        mViewDelegate.updateProgress(detailId)
     }
 
     override fun updateProgress(detailMsg: String?) {
-        if (detailMsg.isNullOrEmpty()) return
-        if (mKProgressHUD == null) return
-        if (false == mKProgressHUD?.isShowing) return
-        mKProgressHUD?.setDetailsLabel(detailMsg.toString())
+        mViewDelegate.updateProgress(detailMsg)
     }
 
-    override fun dismiss() {
-        mKProgressHUD?.dismiss()
+    override fun dismissProgress() {
+        mViewDelegate.dismissProgress()
     }
 
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.mLoadState ?: return
-        if (loadState.currentState is SuccessState) return
-        val loadingMsg = when {
-            msgId != null -> getString(msgId)
-            msg != null -> msg
-            else -> null
-        }
-        val loadingDesc = when {
-            descId != null -> getString(descId)
-            desc != null -> desc
-            else -> null
-        }
-        loadState.show<LoadingState>(false) { state ->
-            if (loadingMsg != null) {
-                state.setMessage(loadingMsg)
-            }
-            if (loadingDesc != null) {
-                state.setDesc(loadingDesc)
-            }
-        }
+        mViewDelegate.showLoadingPage(msgId, msg, descId, desc)
     }
 
     override fun showEmptyPage(msgId: Int?, msg: String?) {
-        val loadState = this.mLoadState ?: return
-        val emptyMsg = when {
-            msgId != null -> getString(msgId)
-            msg != null -> msg
-            else -> null
-        }
-        loadState.show<EmptyState>(false) { state ->
-            if (emptyMsg != null) {
-                state.setMessage(emptyMsg)
-            }
-            state.setOnRetryClickListener(this)
-        }
+        mViewDelegate.showEmptyPage(msgId, msg)
     }
 
     override fun showErrorPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
-        val loadState = this.mLoadState ?: return
-        val errorMsg = when {
-            msgId != null -> getString(msgId)
-            msg != null -> msg
-            else -> null
-        }
-        val errorDesc = when {
-            descId != null -> getString(descId)
-            desc != null -> desc
-            else -> null
-        }
-        loadState.show<ErrorState>(false) { state ->
-            if (errorMsg != null) {
-                state.setMessage(errorMsg)
-            }
-            if (errorDesc != null) {
-                state.setDesc(errorDesc)
-            }
-            state.setOnRetryClickListener(this)
-        }
+        mViewDelegate.showErrorPage(msgId, msg, descId, desc)
     }
 
     override fun showSuccessPage() {
-        val loadState = this.mLoadState ?: return
-        if (loadState.currentState is SuccessState) return
-        loadState.show<SuccessState>()
+        mViewDelegate.showSuccessPage()
     }
 
     override fun tokenTimeout() {
-        val application = application as? IApplication ?: return
-        application.onTokenTimeout()
+        mViewDelegate.tokenTimeout()
     }
 
     override fun onRetryClick() = Unit

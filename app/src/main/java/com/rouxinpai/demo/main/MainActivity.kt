@@ -9,6 +9,8 @@ import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseSimpleFragmentStateAdapter
+import com.rouxinpai.arms.dialog.DateRangeDialog
+import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -26,7 +28,19 @@ class MainActivity : BaseMvpActivity<ActivityMainBinding, MainContract.View, Mai
         super.onInit(savedInstanceState)
         binding.viewPager.adapter = PagerAdapter(this)
         binding.btnRequest.setOnClickListener {
-            presenter.print("")
+            // presenter.print("")
+            DateRangeDialog.show(
+                supportFragmentManager,
+                null,
+                null,
+                object : DateRangeDialog.OnDateRangeSelectedListener {
+                    override fun onDateRangeSelected(
+                        startCalendar: Calendar?,
+                        endCalendar: Calendar?
+                    ) {
+                        showToast(startCalendar.toString() + "\n" + endCalendar.toString())
+                    }
+                })
         }
     }
 

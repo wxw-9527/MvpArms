@@ -15,7 +15,7 @@ import java.net.UnknownHostException
  * desc   :
  */
 
-abstract class DefaultObserver<T>(
+abstract class DefaultObserver<T : Any>(
     private val view: IView?,
     private val showErrorPage: Boolean = true
 ) : DisposableObserver<T>() {
@@ -38,7 +38,7 @@ abstract class DefaultObserver<T>(
     open fun onEmpty() {}
 
     open fun onFail(e: Throwable) {
-        view?.dismiss()
+        view?.dismissProgress()
         val errorMsg = when (e) {
             is UnknownHostException -> "无法解析主机名称对应的IP地址，请检查网络"
             else -> e.message
