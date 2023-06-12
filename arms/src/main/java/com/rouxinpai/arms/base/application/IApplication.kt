@@ -18,9 +18,9 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
     val topActivity: Activity?
 
     /**
-     * 是否打印日志
+     * 是否为调试模式
      */
-    val loggable: Boolean
+    val debug: Boolean
 
     /**
      * 结束指定类名的Activity

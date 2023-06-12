@@ -71,7 +71,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:1.9.0'
+    implementation 'com.github.wxw-9527:MvpArms:1.9.1'
 }
 ```
 
@@ -108,3 +108,7 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
     2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
     3)覆写Presenter中的handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法可自行处理条码上下文数据
     4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault().cancelEventDelivery(event)可取消事件继续传递
+
+六、华为崩溃信息收集服务、分析服务集成
+
+1、将“agconnect-services.json”文件拷贝到Android Studio项目的应用级根目录下
