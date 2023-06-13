@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 全屏主题 -->
+    <style name="FullScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 在视图上停用 Force Dark -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <!-- 主色 -->
+        <item name="colorPrimary">@color/color_secondary</item>
+        <item name="colorPrimaryVariant">@color/color_secondary</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- 全屏 -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- 全屏主题白色 -->
+    <style name="FullScreenTheme.White">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <!-- 启动页样式 -->
+    <style name="ThemeSplash" parent="FullScreenTheme.White">
+        <item name="android:windowBackground">@drawable/window_background</item>
+    </style>
+</resources>

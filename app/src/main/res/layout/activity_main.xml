@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.MainActivity">
+    tools:context=".main.main.MainActivity">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
@@ -12,9 +12,17 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/btn_request"
+        android:id="@+id/btn_change_domain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="request" />
+        android:text="切换域名" />
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_change_domain"
+        android:layout_centerHorizontal="true"
+        android:text="测试扫码" />
 </RelativeLayout>

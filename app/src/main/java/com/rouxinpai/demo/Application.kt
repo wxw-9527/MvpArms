@@ -12,11 +12,21 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class Application : BaseApplication() {
 
+    companion object {
+
+        /**
+         * 应用唯一入口实例
+         */
+        lateinit var instance: Application
+            private set
+    }
+
     override val debug: Boolean
         get() = true
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
     }
 
     override fun onTokenTimeout() {

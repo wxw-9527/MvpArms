@@ -5,7 +5,7 @@
     <!-- 存储权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 细化存储权限 -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"  />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <!-- 相机权限 -->
