@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.http
+package com.rouxinpai.arms.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -18,16 +18,15 @@ import javax.inject.Singleton
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
- * time   : 2022/11/28 10:19
+ * time   : 2023/6/13 10:19
  * desc   :
  */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    //
-    private const val TOKEN =
-        "eyJhbGciOiJIUzUxMiJ9.eyJ3eF9hcHBfc2Vzc2lvbl9rZXkiOm51bGwsImFkbWluX2ZsYWciOjEsInVzZXJfaWQiOjE2MzE0ODQ1MzkwNDA3OTY2NzMsInl1bl9jb25zb2xlX3Rva2VuIjpudWxsLCJ3eF9hcHBfb3BlbmlkIjpudWxsLCJ1c2VyX2tleSI6ImE0MjY2YmNlLWRkN2UtNGZmMy05NzdiLTFjYTc1NDUzY2RlMiIsImRlcHRfaWQiOjE2MzE0Nzk0MjEwNjI5NzU0OTAsImN1c3RvbWVyX2lkIjoxNjMxNDc5NDIwNTYzODUzMzE0LCJ3eF91bmlvbl9pZCI6bnVsbCwidXNlcm5hbWUiOiJERmFkbWluIn0.0o96Z9Ze1DP-0k5G88nzLPLpBxgvw3gNT4D2LrfkuJm7bY60MPVCQOPyehySgMzYjRnvuTBbH6in0Vt9Xu4J8A"
+    // 超时时长
+    private const val TIME_OUT = 12L
 
     @Provides
     @Singleton
@@ -39,19 +38,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .connectTimeout(12, TimeUnit.SECONDS)
-            .readTimeout(12, TimeUnit.SECONDS)
-            .writeTimeout(12, TimeUnit.SECONDS)
-            .addNetworkInterceptor { chain ->
-                val original = chain.request()
-                val request = original.newBuilder().apply {
-                    addHeader("Authorization", TOKEN)
-                }.build()
-                chain.proceed(request)
-            }
-            .addInterceptor(loggingInterceptor).build()
+            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .addNetworkInterceptor(authInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
 
     @Provides
@@ -66,10 +63,10 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.118.160:55/stage-api/")
+            .baseUrl("http://www.domain.com/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 }

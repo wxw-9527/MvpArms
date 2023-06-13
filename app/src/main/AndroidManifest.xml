@@ -17,8 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".main.MainActivity"
-            android:exported="true">
+            android:name=".main.SplashActivity"
+            android:exported="true"
+            android:theme="@style/ThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,5 +30,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".main.DomainConfigActivity"
+            android:theme="@style/FullScreenTheme.White" />
+
+        <activity
+            android:name=".main.login.AccountLoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+
+        <activity
+            android:name=".main.main.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

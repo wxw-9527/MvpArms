@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.main
+package com.rouxinpai.demo.main.main
 
 import com.rouxinpai.arms.base.presenter.IPresenter
 import com.rouxinpai.arms.base.view.IView

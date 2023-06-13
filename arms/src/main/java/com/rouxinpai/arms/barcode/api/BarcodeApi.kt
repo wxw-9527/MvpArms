@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 /**
  * author : Saxxhw
@@ -18,6 +19,6 @@ interface BarcodeApi {
     /**
      * 获取条码内容
      */
-    @POST("ident/bill-info/query")
-    fun getBarcodeInfo(@Body body: RequestBody): Observable<ApiResponse<BarcodeInfoDTO>>
+    @POST
+    fun getBarcodeInfo(@Url url: String, @Body body: RequestBody): Observable<ApiResponse<BarcodeInfoDTO>>
 }

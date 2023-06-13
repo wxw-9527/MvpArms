@@ -3,7 +3,9 @@ package com.rouxinpai.demo.http
 import com.google.gson.JsonObject
 import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.update.model.UpdateInfo
+import com.rouxinpai.demo.model.AccessTokenDTO
 import com.rouxinpai.demo.model.ArrivalOrderDTO
+import com.rouxinpai.demo.model.CaptchaDTO
 import com.rouxinpai.demo.model.CustomerDictDataDTO
 import com.rouxinpai.demo.model.Detail
 import com.rouxinpai.demo.model.ProductionDTO
@@ -12,6 +14,7 @@ import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 /**
  * author : Saxxhw
@@ -24,8 +27,17 @@ interface Api {
     /**
      * 获取图片验证码
      */
-    @GET("code")
-    fun getCaptcha(): Observable<ApiResponse<JsonObject>>
+    @GET
+    fun getCaptcha(@Url url: String): Observable<ApiResponse<CaptchaDTO>>
+
+    /**
+     * 账号登录
+     */
+    @POST
+    fun accountLogin(
+        @Url url: String,
+        @Body requestBody: RequestBody
+    ): Observable<ApiResponse<AccessTokenDTO>>
 
     /**
      * 获取更新信息

@@ -10,9 +10,12 @@ import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
+import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.update.api.UpdateApi
+import com.rouxinpai.arms.update.model.ClientNameEnum
+import com.rouxinpai.arms.update.model.ClientTypeEnum
 import com.rouxinpai.arms.update.model.UpdateInfo
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -67,7 +70,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             })
         }
         val body = jsonObject.toRequestBody()
-        val disposable = retrofit.create<BarcodeApi>().getBarcodeInfo(body)
+        val disposable = retrofit.create<BarcodeApi>().getBarcodeInfo("${DomainUtils.getDomain()}ident/bill-info/query", body)
             .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { BarcodeInfoVO.convertFromDTO(it) }
@@ -90,8 +93,13 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         mHasUnconsumedBarcode = false
     }
 
-    override fun getUpdateInfo(clientType: String, clientName: String, channel: String) {
-        val disposable = retrofit.create<UpdateApi>().getUpdateInfo(clientType, clientName)
+    override fun getUpdateInfo(
+        clientType: ClientTypeEnum,
+        clientName: ClientNameEnum,
+        channel: String
+    ) {
+        val disposable = retrofit.create<UpdateApi>()
+            .getUpdateInfo("${DomainUtils.getDomain()}system/client/info", clientType.value, clientName.value)
             .compose(schedulersTransformer())
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<UpdateInfo>(view, false) {

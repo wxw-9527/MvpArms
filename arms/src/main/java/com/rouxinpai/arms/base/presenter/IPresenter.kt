@@ -3,6 +3,8 @@ package com.rouxinpai.arms.base.presenter
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import com.rouxinpai.arms.base.view.IView
+import com.rouxinpai.arms.update.model.ClientNameEnum
+import com.rouxinpai.arms.update.model.ClientTypeEnum
 import io.reactivex.rxjava3.disposables.Disposable
 
 /**
@@ -34,5 +36,5 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
      * @param clientName 项目名称
      * @param channel 渠道名
      */
-    fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
+    fun getUpdateInfo(clientType: ClientTypeEnum, clientName: ClientNameEnum, channel: String)
 }

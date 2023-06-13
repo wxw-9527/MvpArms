@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景色 -->
+    <item android:drawable="@color/white" />
+    <!-- 展示图片 -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:tint="@color/color_secondary"
+            android:src="@drawable/window_background__ic_logo" />
+    </item>
+</layer-list>
