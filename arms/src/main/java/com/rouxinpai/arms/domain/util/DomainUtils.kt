@@ -64,14 +64,28 @@ object DomainUtils {
 
     private var mAccessToken: String? = null
 
+    /**
+     * 保存AccessToken
+     */
     fun setAccessToken(accessToken: String) {
         mDefaultMMKV.encode(KEY_ACCESS_TOKEN, accessToken)
     }
 
+    /**
+     * 获取AccessToken
+     */
     fun getAccessToken(): String? {
         if (mAccessToken == null) {
             mAccessToken = mDefaultMMKV.decodeString(KEY_ACCESS_TOKEN)
         }
         return mAccessToken
+    }
+
+    /**
+     * 移除AccessToken
+     */
+    fun removeAccessToken() {
+        mAccessToken = null
+        mDefaultMMKV.remove(KEY_ACCESS_TOKEN)
     }
 }

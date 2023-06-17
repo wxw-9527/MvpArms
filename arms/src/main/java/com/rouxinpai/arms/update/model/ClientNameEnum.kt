@@ -21,5 +21,10 @@ enum class ClientNameEnum(val value: String) {
     /**
      * 质检
      */
-    QC("qc");
+    QC("qc"),
+
+    /**
+     * 设备管理
+     */
+    DM("dm");
 }
