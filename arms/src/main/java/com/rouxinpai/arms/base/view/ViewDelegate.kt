@@ -89,6 +89,10 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
         mKProgressHUD = null
     }
 
+    override fun isProgressShowing(): Boolean {
+        return mKProgressHUD?.isShowing ?: false
+    }
+
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
         val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
