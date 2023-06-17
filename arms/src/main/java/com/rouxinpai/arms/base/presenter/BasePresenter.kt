@@ -39,9 +39,6 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     private val mDisposable = CompositeDisposable()
 
-    // 有条码未被消费
-    private var mHasUnconsumedBarcode = false
-
     var view: V? = null
         private set
 
@@ -56,41 +53,31 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     }
 
     override fun getBarcodeInfo(barcode: String) {
-        if (mHasUnconsumedBarcode) {
-            Timber.d("------> 有条码未被消费，请勿重复扫描")
-            return
+        if (false == view?.isProgressShowing()) {
+            view?.showProgress()
+            val jsonObject = JsonObject().apply {
+                addProperty("barCode", barcode)
+                add("billTypes", JsonArray().apply {
+                    add("quantity")
+                    add("supplierCode")
+                })
+            }
+            val body = jsonObject.toRequestBody()
+            val disposable = retrofit.create<BarcodeApi>()
+                .getBarcodeInfo("${DomainUtils.getDomain()}ident/bill-info/query", body)
+                .compose(schedulersTransformer())
+                .compose(responseTransformer())
+                .map { BarcodeInfoVO.convertFromDTO(it) }
+                .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
+
+                    override fun onData(t: BarcodeInfoVO) {
+                        handleBarcodeInfo(t)
+                    }
+                })
+            addDisposable(disposable)
+        } else {
+            Timber.d("------> 当前有条码信息正在解析中...")
         }
-        view?.showProgress()
-        mHasUnconsumedBarcode = true
-        val jsonObject = JsonObject().apply {
-            addProperty("barCode", barcode)
-            add("billTypes", JsonArray().apply {
-                add("quantity")
-                add("supplierCode")
-            })
-        }
-        val body = jsonObject.toRequestBody()
-        val disposable = retrofit.create<BarcodeApi>().getBarcodeInfo("${DomainUtils.getDomain()}ident/bill-info/query", body)
-            .compose(schedulersTransformer())
-            .compose(responseTransformer())
-            .map { BarcodeInfoVO.convertFromDTO(it) }
-            .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
-
-                override fun onData(t: BarcodeInfoVO) {
-                    view?.dismissProgress()
-                    handleBarcodeInfo(t)
-                }
-
-                override fun onError(e: Throwable) {
-                    super.onError(e)
-                    consumeBarcode()
-                }
-            })
-        addDisposable(disposable)
-    }
-
-    override fun consumeBarcode() {
-        mHasUnconsumedBarcode = false
     }
 
     override fun getUpdateInfo(
@@ -99,7 +86,11 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         channel: String
     ) {
         val disposable = retrofit.create<UpdateApi>()
-            .getUpdateInfo("${DomainUtils.getDomain()}system/client/info", clientType.value, clientName.value)
+            .getUpdateInfo(
+                "${DomainUtils.getDomain()}system/client/info",
+                clientType.value,
+                clientName.value
+            )
             .compose(schedulersTransformer())
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<UpdateInfo>(view, false) {
@@ -125,10 +116,6 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
      * 处理条码上下文数据
      */
     open fun handleBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
-        // 如果条码不是物料条码，则消费条码
-        if (!barcodeInfo.isMaterialBarcode) {
-            consumeBarcode()
-        }
         // 显示条码信息
         view?.showBarcodeInfo(barcodeInfo)
     }

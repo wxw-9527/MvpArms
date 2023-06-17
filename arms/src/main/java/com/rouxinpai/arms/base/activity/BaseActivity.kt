@@ -111,6 +111,10 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         mViewDelegate.dismissProgress()
     }
 
+    override fun isProgressShowing(): Boolean {
+        return mViewDelegate.isProgressShowing()
+    }
+
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
         mViewDelegate.showLoadingPage(msgId, msg, descId, desc)
     }

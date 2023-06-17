@@ -117,6 +117,10 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         mViewDelegate.dismissProgress()
     }
 
+    override fun isProgressShowing(): Boolean {
+        return mViewDelegate.isProgressShowing()
+    }
+
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
         mViewDelegate.showLoadingPage(msgId, msg, descId, desc)
     }

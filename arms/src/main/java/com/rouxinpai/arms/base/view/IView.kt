@@ -77,6 +77,11 @@ interface IView: ILoadMore {
     fun dismissProgress()
 
     /**
+     * 判断加载进度弹窗是否正在展示
+     */
+    fun isProgressShowing(): Boolean
+
+    /**
      * 展示加载中状状态
      *
      * @param msgId 加载中消息文本资源 ID

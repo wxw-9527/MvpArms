@@ -109,6 +109,10 @@ abstract class BaseDialogFragment<VB: ViewBinding>: DialogFragment(), IView, OnR
         mViewDelegate.dismissProgress()
     }
 
+    override fun isProgressShowing(): Boolean {
+        return mViewDelegate.isProgressShowing()
+    }
+
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
         mViewDelegate.showLoadingPage(msgId, msg, descId, desc)
     }
