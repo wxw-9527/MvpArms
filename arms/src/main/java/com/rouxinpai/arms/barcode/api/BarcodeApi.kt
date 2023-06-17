@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.barcode.api
 
 import com.rouxinpai.arms.barcode.model.BarcodeInfoDTO
+import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.bean.ApiResponse
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.RequestBody
@@ -20,5 +21,8 @@ interface BarcodeApi {
      * 获取条码内容
      */
     @POST
-    fun getBarcodeInfo(@Url url: String, @Body body: RequestBody): Observable<ApiResponse<BarcodeInfoDTO>>
+    fun getBarcodeInfo(
+        @Url url: String = "${DomainUtils.getDomain()}ident/bill-info/query",
+        @Body body: RequestBody
+    ): Observable<ApiResponse<BarcodeInfoDTO>>
 }

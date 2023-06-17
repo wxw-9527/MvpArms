@@ -10,7 +10,6 @@ import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
-import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.update.api.UpdateApi
@@ -64,7 +63,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             }
             val body = jsonObject.toRequestBody()
             val disposable = retrofit.create<BarcodeApi>()
-                .getBarcodeInfo("${DomainUtils.getDomain()}ident/bill-info/query", body)
+                .getBarcodeInfo(body = body)
                 .compose(schedulersTransformer())
                 .compose(responseTransformer())
                 .map { BarcodeInfoVO.convertFromDTO(it) }
@@ -87,9 +86,8 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     ) {
         val disposable = retrofit.create<UpdateApi>()
             .getUpdateInfo(
-                "${DomainUtils.getDomain()}system/client/info",
-                clientType.value,
-                clientName.value
+                clientType = clientType.value,
+                clientName = clientName.value
             )
             .compose(schedulersTransformer())
             .compose(responseTransformer())
