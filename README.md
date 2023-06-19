@@ -2,7 +2,7 @@
 
 ## 集成方式
 
-一、启用视图绑定
+### 一、启用视图绑定
 
 将 viewBinding 元素添加到其 build.gradle 文件中
 
@@ -14,7 +14,7 @@ android {
 }
 ```
 
-二、引入Hilt
+### 二、引入Hilt
 
 1、将 hilt-android-gradle-plugin 插件添加到项目的根级 build.gradle 文件中
 
@@ -54,7 +54,7 @@ kapt {
 class Application : BaseApplication() {}
 ```
 
-三、引用本项目依赖
+### 三、引用本项目依赖
 
 1、在settings.gradle添加JitPack仓库地址
 
@@ -71,11 +71,11 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:1.9.7'
+    implementation 'com.github.wxw-9527:MvpArms:1.9.8'
 }
 ```
 
-四、使用版本更新功能
+### 四、使用版本更新功能
 
 在需要检测新版本的页面P层调用以下方法检查新版本
 
@@ -91,7 +91,7 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
 
 重写showUpdateInfo(updateInfo: UpdateInfo)方法可自定义版本更新处理逻辑
 
-五、条码解析服务
+### 五、条码解析服务
 
 1、必须：
 在需要解析条码的Activity、Fragment的父Activity类增加@BarcodeScanningReceiverEnabled标记
@@ -111,7 +111,7 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
 4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault()
 .cancelEventDelivery(event)可取消事件继续传递
 
-六、华为崩溃信息收集服务、分析服务集成
+### 六、华为崩溃信息收集服务、分析服务集成
 
 1、将“agconnect-services.json”文件拷贝到Android Studio项目的应用级根目录下
 
@@ -149,6 +149,10 @@ plugins {
     id 'com.huawei.agconnect' // 华为
 }
 
+// 启用华为分析服务
+agcp {
+    enableAPMS true
+}
 ```
 
 5、在AndroidManifest.xml文件中<application>标签内添加渠道信息
@@ -164,3 +168,47 @@ plugins {
 // 记录userId
 HuaweiUtil.setUserId(userId)
 ```
+
+### 七、邀请码获取域名配置
+
+1、继承BaseSplashActivity创建SplashActivity页
+
+```xml
+
+<activity android:name="包名.SplashActivity"
+    android:configChanges="keyboardHidden|screenSize|orientation" android:exported="true"
+    android:theme="@style/ThemeSplash">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+
+2、继承BaseDomainActivity创建DomainConfigActivity页
+
+```xml
+
+<activity android:name=".main.DomainConfigActivity"
+    android:configChanges="keyboardHidden|screenSize|orientation"
+    android:theme="@style/FullScreenTheme.White" />
+```
+
+3、实现IUrlModel接口，并提供使用邀请码获取相关域名的接口地址
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object UrlModule : IUrlModule {
+
+    @Provides
+    @Singleton
+    @GetDomainConfigurationUrl
+    override fun provideDomainConfigurationUrl(): String {
+        return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
+    }
+}
+```
+
+4、使用DomainUtils相关方法存取token及域名信息
