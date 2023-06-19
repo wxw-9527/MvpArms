@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- PictureSelector Permission Start -->
     <!-- 存储权限 -->
@@ -23,4 +24,7 @@
         </intent>
     </queries>
     <!-- PictureSelector Permission End -->
+
+    <!-- 华为分析 -->
+    <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
 </manifest>

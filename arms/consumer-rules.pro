@@ -5,16 +5,15 @@
 -keep class com.rouxinpai.arms.model.bean.** { <fields>; }
 -keep class com.rouxinpai.arms.update.model.** { <fields>; }
 -keep class com.rouxinpai.arms.barcode.model.** { <fields>; }
+-keep class com.rouxinpai.arms.domain.model.** { <fields>; }
 
-# 友盟
--keep class com.umeng.** { *; }
--keep class org.repackage.** { *; }
--keep class com.uc.** { *; }
--keep class com.efs.** { *; }
--keepclassmembers class *{
-     public<init>(org.json.JSONObject);
-}
--keepclassmembers enum *{
-      publicstatic**[] values();
-      publicstatic** valueOf(java.lang.String);
-}
+# AppGallery Connect
+-ignorewarnings
+-keep class com.huawei.agconnect.**{*;}
+-dontwarn com.huawei.agconnect.**
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+-keep interface com.huawei.hms.analytics.type.HAEventType{*;}
+-keep interface com.huawei.hms.analytics.type.HAParamType{*;}
+-keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
