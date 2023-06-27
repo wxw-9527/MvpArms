@@ -71,7 +71,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:1.9.8'
+    implementation 'com.github.wxw-9527:MvpArms:1.9.9'
 }
 ```
 
@@ -167,6 +167,32 @@ agcp {
 ```kotlin
 // 记录userId
 HuaweiUtil.setUserId(userId)
+```
+
+7、在您的项目中创建一个新的“service”并继承HmsMessageService类，用于接收透传消息、获取Token。此处以“DemoHmsMessageService”类为例。
+
+```kotlin
+public class DemoHmsMessageService : HmsMessageService {
+
+}
+```
+
+8、在“AndroidManifest.xml”文件的“application”标签中找到您上一步定义的“service”，在“intent-filter”标签中传入推送服务的“action”值，如下所示。
+
+```xml
+
+<manifest>
+    <application>
+        <service 
+            android:name=".DemoHmsMessageService" 
+            android:exported="false"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
 ```
 
 ### 七、邀请码获取域名配置

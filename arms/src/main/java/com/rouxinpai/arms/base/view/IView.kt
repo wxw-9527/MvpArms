@@ -19,12 +19,12 @@ interface IView: ILoadMore {
      * 显示 Toast 提示
      *
      * @param messageId 提示文本资源 ID
-     * @param duration  显示时间长度，默认为 LENGTH_SHORT
+     * @param duration  显示时间长度，默认为 LENGTH_LONG
      * @param type      提示样式，默认为 DEFAULT
      */
     fun showToast(
         @StringRes messageId: Int,
-        @Duration duration: Int = FancyToast.LENGTH_SHORT,
+        @Duration duration: Int = FancyToast.LENGTH_LONG,
         @LayoutType type: Int = FancyToast.DEFAULT
     )
 
@@ -32,12 +32,12 @@ interface IView: ILoadMore {
      * 显示 Toast 提示
      *
      * @param message   提示文本
-     * @param duration  显示时间长度，默认为 LENGTH_SHORT
+     * @param duration  显示时间长度，默认为 LENGTH_LONG
      * @param type      提示样式，默认为 DEFAULT
      */
     fun showToast(
         message: CharSequence?,
-        @Duration duration: Int = FancyToast.LENGTH_SHORT,
+        @Duration duration: Int = FancyToast.LENGTH_LONG,
         @LayoutType type: Int = FancyToast.DEFAULT
     )
 

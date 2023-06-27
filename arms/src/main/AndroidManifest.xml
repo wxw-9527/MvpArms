@@ -27,4 +27,12 @@
 
     <!-- 华为分析 -->
     <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
+
+    <application>
+
+        <!-- 华为推送-自动初始化 -->
+        <meta-data
+            android:name="push_kit_auto_init_enabled"
+            android:value="true" />
+    </application>
 </manifest>

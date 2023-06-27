@@ -3,6 +3,8 @@ package com.rouxinpai.arms.util
 import android.content.Context
 import com.huawei.agconnect.crash.AGConnectCrash
 import com.huawei.hms.analytics.HiAnalytics
+import com.huawei.hms.push.HmsMessaging
+import timber.log.Timber
 
 /**
  * author : Saxxhw
@@ -11,6 +13,9 @@ import com.huawei.hms.analytics.HiAnalytics
  * desc   :
  */
 object HuaweiUtil {
+
+    //
+    private const val TAG = "HuaweiUtil"
 
     /**
      * 初始化Analytics Kit
@@ -57,6 +62,38 @@ object HuaweiUtil {
     fun recordFatalException(throwable: Throwable?) {
         if (throwable != null) {
             AGConnectCrash.getInstance().recordFatalException(throwable)
+        }
+    }
+
+    /**
+     * 打开通知栏消息显示的开关。
+     */
+    fun turnOnPush(context: Context, failed: () -> Unit = {}, success: () -> Unit = {}) {
+        HmsMessaging.getInstance(context).turnOnPush().addOnCompleteListener { task ->
+            // 获取结果
+            if (task.isSuccessful) {
+                Timber.d(TAG, "turnOnPush successfully.")
+                success.invoke()
+            } else {
+                Timber.d(TAG, "turnOnPush failed.")
+                failed.invoke()
+            }
+        }
+    }
+
+    /**
+     * 关闭通知栏消息显示的开关。
+     */
+    fun turnOffPush(context: Context, failed: () -> Unit = {}, success: () -> Unit) {
+        HmsMessaging.getInstance(context).turnOffPush().addOnCompleteListener { task ->
+            // 获取结果
+            if (task.isSuccessful) {
+                Timber.d(TAG, "turnOffPush successfully.")
+                success.invoke()
+            } else {
+                Timber.d(TAG, "turnOffPush failed.")
+                failed.invoke()
+            }
         }
     }
 }
