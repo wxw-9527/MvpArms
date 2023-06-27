@@ -14,25 +14,21 @@
     <!-- 开启一个前台服务用于增强保活部分机型 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <!-- Android 11 使用相机需要如下代码 -->
     <queries package="${applicationId}">
+        <!-- PictureSelector Permission Start -->
+        <!-- Android 11 使用相机需要如下代码 -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
+        <!-- 华为推送 -->
+        <intent>
+            <action android:name="com.huawei.hms.core.aidlservice" />
+        </intent>
     </queries>
-    <!-- PictureSelector Permission End -->
 
     <!-- 华为分析 -->
     <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
-
-    <application>
-
-        <!-- 华为推送-自动初始化 -->
-        <meta-data
-            android:name="push_kit_auto_init_enabled"
-            android:value="true" />
-    </application>
 </manifest>
