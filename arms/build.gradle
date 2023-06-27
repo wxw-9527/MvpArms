@@ -102,4 +102,5 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-apms:1.6.2.300' // 性能管理SDK
     implementation 'com.huawei.hms:hianalytics:6.10.0.300' // 华为分析SDK
     api 'com.huawei.hms:push:6.11.0.300' // 华为推送
+    implementation 'com.huawei.hms:hmscoreinstaller:6.8.0.300'
 }

@@ -2,8 +2,12 @@ package com.rouxinpai.arms.util
 
 import android.content.Context
 import com.huawei.agconnect.crash.AGConnectCrash
+import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.analytics.HiAnalytics
 import com.huawei.hms.push.HmsMessaging
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 
 /**
@@ -63,6 +67,30 @@ object HuaweiUtil {
         if (throwable != null) {
             AGConnectCrash.getInstance().recordFatalException(throwable)
         }
+    }
+
+    /**
+     * 设置是否自动初始化。
+     * 如果设置为true，SDK会自动生成AAID，自动申请Token，申请的Token通过onNewToken()回调方法返回。
+     */
+    private fun setAutoInitEnabled(context: Context, isEnable: Boolean) {
+        HmsMessaging.getInstance(context).isAutoInitEnabled = isEnable
+    }
+
+    /**
+     * 获取Token。
+     */
+    private fun getToken(context: Context, appId: String, tokenScope: String): Single<String> {
+        return Single.create<String> { emitter ->
+            val token = HmsInstanceId.getInstance(context).getToken(appId, tokenScope)
+            if (token != null) {
+                emitter.onSuccess(token)
+            } else {
+                emitter.onError(Throwable("获取Token失败"))
+            }
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     /**
