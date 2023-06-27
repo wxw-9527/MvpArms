@@ -26,6 +26,7 @@ abstract class BaseApplication : Application(), IApplication {
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
+        HuaweiUtil.initAGConnect(applicationContext)
         HuaweiUtil.initHwCrashHandler(debug)
         initTimber()
         initMmkv()
