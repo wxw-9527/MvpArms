@@ -101,5 +101,5 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-crash-native:1.9.0.300' // 崩溃NDK
     implementation 'com.huawei.agconnect:agconnect-apms:1.6.2.300' // 性能管理SDK
     implementation 'com.huawei.hms:hianalytics:6.10.0.300' // 华为分析SDK
-    implementation 'com.huawei.hms:push:6.11.0.300' // 华为推送
+    api 'com.huawei.hms:push:6.11.0.300' // 华为推送
 }
