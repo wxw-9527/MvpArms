@@ -73,14 +73,14 @@ object HuaweiUtil {
      * 设置是否自动初始化。
      * 如果设置为true，SDK会自动生成AAID，自动申请Token，申请的Token通过onNewToken()回调方法返回。
      */
-    private fun setAutoInitEnabled(context: Context, isEnable: Boolean) {
+    fun setAutoInitEnabled(context: Context, isEnable: Boolean) {
         HmsMessaging.getInstance(context).isAutoInitEnabled = isEnable
     }
 
     /**
      * 获取Token。
      */
-    private fun getToken(context: Context, appId: String, tokenScope: String): Single<String> {
+    fun getToken(context: Context, appId: String, tokenScope: String): Single<String> {
         return Single.create<String> { emitter ->
             val token = HmsInstanceId.getInstance(context).getToken(appId, tokenScope)
             if (token != null) {
