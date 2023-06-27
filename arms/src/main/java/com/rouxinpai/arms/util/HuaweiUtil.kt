@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.util
 
 import android.content.Context
+import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.crash.AGConnectCrash
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.analytics.HiAnalytics
@@ -20,6 +21,13 @@ object HuaweiUtil {
 
     //
     private const val TAG = "HuaweiUtil"
+
+    /**
+     * 初始化AGConnectInstance
+     */
+    internal fun initAGConnect(applicationContext: Context) {
+        AGConnectInstance.initialize(applicationContext)
+    }
 
     /**
      * 初始化Analytics Kit
@@ -80,9 +88,9 @@ object HuaweiUtil {
     /**
      * 获取Token。
      */
-    fun getToken(context: Context, appId: String, tokenScope: String): Single<String> {
+    fun getToken(context: Context, appId: String): Single<String> {
         return Single.create<String> { emitter ->
-            val token = HmsInstanceId.getInstance(context).getToken(appId, tokenScope)
+            val token = HmsInstanceId.getInstance(context).getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE)
             if (token != null) {
                 emitter.onSuccess(token)
             } else {
