@@ -212,3 +212,167 @@ object UrlModule : IUrlModule {
 ```
 
 4、使用DomainUtils相关方法存取token及域名信息
+
+### 八、集成个推
+
+#### 1、配置 Maven 库地址
+
+在项目根目录settings.gradle文件的dependencyResolutionManagement.repositories节点下，添加个推maven库地址
+
+```groovy
+dependencyResolutionManagement {
+    repositories {
+        maven { url "https://mvn.getui.com/nexus/content/repositories/releases/" } // 个推
+    }
+}
+```
+
+#### 2、配置 SDK 依赖及应用参数
+
+```groovy
+android {
+    defaultConfig {
+        manifestPlaceholders = [
+                //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID 
+                //后续所有产品的 APPID 均统一配置为 GETUI_APPID 占位符
+                GETUI_APPID: "your appid",
+        ]
+    }
+}
+dependencies {
+    implementation 'com.getui:gtsdk:3.2.18.0'  //个推SDK
+    implementation 'com.getui:gtc:3.2.6.0'  //个推核心组件
+}  
+```
+
+#### 3、设置通知图标
+
+为了修改默认的通知图标以及通知栏顶部提示小图标，请务必在资源目录的
+res/drawable-ldpi/、res/drawable-mdpi/、res/drawable-hdpi/、res/drawable-xhdpi/、res/drawable-xxhdpi/
+等各分辨率目录下，放置相应尺寸的文件名为 push.png 和 push_small.png 的图片（该图片内容为您应用自定义的图标文件）
+建议的 push.png 图片尺寸和 push_small.png 图片尺寸分别如下：
+
+//push.png 图片尺寸
+ldpi:    48*48
+mdpi:    64*64
+hdpi:    96*96
+xhdpi:   128*128
+xxhdpi:  192*192
+
+//push_small.png 图片尺寸
+ldpi:    18*18
+mdpi:    24*24
+hdpi:    36*36
+xhdpi:   48*48
+xxhdpi:  72*72
+xxxhdpi:  96*96
+
+#### 4、资源精简配置
+
+如果您的工程启用了资源精简，即如果在 app/build.gradle 的 android.buildTypes.release 下配置了
+shrinkResources true，为了避免个推 SDK 所需资源被错误精简导致功能异常，需要在项目资源目录 res/raw 中添加
+keep.xml 文件，并在 keep.xml 文件中使用 tools:keep 定义哪些资源需要被保留（资源之间用“,”隔开），如
+tools:keep="@drawable/push,@drawable/push_small,...,"，此处 @drawable/push、@drawable/push_small
+通知图标的名称应为您当前放着于应用中的图标名称，如下：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="......,
+    @drawable/push,
+    @drawable/push_small" />
+```
+
+#### 5、自定义接收推送服务事件
+
+在项目源码中添加一个继承自 com.igexin.sdk.GTIntentService 的类，用于接收 CID、透传消息以及其他推送服务事件。
+
+```kotlin
+/**
+ * author : Saxxhw
+ * email  : xingwangwang@cloudinnov.com
+ * time   : 2023/6/28 15:34
+ * desc   :
+ */
+class IntentService : GTIntentService() {
+
+    /**
+     * 个推进程启动成功回调该函数。
+     */
+    override fun onReceiveServicePid(context: Context, pid: Int) {
+        super.onReceiveServicePid(context, pid)
+    }
+
+    /**
+     * 个推初始化成功回调该函数并返回 cid。
+     */
+    override fun onReceiveClientId(context: Context, clientid: String) {
+        super.onReceiveClientId(context, clientid)
+    }
+
+    /**
+     * 此方法用于接收和处理透传消息。
+     * 透传消息个推只传递数据，不做任何处理，客户端接收到透传消息后需要自己去做后续动作处理，如通知栏展示、弹框等。
+     * 如果开发者在客户端将透传消息创建了通知栏展示，建议将展示和点击回执上报给个推。
+     */
+    override fun onReceiveMessageData(context: Context, pushMessage: GTTransmitMessage) {
+        super.onReceiveMessageData(context, pushMessage)
+    }
+
+    /**
+     * cid 在线状态变化时回调该函数
+     */
+    override fun onReceiveOnlineState(context: Context, online: Boolean) {
+        super.onReceiveOnlineState(context, online)
+    }
+
+    /**
+     * 调用设置标签、绑定别名、解绑别名、自定义回执操作的结果返回
+     * action结果值说明：
+     *  10009：设置标签的结果回执
+     *  10010：绑定别名的结果回执
+     *  10011：解绑别名的结果回执
+     *  10012: 查询标签的结果回执
+     *  10006：自定义回执的结果回执
+     */
+    override fun onReceiveCommandResult(context: Context, cmdMessage: GTCmdMessage) {
+        super.onReceiveCommandResult(context, cmdMessage)
+    }
+
+    /**
+     * 通知到达，只有个推通道下发的通知会回调此方法
+     */
+    override fun onNotificationMessageArrived(
+        context: Context,
+        notificationMessage: GTNotificationMessage
+    ) {
+        super.onNotificationMessageArrived(context, notificationMessage)
+    }
+
+    /**
+     *  通知点击，只有个推通道下发的通知会回调此方法
+     */
+    override fun onNotificationMessageClicked(
+        context: Context,
+        notificationMessage: GTNotificationMessage
+    ) {
+        super.onNotificationMessageClicked(context, notificationMessage)
+    }
+
+    /**
+     * 检测用户设备是否开启通知权限
+     */
+    override fun areNotificationsEnabled(context: Context, enable: Boolean) {
+        super.areNotificationsEnabled(context, enable)
+        if (!enable) {
+            PushManager.getInstance().openNotification(context)
+        }
+    }
+}
+```
+
+在 AndroidManifest.xml 中配置上述 IntentService 类，如下：
+
+```xml
+
+<service android:name="包名.IntentService" />
+```
