@@ -23,10 +23,6 @@
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
-        <!-- 华为推送 -->
-        <intent>
-            <action android:name="com.huawei.hms.core.aidlservice" />
-        </intent>
     </queries>
 
     <!-- 华为分析 -->

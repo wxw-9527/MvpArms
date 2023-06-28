@@ -3,13 +3,7 @@ package com.rouxinpai.arms.util
 import android.content.Context
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.crash.AGConnectCrash
-import com.huawei.hmf.tasks.Task
-import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.analytics.HiAnalytics
-import com.huawei.hms.push.HmsMessaging
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * author : Saxxhw
@@ -71,49 +65,6 @@ object HuaweiUtil {
     fun recordFatalException(throwable: Throwable?) {
         if (throwable != null) {
             AGConnectCrash.getInstance().recordFatalException(throwable)
-        }
-    }
-
-    /**
-     * 设置是否自动初始化。
-     * 如果设置为true，SDK会自动生成AAID，自动申请Token，申请的Token通过onNewToken()回调方法返回。
-     */
-    fun setAutoInitEnabled(context: Context, isEnable: Boolean) {
-        HmsMessaging.getInstance(context).isAutoInitEnabled = isEnable
-    }
-
-    /**
-     * 获取Token。
-     */
-    fun getToken(context: Context, appId: String): Single<String> {
-        return Single.create<String> { emitter ->
-            val token = HmsInstanceId.getInstance(context)
-                .getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE)
-            if (token != null) {
-                emitter.onSuccess(token)
-            } else {
-                emitter.onError(Throwable("获取Token失败"))
-            }
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    /**
-     * 打开通知栏消息显示的开关。
-     */
-    fun turnOnPush(context: Context, onComplete: (Task<Void>) -> Unit) {
-        HmsMessaging.getInstance(context).turnOnPush().addOnCompleteListener { task ->
-            onComplete.invoke(task)
-        }
-    }
-
-    /**
-     * 关闭通知栏消息显示的开关。
-     */
-    fun turnOffPush(context: Context, onComplete: (Task<Void>) -> Unit) {
-        HmsMessaging.getInstance(context).turnOffPush().addOnCompleteListener { task ->
-            onComplete.invoke(task)
         }
     }
 }
