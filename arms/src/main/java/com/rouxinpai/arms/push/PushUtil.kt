@@ -1,6 +1,8 @@
 package com.rouxinpai.arms.push
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.igexin.sdk.PushManager
 import timber.log.Timber
 
@@ -69,5 +71,56 @@ object PushUtil {
      */
     fun unBindAlias(context: Context, alias: String, isSelf: Boolean = false) {
         PushManager.getInstance().unBindAlias(context, alias, isSelf)
+    }
+
+    /**
+     *
+     * 生成打开特定页面地址
+     * @param context
+     * @param cls 要跳转的页面
+     * @param packageName 目标应用的包名
+     * @param urlString Scheme协议（demoscheme://com.rouxinpai.demo/main?）开发者可以自定义
+     * @param map intent 中添加自定义键值对
+     */
+    fun genIntentUri(
+        context: Context,
+        cls: Class<*>,
+        packageName: String,
+        urlString: String,
+        map: Map<String, Any>
+    ): String {
+        val intent = Intent(context, cls)
+        // 如果设置了 package，则表示目标应用必须是 package 所对应的应用
+        intent.setPackage(packageName)
+        // Scheme协议（gtpushscheme://com.getui.push/detail?）开发者可以自定义
+        intent.data = Uri.parse(urlString)
+        // gttask 不用赋值，添加 gttask 字段后，个推给客户端的 intent 里会自动拼接上 taskid 和 actionid
+        intent.putExtra("gttask", "")
+        // intent 中添加自定义键值对
+        map.forEach {
+            val key = it.key
+            val value = it.value
+            if (value is String) {
+                intent.putExtra(key, value)
+            }
+            if (value is Int) {
+                intent.putExtra(key, value)
+            }
+            if (value is Float) {
+                intent.putExtra(key, value)
+            }
+            if (value is Double) {
+                intent.putExtra(key, value)
+            }
+            if (value is Boolean) {
+                intent.putExtra(key, value)
+            }
+            if (value is Byte) {
+                intent.putExtra(key, value)
+            }
+        }
+        // 应用必须带上该Flag，如果不添加该选项有可能会显示重复的消息，强烈推荐使用Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        return intent.toUri(Intent.URI_INTENT_SCHEME)
     }
 }

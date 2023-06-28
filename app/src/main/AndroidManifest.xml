@@ -45,7 +45,19 @@
 
         <activity
             android:name=".main.main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="com.rouxinpai.demo"
+                    android:path="/main"
+                    android:scheme="demoscheme" />
+            </intent-filter>
+        </activity>
 
         <!-- 个推 -->
         <service android:name=".IntentService" />

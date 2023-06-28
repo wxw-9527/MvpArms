@@ -11,7 +11,7 @@ import com.rouxinpai.demo.main.login.AccountLoginActivity
  * time   : 2023/6/13 15:22
  * desc   :
  */
-class DomainConfigActivity: BaseDomainConfigActivity() {
+class DomainConfigActivity : BaseDomainConfigActivity() {
 
     companion object {
 

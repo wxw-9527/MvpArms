@@ -71,7 +71,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.0.5'
+    implementation 'com.github.wxw-9527:MvpArms:2.0.6'
 }
 ```
 
@@ -227,7 +227,7 @@ dependencyResolutionManagement {
 }
 ```
 
-#### 2、配置 SDK 依赖及应用参数
+#### 2、配置应用参数
 
 ```groovy
 android {
@@ -239,19 +239,16 @@ android {
         ]
     }
 }
-dependencies {
-    implementation 'com.getui:gtsdk:3.2.18.0'  //个推SDK
-    implementation 'com.getui:gtc:3.2.6.0'  //个推核心组件
-}  
 ```
 
-#### 3、设置通知图标
+#### 3、设置通知图标（已配置默认图标，不定制可跳过）
 
 为了修改默认的通知图标以及通知栏顶部提示小图标，请务必在资源目录的
 res/drawable-ldpi/、res/drawable-mdpi/、res/drawable-hdpi/、res/drawable-xhdpi/、res/drawable-xxhdpi/
 等各分辨率目录下，放置相应尺寸的文件名为 push.png 和 push_small.png 的图片（该图片内容为您应用自定义的图标文件）
 建议的 push.png 图片尺寸和 push_small.png 图片尺寸分别如下：
 
+```
 //push.png 图片尺寸
 ldpi:    48*48
 mdpi:    64*64
@@ -266,6 +263,7 @@ hdpi:    36*36
 xhdpi:   48*48
 xxhdpi:  72*72
 xxxhdpi:  96*96
+```
 
 #### 4、资源精简配置
 
