@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' } // JitPack
         maven { url 'https://developer.huawei.com/repo/' } // 华为
+        maven { url "https://mvn.getui.com/nexus/content/repositories/releases/" } // 个推
     }
 }
 rootProject.name = "MvpArms"

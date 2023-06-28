@@ -26,7 +26,7 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
      * 闪屏页等待时长
      */
     val splashWaitDuration: Long
-        get() = 100L
+        get() = 1000L
 
     /**
      * 结束指定类名的Activity
