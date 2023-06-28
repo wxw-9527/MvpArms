@@ -23,6 +23,12 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
     val debug: Boolean
 
     /**
+     * 闪屏页等待时长
+     */
+    val splashWaitDuration: Long
+        get() = 100L
+
+    /**
      * 结束指定类名的Activity
      */
     fun finishActivity(vararg cls: Class<*>)

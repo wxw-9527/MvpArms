@@ -3,13 +3,13 @@ package com.rouxinpai.arms.util
 import android.content.Context
 import com.huawei.agconnect.AGConnectInstance
 import com.huawei.agconnect.crash.AGConnectCrash
+import com.huawei.hmf.tasks.Task
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.analytics.HiAnalytics
 import com.huawei.hms.push.HmsMessaging
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 
 /**
  * author : Saxxhw
@@ -18,9 +18,6 @@ import timber.log.Timber
  * desc   :
  */
 object HuaweiUtil {
-
-    //
-    private const val TAG = "HuaweiUtil"
 
     /**
      * 初始化AGConnectInstance
@@ -90,7 +87,8 @@ object HuaweiUtil {
      */
     fun getToken(context: Context, appId: String): Single<String> {
         return Single.create<String> { emitter ->
-            val token = HmsInstanceId.getInstance(context).getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE)
+            val token = HmsInstanceId.getInstance(context)
+                .getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE)
             if (token != null) {
                 emitter.onSuccess(token)
             } else {
@@ -104,32 +102,18 @@ object HuaweiUtil {
     /**
      * 打开通知栏消息显示的开关。
      */
-    fun turnOnPush(context: Context, failed: () -> Unit = {}, success: () -> Unit = {}) {
+    fun turnOnPush(context: Context, onComplete: (Task<Void>) -> Unit) {
         HmsMessaging.getInstance(context).turnOnPush().addOnCompleteListener { task ->
-            // 获取结果
-            if (task.isSuccessful) {
-                Timber.d(TAG, "turnOnPush successfully.")
-                success.invoke()
-            } else {
-                Timber.d(TAG, "turnOnPush failed.")
-                failed.invoke()
-            }
+            onComplete.invoke(task)
         }
     }
 
     /**
      * 关闭通知栏消息显示的开关。
      */
-    fun turnOffPush(context: Context, failed: () -> Unit = {}, success: () -> Unit) {
+    fun turnOffPush(context: Context, onComplete: (Task<Void>) -> Unit) {
         HmsMessaging.getInstance(context).turnOffPush().addOnCompleteListener { task ->
-            // 获取结果
-            if (task.isSuccessful) {
-                Timber.d(TAG, "turnOffPush successfully.")
-                success.invoke()
-            } else {
-                Timber.d(TAG, "turnOffPush failed.")
-                failed.invoke()
-            }
+            onComplete.invoke(task)
         }
     }
 }
