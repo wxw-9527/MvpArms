@@ -23,22 +23,8 @@
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
-        <!-- 个推 - 适配Android11及以上 -->
-        <intent>
-            <action android:name="com.getui.sdk.action" />
-        </intent>
     </queries>
 
     <!-- 华为分析 -->
     <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
-
-    <application>
-
-        <!-- 请根据您当前自定义的 PushService 名称路径进行配置-->
-        <service
-            android:name=".push.PushService"
-            android:exported="false"
-            android:label="PushService"
-            android:process=":pushservice" />
-    </application>
 </manifest>
