@@ -37,6 +37,7 @@ object DomainUtils {
      * 保存域名配置信息
      */
     fun setDomainConfiguration(domainConfiguration: DomainConfigurationVO) {
+        mDomainConfiguration = domainConfiguration
         mDefaultMMKV.encode(KEY_DOMAIN_CONFIGURATION, domainConfiguration)
     }
 
@@ -68,6 +69,7 @@ object DomainUtils {
      * 保存AccessToken
      */
     fun setAccessToken(accessToken: String) {
+        mAccessToken = accessToken
         mDefaultMMKV.encode(KEY_ACCESS_TOKEN, accessToken)
     }
 
