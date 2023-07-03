@@ -50,6 +50,13 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         onInit(savedInstanceState)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            onParseData(intent)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         //

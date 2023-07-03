@@ -3,7 +3,6 @@ package com.rouxinpai.arms.base.application
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import com.rouxinpai.arms.push.PushUtil
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
@@ -33,8 +32,6 @@ abstract class BaseApplication : Application(), IApplication {
         // 初始化华为相关
         HuaweiUtil.initAGConnect(applicationContext)
         HuaweiUtil.initHwCrashHandler(debug)
-        // 初始化个推推送
-        PushUtil.init(this, debug)
         // 初始化MMKV
         initMmkv()
         // 初始化版本更新

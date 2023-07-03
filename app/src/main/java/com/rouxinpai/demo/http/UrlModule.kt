@@ -22,6 +22,6 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
+        return "http://test.zk-work.com/stage-api/system/customer/validCode/"
     }
 }

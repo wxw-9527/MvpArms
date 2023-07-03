@@ -18,15 +18,9 @@ android {
         applicationId "com.rouxinpai.demo"
         minSdk 21
         targetSdk 33
-        versionCode 206
-        versionName "2.0.6"
+        versionCode 207
+        versionName "2.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        // 个推
-        manifestPlaceholders = [
-                //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID
-                //后续所有产品的 APPID 均统一配置为 GETUI_APPID 占位符
-                GETUI_APPID: "96RmMohy2R8JNC2tvBoau3",
-        ]
     }
     buildTypes {
         release {

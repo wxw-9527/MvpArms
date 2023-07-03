@@ -14,6 +14,9 @@
     <!-- 开启一个前台服务用于增强保活部分机型 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- 发送通知权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <queries package="${applicationId}">
         <!-- PictureSelector Permission Start -->
         <!-- Android 11 使用相机需要如下代码 -->
@@ -23,22 +26,8 @@
         <intent>
             <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
         </intent>
-        <!-- 个推 - 适配Android11及以上 -->
-        <intent>
-            <action android:name="com.getui.sdk.action" />
-        </intent>
     </queries>
 
     <!-- 华为分析 -->
     <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
-
-    <application>
-
-        <!-- 请根据您当前自定义的 PushService 名称路径进行配置-->
-        <service
-            android:name=".push.PushService"
-            android:exported="false"
-            android:label="PushService"
-            android:process=":pushservice" />
-    </application>
 </manifest>
