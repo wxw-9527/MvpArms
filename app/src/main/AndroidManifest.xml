@@ -17,6 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- WebSocket服务 -->
+        <service
+            android:name="com.rouxinpai.arms.ws.WebSocketService"
+            android:directBootAware="true"
+            android:exported="false" />
+
         <activity
             android:name=".main.SplashActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
@@ -46,16 +52,18 @@
         <activity
             android:name=".main.main.MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="com.rouxinpai.demo"
-                    android:path="/main"
-                    android:scheme="demoscheme" />
+                    android:path="/notification"
+                    android:scheme="wsscheme" />
             </intent-filter>
         </activity>
     </application>

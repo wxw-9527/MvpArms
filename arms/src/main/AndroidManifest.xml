@@ -14,6 +14,9 @@
     <!-- 开启一个前台服务用于增强保活部分机型 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- 发送通知权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <queries package="${applicationId}">
         <!-- PictureSelector Permission Start -->
         <!-- Android 11 使用相机需要如下代码 -->

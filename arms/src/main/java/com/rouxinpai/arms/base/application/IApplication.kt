@@ -24,9 +24,24 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
 
     /**
      * 闪屏页等待时长
+     * 默认为1秒
      */
     val splashWaitDuration: Long
         get() = 1000L
+
+    /**
+     * 请求超时时长
+     * 默认为10秒
+     */
+    val requestTimeout: Long
+        get() = 10L
+
+    /**
+     * 心跳间隔
+     * 默认为10秒
+     */
+    val heartbeatInterval: Long
+        get() = 10L
 
     /**
      * 结束指定类名的Activity
