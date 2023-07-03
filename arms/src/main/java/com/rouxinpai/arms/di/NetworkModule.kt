@@ -1,9 +1,6 @@
 package com.rouxinpai.arms.di
 
 import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.rouxinpai.arms.base.application.BaseApplication
@@ -41,27 +38,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideChuckerInterceptor(@ApplicationContext context: Context): ChuckerInterceptor {
-        // Create the Collector
-        val chuckerCollector = ChuckerCollector(
-            context = context,
-            // Toggles visibility of the notification
-            showNotification = false,
-            // Allows to customize the retention period of collected data
-            retentionPeriod = RetentionManager.Period.ONE_HOUR
-        )
-        return ChuckerInterceptor
-            .Builder(context)
-            .collector(chuckerCollector)
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideOkHttpClient(
         @ApplicationContext context: Context,
         authInterceptor: AuthInterceptor,
-        chuckerInterceptor: ChuckerInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         val application = context as BaseApplication
@@ -72,9 +51,8 @@ object NetworkModule {
             .connectTimeout(requestTimeout, TimeUnit.SECONDS)
             .readTimeout(requestTimeout, TimeUnit.SECONDS)
             .writeTimeout(requestTimeout, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor(authInterceptor)
-            .addInterceptor(chuckerInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 
