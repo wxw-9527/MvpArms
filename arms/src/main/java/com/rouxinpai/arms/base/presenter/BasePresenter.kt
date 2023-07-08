@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
+import com.rouxinpai.arms.di.qualifier.GetUpgradeUrl
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
@@ -33,6 +34,10 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     @Inject
     lateinit var retrofit: Retrofit
+
+    @Inject
+    @GetUpgradeUrl
+    lateinit var updateUrl: String
 
     private var mLifecycle: Lifecycle? = null
 
@@ -86,6 +91,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     ) {
         val disposable = retrofit.create<UpdateApi>()
             .getUpdateInfo(
+                url = updateUrl,
                 clientType = clientType.value,
                 clientName = clientName.value
             )

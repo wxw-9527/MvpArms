@@ -13,4 +13,9 @@ interface IUrlModule {
      * 获取域名配置地址
      */
     fun provideDomainConfigurationUrl(): String
+
+    /**
+     *
+     */
+    fun provideUpgradeUrl(): String
 }
