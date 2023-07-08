@@ -2,6 +2,7 @@ package com.rouxinpai.demo.http
 
 import com.rouxinpai.arms.di.IUrlModule
 import com.rouxinpai.arms.di.qualifier.GetDomainConfigurationUrl
+import com.rouxinpai.arms.di.qualifier.GetUpgradeUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +24,12 @@ object UrlModule : IUrlModule {
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
         return "http://test.zk-work.com/stage-api/system/customer/validCode/"
+    }
+
+    @Provides
+    @Singleton
+    @GetUpgradeUrl
+    override fun provideUpgradeUrl(): String {
+        return "http://dev.zk-work.com/stage-api/system/client/info"
     }
 }
