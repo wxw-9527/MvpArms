@@ -1,9 +1,9 @@
-package com.rouxinpai.demo.main
+package com.rouxinpai.demo.feature.domain
 
 import android.content.Context
 import android.content.Intent
 import com.rouxinpai.arms.domain.BaseDomainConfigActivity
-import com.rouxinpai.demo.main.login.AccountLoginActivity
+import com.rouxinpai.demo.feature.login.AccountLoginActivity
 
 /**
  * author : Saxxhw

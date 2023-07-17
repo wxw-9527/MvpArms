@@ -1,5 +1,7 @@
 package com.rouxinpai.arms.base.fragment
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,7 @@ import org.greenrobot.eventbus.EventBus
  * time   : 2023/1/11 10:28
  * desc   :
  */
-abstract class BaseDialogFragment<VB: ViewBinding>: DialogFragment(), IView, OnRetryClickListener {
+abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment(), IView, OnRetryClickListener {
 
     private var mBinding: VB? = null
     val binding: VB get() = mBinding!!
@@ -48,7 +50,11 @@ abstract class BaseDialogFragment<VB: ViewBinding>: DialogFragment(), IView, OnR
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // 使用指定的布局文件创建视图绑定对象
         mBinding = onCreateViewBinding(inflater, container)
+        // 设置对话框背景透明
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // 返回根视图
         return mBinding?.root
     }
 
@@ -58,6 +64,18 @@ abstract class BaseDialogFragment<VB: ViewBinding>: DialogFragment(), IView, OnR
         mViewDelegate = ViewDelegate(requireContext(), stateLayout, this)
         // 初始化
         onInit(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            // 获取屏幕宽度
+            val screenWidth = resources.displayMetrics.widthPixels
+            // 计算目标宽度
+            val targetWidth = (screenWidth * 0.85f).toInt()
+            // 设置对话框的宽度
+            setLayout(targetWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
     }
 
     override fun onResume() {

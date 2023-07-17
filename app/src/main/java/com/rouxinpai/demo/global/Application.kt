@@ -1,4 +1,4 @@
-package com.rouxinpai.demo
+package com.rouxinpai.demo.global
 
 import com.rouxinpai.arms.base.application.BaseApplication
 import dagger.hilt.android.HiltAndroidApp

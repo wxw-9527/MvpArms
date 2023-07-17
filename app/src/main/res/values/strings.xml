@@ -13,4 +13,11 @@
     <string name="login__remember_me">记住我</string>
     <string name="login__sign_in_now">立即登录</string>
     <string name="login__login_successful">登录成功！</string>
+
+    <!-- 切换域名 -->
+    <string name="switch_domain">切换域名</string>
+    <string name="switch_domain__dialog_message">是否切换域名？</string>
+
+    <!-- 对话框 -->
+    <string name="dialog">对话框</string>
 </resources>

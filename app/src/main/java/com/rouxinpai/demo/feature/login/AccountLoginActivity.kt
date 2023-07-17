@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.main.login
+package com.rouxinpai.demo.feature.login
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,7 @@ import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.extension.shake
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.AccountLoginActivityBinding
-import com.rouxinpai.demo.main.main.MainActivity
+import com.rouxinpai.demo.feature.main.MainActivity
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 

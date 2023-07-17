@@ -1,11 +1,12 @@
-package com.rouxinpai.demo.main
+package com.rouxinpai.demo.feature.splash
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.rouxinpai.arms.domain.BaseSplashActivity
-import com.rouxinpai.demo.main.login.AccountLoginActivity
-import com.rouxinpai.demo.main.main.MainActivity
+import com.rouxinpai.demo.feature.domain.DomainConfigActivity
+import com.rouxinpai.demo.feature.login.AccountLoginActivity
+import com.rouxinpai.demo.feature.main.MainActivity
 
 /**
  * author : Saxxhw

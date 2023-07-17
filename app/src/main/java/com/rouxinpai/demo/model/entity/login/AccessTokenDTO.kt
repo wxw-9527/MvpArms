@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.model
+package com.rouxinpai.demo.model.entity.login
 
 import com.google.gson.annotations.SerializedName
 

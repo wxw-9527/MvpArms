@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.main.login
+package com.rouxinpai.demo.feature.login
 
 import android.graphics.Bitmap
 import com.rouxinpai.arms.base.presenter.IPresenter
