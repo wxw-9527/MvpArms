@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.main.login
+package com.rouxinpai.demo.feature.login
 
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -11,9 +11,9 @@ import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
-import com.rouxinpai.demo.http.Api
-import com.rouxinpai.demo.model.AccessTokenDTO
-import com.rouxinpai.demo.model.CaptchaDTO
+import com.rouxinpai.demo.model.remote.Api
+import com.rouxinpai.demo.model.entity.login.AccessTokenDTO
+import com.rouxinpai.demo.model.entity.login.CaptchaDTO
 import retrofit2.create
 import javax.inject.Inject
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingVertical="16dp"
+    tools:ignore="HardcodedText">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_progress_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载进度条（3秒后自动关闭）" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_simple_dialog_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="展示SimpleDialogFragment"
+        android:textAllCaps="false" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_simple_bottom_dialog_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="展示SimpleBottomDialogFragment"
+        android:textAllCaps="false" />
+</LinearLayout>

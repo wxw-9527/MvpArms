@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Application"
+        android:name=".global.Application"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,7 +24,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".main.SplashActivity"
+            android:name=".feature.splash.SplashActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="true"
             android:theme="@style/ThemeSplash">
@@ -40,17 +40,17 @@
         </activity>
 
         <activity
-            android:name=".main.DomainConfigActivity"
+            android:name=".feature.domain.DomainConfigActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:theme="@style/FullScreenTheme.White" />
 
         <activity
-            android:name=".main.login.AccountLoginActivity"
+            android:name=".feature.login.AccountLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".main.main.MainActivity"
+            android:name=".feature.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -66,5 +66,15 @@
                     android:scheme="wsscheme" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".feature.demo.switchdomain.SwitchDomainActivity"
+            android:label="@string/switch_domain"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.dialog.DialogActivity"
+            android:label="@string/dialog"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

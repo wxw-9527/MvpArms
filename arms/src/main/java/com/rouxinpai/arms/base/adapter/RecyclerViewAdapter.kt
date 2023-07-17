@@ -35,7 +35,7 @@ abstract class BaseVbAdapter<VB : ViewBinding, T>(data: MutableList<T>? = null) 
         onBindView(holder.binding, holder.layoutPosition, item, payloads)
     }
 
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int, ): VB
+    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 

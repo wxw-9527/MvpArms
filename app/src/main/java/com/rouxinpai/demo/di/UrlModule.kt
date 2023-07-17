@@ -1,4 +1,4 @@
-package com.rouxinpai.demo.http
+package com.rouxinpai.demo.di
 
 import com.rouxinpai.arms.di.IUrlModule
 import com.rouxinpai.arms.di.qualifier.GetDomainConfigurationUrl
@@ -30,6 +30,6 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetUpgradeUrl
     override fun provideUpgradeUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/client/info"
+        return "http://test.zk-work.com/stage-api/system/client/info"
     }
 }
