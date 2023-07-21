@@ -89,12 +89,28 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         mBinding = null
     }
 
-    override fun showToast(messageId: Int, duration: Int, type: Int) {
-        mViewDelegate.showToast(messageId, duration, type)
+    override fun showSuccessTip(messageId: Int) {
+        mViewDelegate.showSuccessTip(messageId)
     }
 
-    override fun showToast(message: CharSequence?, duration: Int, type: Int) {
-        mViewDelegate.showToast(message, duration, type)
+    override fun showSuccessTip(message: CharSequence?) {
+        mViewDelegate.showSuccessTip(message)
+    }
+
+    override fun showWarningTip(messageId: Int) {
+        mViewDelegate.showWarningTip(messageId)
+    }
+
+    override fun showWarningTip(message: CharSequence?) {
+        mViewDelegate.showWarningTip(message)
+    }
+
+    override fun showErrorTip(messageId: Int) {
+        mViewDelegate.showErrorTip(messageId)
+    }
+
+    override fun showErrorTip(message: CharSequence?) {
+        mViewDelegate.showErrorTip(message)
     }
 
     override fun showProgress(labelId: Int, detailId: Int?) {

@@ -1,30 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingVertical="16dp"
     tools:ignore="HardcodedText">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_progress_dialog"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="加载进度条（3秒后自动关闭）" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingVertical="16dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_simple_dialog_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="展示SimpleDialogFragment"
-        android:textAllCaps="false" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_progress_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加载进度条（3秒后自动关闭）" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_simple_bottom_dialog_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="展示SimpleBottomDialogFragment"
-        android:textAllCaps="false" />
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_simple_dialog_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示SimpleDialogFragment"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_simple_bottom_dialog_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示SimpleBottomDialogFragment"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_success_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="成功提示"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_warning_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="告警提示"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_error_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="错误提示"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</ScrollView>

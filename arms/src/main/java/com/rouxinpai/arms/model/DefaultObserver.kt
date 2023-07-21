@@ -3,7 +3,6 @@ package com.rouxinpai.arms.model
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.model.bean.exception.EmptyException
 import com.rouxinpai.arms.model.bean.exception.TokenTimeoutException
-import com.shashank.sony.fancytoastlib.FancyToast
 import io.reactivex.rxjava3.observers.DisposableObserver
 import timber.log.Timber
 import java.net.UnknownHostException
@@ -43,7 +42,7 @@ abstract class DefaultObserver<T : Any>(
             is UnknownHostException -> "无法解析主机名称对应的IP地址，请检查网络"
             else -> e.message
         }
-        view?.showToast(message = errorMsg, type = FancyToast.ERROR)
+        view?.showErrorTip(errorMsg)
         if (e is TokenTimeoutException) {
             view?.tokenTimeout()
             return

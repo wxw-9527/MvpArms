@@ -3,9 +3,6 @@ package com.rouxinpai.arms.base.view
 import androidx.annotation.StringRes
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.update.model.UpdateInfo
-import com.shashank.sony.fancytoastlib.FancyToast
-import com.shashank.sony.fancytoastlib.FancyToast.Duration
-import com.shashank.sony.fancytoastlib.FancyToast.LayoutType
 
 /**
  * author : Saxxhw
@@ -16,30 +13,46 @@ import com.shashank.sony.fancytoastlib.FancyToast.LayoutType
 interface IView: ILoadMore {
 
     /**
-     * 显示 Toast 提示
+     * 显示简单提示
      *
      * @param messageId 提示文本资源 ID
-     * @param duration  显示时间长度，默认为 LENGTH_LONG
-     * @param type      提示样式，默认为 DEFAULT
      */
-    fun showToast(
-        @StringRes messageId: Int,
-        @Duration duration: Int = FancyToast.LENGTH_LONG,
-        @LayoutType type: Int = FancyToast.DEFAULT
-    )
+    fun showSuccessTip(@StringRes messageId: Int)
 
     /**
-     * 显示 Toast 提示
+     * 显示简单提示
      *
-     * @param message   提示文本
-     * @param duration  显示时间长度，默认为 LENGTH_LONG
-     * @param type      提示样式，默认为 DEFAULT
+     * @param message 提示文本
      */
-    fun showToast(
-        message: CharSequence?,
-        @Duration duration: Int = FancyToast.LENGTH_LONG,
-        @LayoutType type: Int = FancyToast.DEFAULT
-    )
+    fun showSuccessTip(message: CharSequence?)
+
+    /**
+     * 显示告警提示
+     *
+     * @param messageId 提示文本资源 ID
+     */
+    fun showWarningTip(@StringRes messageId: Int)
+
+    /**
+     * 显示告警提示
+     *
+     * @param message 提示文本
+     */
+    fun showWarningTip(message: CharSequence?)
+
+    /**
+     * 显示错误提示
+     *
+     * @param messageId 提示文本资源 ID
+     */
+    fun showErrorTip(@StringRes messageId: Int)
+
+    /**
+     * 显示错误提示
+     *
+     * @param message 提示文本
+     */
+    fun showErrorTip(message: CharSequence?)
 
     /**
      * 显示加载进度弹窗

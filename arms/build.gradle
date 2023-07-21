@@ -78,8 +78,6 @@ dependencies {
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'
-    // 吐司框架
-    api 'io.github.shashank02051997:FancyToast:2.0.2'
     // 图片选择框架
     api 'io.github.lucksiege:pictureselector:v3.11.1'
     api 'io.github.lucksiege:compress:v3.11.1'

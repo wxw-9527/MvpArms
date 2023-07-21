@@ -12,7 +12,6 @@ import com.rouxinpai.arms.extension.shake
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.AccountLoginActivityBinding
 import com.rouxinpai.demo.feature.main.MainActivity
-import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -93,21 +92,21 @@ class AccountLoginActivity :
         val account = binding.etAccount.text?.toString()?.trim()
         if (account.isNullOrBlank()) {
             binding.etAccount.shake()
-            showToast(R.string.login__enter_account, type = FancyToast.WARNING)
+            showWarningTip(R.string.login__enter_account)
             return
         }
         // 密码
         val password = binding.etPassword.text?.toString()?.trim()
         if (password.isNullOrBlank()) {
             binding.etPassword.shake()
-            showToast(R.string.login__enter_password, type = FancyToast.WARNING)
+            showWarningTip(R.string.login__enter_password)
             return
         }
         // 验证码
         val captcha = binding.etCaptcha.text?.toString()?.trim()
         if (captcha.isNullOrBlank()) {
             binding.etCaptcha.shake()
-            showToast(R.string.login__enter_captcha, type = FancyToast.WARNING)
+            showWarningTip(R.string.login__enter_captcha)
             return
         }
         // 记住我
