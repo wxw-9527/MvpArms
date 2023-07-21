@@ -84,6 +84,7 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.1'
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
+    api 'com.kongzue.dialogx:DialogX:0.0.48'
     api 'com.afollestad.material-dialogs:core:3.3.0'
     api 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
     implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'

@@ -3,6 +3,7 @@ package com.rouxinpai.arms.base.application
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.kongzue.dialogx.DialogX
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
@@ -34,6 +35,8 @@ abstract class BaseApplication : Application(), IApplication {
         HuaweiUtil.initHwCrashHandler(debug)
         // 初始化MMKV
         initMmkv()
+        // 初始化DialogX
+        initDialogX()
         // 初始化版本更新
         initUpdater()
     }
@@ -88,6 +91,11 @@ abstract class BaseApplication : Application(), IApplication {
     private fun initMmkv() {
         val rootDir = MMKV.initialize(this)
         Timber.d("mmkv root：$rootDir")
+    }
+
+    // 初始化DialogX
+    private fun initDialogX() {
+        DialogX.init(this)
     }
 
     // 初始化版本更新框架
