@@ -71,7 +71,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.1.2'
+    implementation 'com.github.wxw-9527:MvpArms:2.1.3'
 }
 ```
 
@@ -163,7 +163,9 @@ agcp {
 
 ```xml
 <!-- 华为分析服务 -->
-<meta-data android:name="install_channel" android:value="${channel}" />
+<meta-data 
+    android:name="install_channel" 
+    android:value="${channel}" />
 ```
 
 #### 6、登录成功后调用以下方法上传用户信息
@@ -179,12 +181,13 @@ HuaweiUtil.setUserId(userId)
 
 ```xml
 
-<activity android:name="包名.SplashActivity"
-    android:configChanges="keyboardHidden|screenSize|orientation" android:exported="true"
+<activity 
+    android:name="包名.SplashActivity"
+    android:configChanges="keyboardHidden|screenSize|orientation"
+    android:exported="true"
     android:theme="@style/ThemeSplash">
     <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
     </intent-filter>
 </activity>
@@ -194,7 +197,8 @@ HuaweiUtil.setUserId(userId)
 
 ```xml
 
-<activity android:name=".main.DomainConfigActivity"
+<activity 
+    android:name=".main.DomainConfigActivity"
     android:configChanges="keyboardHidden|screenSize|orientation"
     android:theme="@style/FullScreenTheme.White" />
 ```
@@ -223,7 +227,9 @@ object UrlModule : IUrlModule {
 
 ```xml
 <!-- WebSocket服务 -->
-<service android:name="com.rouxinpai.arms.ws.WebSocketService" android:directBootAware="true"
+<service 
+    android:name="com.rouxinpai.arms.ws.WebSocketService" 
+    android:directBootAware="true"
     android:exported="false" />
 ```
 
@@ -235,6 +241,7 @@ object UrlModule : IUrlModule {
     android:exported="true"
     android:launchMode="singleTop" 
     android:screenOrientation="portrait">
+    
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />

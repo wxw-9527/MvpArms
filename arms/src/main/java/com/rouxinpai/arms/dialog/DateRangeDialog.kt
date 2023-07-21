@@ -14,7 +14,6 @@ import com.rouxinpai.arms.base.fragment.BaseBottomSheetDialogFragment
 import com.rouxinpai.arms.databinding.DateRangeDialogBinding
 import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.calendarview.CalendarView
-import com.shashank.sony.fancytoastlib.FancyToast
 
 /**
  * author : Saxxhw
@@ -129,10 +128,7 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     private fun onConfirmClick() {
         val list = binding.calendarView.selectCalendarRange
         if (list.isNullOrEmpty()) {
-            showToast(
-                R.string.date_range__please_select_the_correct_start_date,
-                type = FancyToast.WARNING
-            )
+            showWarningTip(R.string.date_range__please_select_the_correct_start_date)
         } else {
             val startCalendar = list.first()
             val endCalendar = list.last()

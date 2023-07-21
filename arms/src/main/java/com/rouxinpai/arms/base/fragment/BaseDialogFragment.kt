@@ -1,5 +1,6 @@
 package com.rouxinpai.arms.base.fragment
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -72,7 +73,11 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment(), IView, O
             // 获取屏幕宽度
             val screenWidth = resources.displayMetrics.widthPixels
             // 计算目标宽度
-            val targetWidth = (screenWidth * 0.85f).toInt()
+            val targetWidth = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) {
+                (screenWidth * 0.6f).toInt()
+            } else {
+                (screenWidth * 0.85f).toInt()
+            }
             // 设置对话框的宽度
             setLayout(targetWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
@@ -99,12 +104,28 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment(), IView, O
         mBinding = null
     }
 
-    override fun showToast(messageId: Int, duration: Int, type: Int) {
-        mViewDelegate.showToast(messageId, duration, type)
+    override fun showSuccessTip(messageId: Int) {
+        mViewDelegate.showSuccessTip(messageId)
     }
 
-    override fun showToast(message: CharSequence?, duration: Int, type: Int) {
-        mViewDelegate.showToast(message, duration, type)
+    override fun showSuccessTip(message: CharSequence?) {
+        mViewDelegate.showSuccessTip(message)
+    }
+
+    override fun showWarningTip(messageId: Int) {
+        mViewDelegate.showWarningTip(messageId)
+    }
+
+    override fun showWarningTip(message: CharSequence?) {
+        mViewDelegate.showWarningTip(message)
+    }
+
+    override fun showErrorTip(messageId: Int) {
+        mViewDelegate.showErrorTip(messageId)
+    }
+
+    override fun showErrorTip(message: CharSequence?) {
+        mViewDelegate.showErrorTip(message)
     }
 
     override fun showProgress(labelId: Int, detailId: Int?) {

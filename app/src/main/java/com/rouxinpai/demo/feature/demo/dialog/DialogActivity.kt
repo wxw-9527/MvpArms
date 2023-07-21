@@ -29,6 +29,9 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         binding.btnProgressDialog.setOnClickListener(this)
         binding.btnSimpleDialogFragment.setOnClickListener(this)
         binding.btnSimpleBottomDialogFragment.setOnClickListener(this)
+        binding.btnShowSuccessTip.setOnClickListener(this)
+        binding.btnShowWarningTip.setOnClickListener(this)
+        binding.btnShowErrorTip.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -36,10 +39,12 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
             R.id.btn_progress_dialog -> showProgressDialog()
             R.id.btn_simple_dialog_fragment -> showSimpleDialogFragment()
             R.id.btn_simple_bottom_dialog_fragment -> showSimpleBottomDialogFragment()
+            R.id.btn_show_success_tip -> showSuccessTip()
+            R.id.btn_show_warning_tip -> showWarningTip()
+            R.id.btn_show_error_tip -> showErrorTip()
         }
     }
 
-    // 显示进度对话框
     private fun showProgressDialog() {
         showProgress()
         Handler(Looper.getMainLooper()).postDelayed(3 * 1000L) {
@@ -47,13 +52,23 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         }
     }
 
-    // 显示简单对话框
     private fun showSimpleDialogFragment() {
         SimpleDialogFragment.show(supportFragmentManager)
     }
 
-    // 显示简单底部对话框
     private fun showSimpleBottomDialogFragment() {
         SimpleBottomDialogFragment.show(supportFragmentManager)
+    }
+
+    private fun showSuccessTip() {
+        showSuccessTip("这是一个成功提示")
+    }
+
+    private fun showWarningTip() {
+        showWarningTip("告警提示，提示用户做了预期外的操作")
+    }
+
+    private fun showErrorTip() {
+        showErrorTip("错误提示，这是一个提示用户系统发生异常")
     }
 }

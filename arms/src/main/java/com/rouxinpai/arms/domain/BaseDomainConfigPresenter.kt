@@ -9,7 +9,6 @@ import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
-import com.shashank.sony.fancytoastlib.FancyToast
 import retrofit2.create
 import javax.inject.Inject
 
@@ -48,10 +47,7 @@ class BaseDomainConfigPresenter @Inject constructor() :
                 override fun onEmpty() {
                     super.onEmpty()
                     view?.dismissProgress()
-                    view?.showToast(
-                        R.string.base_domain_config__invitation_code_invalid,
-                        type = FancyToast.ERROR
-                    )
+                    view?.showErrorTip(R.string.base_domain_config__invitation_code_invalid)
                 }
             })
         addDisposable(disposable)

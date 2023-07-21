@@ -3,8 +3,8 @@ package com.rouxinpai.arms.base.view
 import android.content.Context
 import android.view.View
 import com.kaopiz.kprogresshud.KProgressHUD
+import com.kongzue.dialogx.dialogs.PopTip
 import com.rouxinpai.arms.base.application.IApplication
-import com.shashank.sony.fancytoastlib.FancyToast
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
 import com.view.multistatepage.state.ErrorState
@@ -40,14 +40,37 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
         mOnRetryClickListener = retryClickListener
     }
 
-    override fun showToast(messageId: Int, duration: Int, type: Int) {
+    override fun showSuccessTip(messageId: Int) {
         val message = mContext.getString(messageId)
-        showToast(message, duration, type)
+        showSuccessTip(message)
     }
 
-    override fun showToast(message: CharSequence?, duration: Int, type: Int) {
-        if (message.isNullOrEmpty()) return
-        FancyToast.makeText(mContext, message, duration, type, false).show()
+    override fun showSuccessTip(message: CharSequence?) {
+        PopTip.show(message)
+            .iconSuccess()
+            .autoDismiss(1000L)
+    }
+
+    override fun showWarningTip(messageId: Int) {
+        val message = mContext.getString(messageId)
+        showWarningTip(message)
+    }
+
+    override fun showWarningTip(message: CharSequence?) {
+        PopTip.show(message)
+            .iconWarning()
+            .showLong()
+    }
+
+    override fun showErrorTip(messageId: Int) {
+        val message = mContext.getString(messageId)
+        showErrorTip(message)
+    }
+
+    override fun showErrorTip(message: CharSequence?) {
+        PopTip.show(message)
+            .iconError()
+            .showLong()
     }
 
     override fun showProgress(labelId: Int, detailId: Int?) {
@@ -57,19 +80,14 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     }
 
     override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
-        mKProgressHUD = KProgressHUD
-            .create(mContext, KProgressHUD.Style.SPIN_INDETERMINATE)
-            .apply {
-                if (!labelMsg.isNullOrEmpty()) {
-                    setLabel(labelMsg.toString())
-                }
-                if (!detailMsg.isNullOrEmpty()) {
-                    setDetailsLabel(detailMsg)
-                }
+        mKProgressHUD = KProgressHUD.create(mContext, KProgressHUD.Style.SPIN_INDETERMINATE).apply {
+            if (!labelMsg.isNullOrEmpty()) {
+                setLabel(labelMsg.toString())
             }
-            .setCancellable(true)
-            .setDimAmount(0.2f)
-            .show()
+            if (!detailMsg.isNullOrEmpty()) {
+                setDetailsLabel(detailMsg)
+            }
+        }.setCancellable(true).setDimAmount(0.2f).show()
     }
 
     override fun updateProgress(detailId: Int) {

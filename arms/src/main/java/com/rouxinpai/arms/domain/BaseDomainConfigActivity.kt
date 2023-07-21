@@ -8,7 +8,6 @@ import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.databinding.BaseDomainConfigActivityBinding
 import com.rouxinpai.arms.extension.shake
-import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -38,10 +37,7 @@ abstract class BaseDomainConfigActivity :
             R.id.btn_submit -> {
                 val invitationCode = binding.etInvitationCode.text?.toString()
                 if (invitationCode.isNullOrEmpty()) {
-                    showToast(
-                        R.string.base_domain_config__input_invitation_code,
-                        type = FancyToast.WARNING
-                    )
+                    showWarningTip(R.string.base_domain_config__input_invitation_code)
                     binding.textInputLayout.shake()
                     return
                 }
