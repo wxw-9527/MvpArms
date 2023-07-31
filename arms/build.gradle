@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android' // Hilt
     id 'com.huawei.agconnect' // 华为
@@ -40,19 +40,19 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //
     api 'androidx.appcompat:appcompat:1.6.1'
-    api 'com.google.android.material:material:1.7.0'
+    api 'com.google.android.material:material:1.8.0'
     // 官方扩展程序
     api 'androidx.core:core-ktx:1.9.0'
     api 'androidx.activity:activity-ktx:1.7.0'
     api 'androidx.fragment:fragment-ktx:1.6.0'
-    api 'androidx.work:work-runtime-ktx:2.7.1'
+    api 'androidx.work:work-runtime-ktx:2.8.1'
     // 官方控件
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
     api 'androidx.recyclerview:recyclerview:1.3.0'
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     // 依赖注入：https://dagger.dev/hilt/
     implementation 'com.google.dagger:hilt-android:2.47'
-    kapt 'com.google.dagger:hilt-compiler:2.47'
+    ksp 'com.google.dagger:hilt-compiler:2.47'
     // RxJava
     api 'io.reactivex.rxjava3:rxandroid:3.0.2'
     api 'io.reactivex.rxjava3:rxjava:3.1.6'
@@ -65,7 +65,7 @@ dependencies {
     api 'com.google.code.gson:gson:2.10.1'
     // 图片缓存
     api 'com.github.bumptech.glide:glide:4.15.1'
-    kapt 'com.github.bumptech.glide:compiler:4.15.1'
+    ksp 'com.github.bumptech.glide:compiler:4.15.1'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.15.1'
     // 基于 mmap 的高性能通用 key-value 组件
     api 'com.tencent:mmkv:1.3.0'
