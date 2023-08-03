@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 九宫格控件 -->
     <declare-styleable name="NineGridView">
         <!-- 是否可编辑，默认值为 false -->
         <attr name="ngv_editable" format="boolean" />

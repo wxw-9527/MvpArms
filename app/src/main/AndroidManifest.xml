@@ -76,5 +76,15 @@
             android:name=".feature.demo.dialog.DialogActivity"
             android:label="@string/dialog"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.balloon.BalloonActivity"
+            android:label="@string/balloon"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.dropdown.DropdownActivity"
+            android:label="@string/dropdown"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
