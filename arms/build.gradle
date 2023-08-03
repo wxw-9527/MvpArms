@@ -92,6 +92,8 @@ dependencies {
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 版本更新
     implementation 'com.github.wxw-9527:UpdateAppUtils:2.3.1'
+    // 气泡提示
+    implementation "com.github.skydoves:balloon:1.5.4"
     // 华为
     implementation 'com.huawei.agconnect:agconnect-core:1.9.0.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.9.0.300'

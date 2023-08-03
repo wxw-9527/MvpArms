@@ -4,4 +4,7 @@
     <color name="color_secondary_variant">#FF3F8CFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- 对话框遮罩层颜色 -->
+    <color name="cl_dropdown_button_dialog_mask">@color/black30</color>
+    <color name="cl_dropdown_button_selected_item">@color/black10</color>
 </resources>
