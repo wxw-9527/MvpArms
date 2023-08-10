@@ -56,6 +56,10 @@ class DropdownActivity : BaseActivity<DropdownActivityBinding>(),
                 DropdownEntity("7", "选项777"),
             )
         )
+
+        binding.btnClear.setOnClickListener {
+            binding.dropdownMenu2.clear()
+        }
     }
 
     override fun onItemSelected(view: View, position: Int, item: DropdownButton.IDropdownEntity) {

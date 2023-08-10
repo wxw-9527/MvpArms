@@ -99,6 +99,19 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
     }
 
     /**
+     * 重置状态
+     */
+    fun clear() {
+        // 清除文案及标签
+        text = null
+        tag = null
+        // 清除选中下标
+        mMenuAdapter.clearSelectedIndex()
+        // 清除数据
+        mMenuAdapter.data.clear()
+    }
+
+    /**
      * 填充列表数据
      */
     fun setList(list: Collection<T>?) {
@@ -149,6 +162,10 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
         fun select(index: Int) {
             mSelectedIndex = index
             notifyDataSetChanged()
+        }
+
+        fun clearSelectedIndex() {
+            mSelectedIndex = -1
         }
 
         override fun onCreateViewBinding(
