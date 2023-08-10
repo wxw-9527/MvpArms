@@ -95,8 +95,7 @@ class NineGridView<T : NineGridView.IEntity> @JvmOverloads constructor(
     }
 
     fun setNewList(list: List<T>?) {
-        if (list.isNullOrEmpty()) return
-        mAdapter.setNewList(list)
+        mAdapter.setNewList(list.orEmpty())
     }
 
     fun setEditable(editable: Boolean) {
