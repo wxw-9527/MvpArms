@@ -7,9 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.core.os.postDelayed
+import com.blankj.utilcode.util.TimeUtils
 import com.rouxinpai.arms.base.activity.BaseActivity
+import com.rouxinpai.arms.constant.TimeConstants
+import com.rouxinpai.arms.dialog.DateRangeDialog
+import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.DialogActivityBinding
+import timber.log.Timber
 
 /**
  * author : Saxxhw
@@ -27,37 +32,37 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         super.onInit(savedInstanceState)
         // 绑定监听事件
         binding.btnProgressDialog.setOnClickListener(this)
-        binding.btnSimpleDialogFragment.setOnClickListener(this)
-        binding.btnSimpleBottomDialogFragment.setOnClickListener(this)
         binding.btnShowSuccessTip.setOnClickListener(this)
         binding.btnShowWarningTip.setOnClickListener(this)
         binding.btnShowErrorTip.setOnClickListener(this)
+        binding.btnSelectDateRange.setOnClickListener(this)
+        binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
+        binding.btnShowCustomViewDialog.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_progress_dialog -> showProgressDialog()
-            R.id.btn_simple_dialog_fragment -> showSimpleDialogFragment()
-            R.id.btn_simple_bottom_dialog_fragment -> showSimpleBottomDialogFragment()
             R.id.btn_show_success_tip -> showSuccessTip()
             R.id.btn_show_warning_tip -> showWarningTip()
             R.id.btn_show_error_tip -> showErrorTip()
+            R.id.btn_select_date_range -> showSelectDateRangeDialog()
+            R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
+            R.id.btn_show_custom_view_dialog -> showCustomViewDialog()
         }
     }
 
     private fun showProgressDialog() {
         showProgress()
+        Handler(Looper.getMainLooper()).postDelayed(1 * 1000L) {
+            Timber.d("进度条状态1 = ${isProgressShowing()}")
+        }
         Handler(Looper.getMainLooper()).postDelayed(3 * 1000L) {
+            Handler(Looper.getMainLooper()).postDelayed(1 * 1000L) {
+                Timber.d("进度条状态2 = ${isProgressShowing()}")
+            }
             dismissProgress()
         }
-    }
-
-    private fun showSimpleDialogFragment() {
-        SimpleDialogFragment.show(supportFragmentManager)
-    }
-
-    private fun showSimpleBottomDialogFragment() {
-        SimpleBottomDialogFragment.show(supportFragmentManager)
     }
 
     private fun showSuccessTip() {
@@ -70,5 +75,38 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showErrorTip() {
         showErrorTip("错误提示，这是一个提示用户系统发生异常")
+    }
+
+    private var mStartCalendar: Calendar? = null
+    private var mEndCalendar: Calendar? = null
+
+    private fun showSelectDateRangeDialog() {
+        DateRangeDialog.show(
+            mStartCalendar,
+            mEndCalendar,
+            object : DateRangeDialog.OnDateRangeSelectedListener {
+                override fun onDateRangeSelected(startCalendar: Calendar?, endCalendar: Calendar?) {
+                    mStartCalendar = startCalendar
+                    mEndCalendar = endCalendar
+                    if (startCalendar == null && endCalendar == null) {
+                        showSuccessTip("清除选中日期范围")
+                    } else {
+                        val startMillis = startCalendar?.timeInMillis ?: System.currentTimeMillis()
+                        val startDate = TimeUtils.millis2String(startMillis, TimeConstants.Y_MO_D)
+                        val endMillis = endCalendar?.timeInMillis ?: System.currentTimeMillis()
+                        val endDate = TimeUtils.millis2String(endMillis, TimeConstants.Y_MO_D)
+                        showSuccessTip("$startDate 至 $endDate")
+                    }
+                }
+            }
+        )
+    }
+
+    private fun showSimpleCustomViewDialog() {
+        SimpleCustomViewDialog.showBottomDialog()
+    }
+
+    private fun showCustomViewDialog() {
+        CustomViewDialog.showBottomDialog()
     }
 }

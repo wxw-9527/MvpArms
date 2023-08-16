@@ -1,10 +1,11 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.rouxinpai.arms.base.fragment
+package com.rouxinpai.arms.base.dialog
 
-import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.kongzue.dialogx.interfaces.BaseDialog
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.presenter.IPresenter
 import com.rouxinpai.arms.base.view.ILoadMore
@@ -12,18 +13,19 @@ import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.LoadMoreDelegate
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import javax.inject.Inject
 
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
- * time   : 2023/6/12 14:49
+ * time   : 2023/8/16 16:48
  * desc   :
  */
-abstract class BaseMvpBottomSheetDialogFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
-    BaseBottomSheetDialogFragment<VB>(), ILoadMore {
+abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P : IPresenter<V>>(
+    layoutResId: Int,
+    async: Boolean = false
+) : BaseOnBindView<D, VB>(layoutResId, async), ILoadMore {
 
-    @Inject
+    // P层实例
     lateinit var presenter: P
 
     // 加载更多代理类实例
@@ -31,9 +33,12 @@ abstract class BaseMvpBottomSheetDialogFragment<VB : ViewBinding, V : IView, P :
 
     open val mLoadMoreModule: BaseLoadMoreModule? = null
 
-    override fun onInit(savedInstanceState: Bundle?) {
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        // 初始化Presenter
+        presenter = onCreatePresenter()
         presenter.bind(lifecycle, this as V)
-        super.onInit(savedInstanceState)
+        // 初始化加载更多代理类
         mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
@@ -53,4 +58,6 @@ abstract class BaseMvpBottomSheetDialogFragment<VB : ViewBinding, V : IView, P :
     override fun loadMoreFail() {
         mLoadMoreDelegate.loadMoreFail()
     }
+
+    abstract fun onCreatePresenter(): P
 }

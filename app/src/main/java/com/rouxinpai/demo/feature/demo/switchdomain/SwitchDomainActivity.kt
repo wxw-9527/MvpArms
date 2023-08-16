@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import com.afollestad.materialdialogs.LayoutMode
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.kongzue.dialogx.dialogs.BottomDialog
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.demo.global.Application
@@ -53,17 +51,19 @@ class SwitchDomainActivity : BaseActivity<SwitchDomainActivityBinding>(), OnClic
 
     // 切换域名
     private fun onSwitchDomainClick() {
-        MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
-            .title(R.string.switch_domain)
-            .message(R.string.switch_domain__dialog_message)
-            .negativeButton()
-            .positiveButton {
+        BottomDialog.show(
+            R.string.switch_domain,
+            R.string.switch_domain__dialog_message
+        )
+            .setCancelButton(R.string.switch_domain__cancel) { _, _ ->  false}
+            .setOkButton(R.string.switch_domain__ok) { _, _ ->
                 // 清除所有域名信息
                 DomainUtils.clearAll()
                 // 重启应用
                 SplashActivity.start(this)
                 Application.instance.finishAllActivities()
+                //
+                false
             }
-            .show()
     }
 }

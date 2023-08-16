@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_year_month"
         android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:textColor="#000000"
@@ -20,11 +20,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_clear"
-        style="@style/ThemeOverlay.Material3.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="清除选中"
         android:textColor="#FFA7AAB4"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_year_month"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_year_month" />
@@ -62,23 +63,24 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"
-        style="@style/ThemeOverlay.Material3.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="取消"
         android:textColor="#FFA7AAB4"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_confirm"
         app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
         app:layout_constraintTop_toTopOf="@+id/btn_confirm" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
-        style="@style/ThemeOverlay.Material3.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
         android:text="确定"
         android:textColor="#FF417BF4"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

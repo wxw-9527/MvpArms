@@ -1,16 +1,11 @@
-@file:Suppress("DEPRECATION")
-
 package com.rouxinpai.arms.dialog
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import com.kongzue.dialogx.dialogs.BottomDialog
 import com.rouxinpai.arms.R
-import com.rouxinpai.arms.base.fragment.BaseBottomSheetDialogFragment
+import com.rouxinpai.arms.base.dialog.BaseOnBindView
 import com.rouxinpai.arms.databinding.DateRangeDialogBinding
 import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.calendarview.CalendarView
@@ -21,35 +16,31 @@ import com.rouxinpai.calendarview.CalendarView
  * time   : 2022/12/28 14:44
  * desc   :
  */
-class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
+class DateRangeDialog :
+    BaseOnBindView<BottomDialog, DateRangeDialogBinding>(R.layout.date_range_dialog),
     CalendarView.OnMonthChangeListener,
     OnClickListener {
 
     companion object {
 
-        // 参数传递标志
-        private const val ARG_START_CALENDAR = "arg_start_calendar" // 开始日期
-        private const val ARG_END_CALENDAR = "arg_end_calendar" // 结束日期
-
         /**
          * 展示
          */
         fun show(
-            manager: FragmentManager,
             startCalendar: Calendar? = null,
             endCalendar: Calendar? = null,
             listener: OnDateRangeSelectedListener? = null
         ) {
-            val dialogFragment = DateRangeDialog().apply {
-                arguments = bundleOf(
-                    ARG_START_CALENDAR to startCalendar,
-                    ARG_END_CALENDAR to endCalendar
-                )
-                if (listener != null) {
-                    setOnDateRangeSelectedListener(listener)
-                }
+            val customView = DateRangeDialog().apply {
+                setStartCalendar(startCalendar)
+                setEndCalendar(endCalendar)
+                setOnDateRangeSelectedListener(listener)
             }
-            dialogFragment.show(manager, DateRangeDialog::class.java.simpleName)
+            BottomDialog
+                .build()
+                .setAllowInterceptTouch(false)
+                .setCustomView(customView)
+                .show()
         }
     }
 
@@ -62,21 +53,12 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     // 监听事件
     private var mOnDateRangeSelectedListener: OnDateRangeSelectedListener? = null
 
-    override fun onParseData(bundle: Bundle) {
-        super.onParseData(bundle)
-        mStartCalendar = bundle.getSerializable(ARG_START_CALENDAR) as? Calendar
-        mEndCalendar = bundle.getSerializable(ARG_END_CALENDAR) as? Calendar
+    override fun onBindView(view: View): DateRangeDialogBinding {
+        return DateRangeDialogBinding.bind(view)
     }
 
-    override fun onCreateViewBinding(
-        inflater: LayoutInflater,
-        parent: ViewGroup?
-    ): DateRangeDialogBinding {
-        return DateRangeDialogBinding.inflate(inflater, parent, false)
-    }
-
-    override fun onInit(savedInstanceState: Bundle?) {
-        super.onInit(savedInstanceState)
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
         // 绑定监听事件
         binding.calendarView.setOnMonthChangeListener(this)
         binding.btnClear.setOnClickListener(this)
@@ -85,7 +67,7 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
         // 初始化界面
         val year = binding.calendarView.curYear
         val month = binding.calendarView.curMonth
-        binding.tvYearMonth.text = getString(R.string.date_range__year_month, year, month)
+        binding.tvYearMonth.text = context.getString(R.string.date_range__year_month, year, month)
         if (mStartCalendar != null && mEndCalendar != null) {
             binding.calendarView.setSelectStartCalendar(mStartCalendar)
             binding.calendarView.setSelectEndCalendar(mEndCalendar)
@@ -96,7 +78,7 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
     }
 
     override fun onMonthChange(year: Int, month: Int) {
-        binding.tvYearMonth.text = getString(R.string.date_range__year_month, year, month)
+        binding.tvYearMonth.text = context.getString(R.string.date_range__year_month, year, month)
     }
 
     override fun onClick(v: View?) {
@@ -112,14 +94,14 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
      */
     private fun onClearClick() {
         mOnDateRangeSelectedListener?.onDateRangeSelected(null, null)
-        dismiss()
+        dialog.dismiss()
     }
 
     /**
      * 取消按钮点击事件
      */
     private fun onCancelClick() {
-        dismiss()
+        dialog.dismiss()
     }
 
     /**
@@ -133,14 +115,28 @@ class DateRangeDialog : BaseBottomSheetDialogFragment<DateRangeDialogBinding>(),
             val startCalendar = list.first()
             val endCalendar = list.last()
             mOnDateRangeSelectedListener?.onDateRangeSelected(startCalendar, endCalendar)
-            dismiss()
+            dialog.dismiss()
         }
+    }
+
+    /**
+     *
+     */
+    fun setStartCalendar(calendar: Calendar?) {
+        mStartCalendar = calendar
+    }
+
+    /**
+     *
+     */
+    fun setEndCalendar(calendar: Calendar?) {
+        mEndCalendar = calendar
     }
 
     /**
      * 绑定监听事件
      */
-    fun setOnDateRangeSelectedListener(listener: OnDateRangeSelectedListener) {
+    fun setOnDateRangeSelectedListener(listener: OnDateRangeSelectedListener?) {
         mOnDateRangeSelectedListener = listener
     }
 

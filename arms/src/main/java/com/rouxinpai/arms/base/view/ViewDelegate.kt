@@ -2,8 +2,8 @@ package com.rouxinpai.arms.base.view
 
 import android.content.Context
 import android.view.View
-import com.kaopiz.kprogresshud.KProgressHUD
 import com.kongzue.dialogx.dialogs.PopTip
+import com.kongzue.dialogx.dialogs.WaitDialog
 import com.rouxinpai.arms.base.application.IApplication
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
@@ -24,9 +24,6 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
 
     // 上下文对象
     private var mContext: Context
-
-    // 加载进度对话框
-    private var mKProgressHUD: KProgressHUD? = null
 
     // 缺省页状态管理实例
     private var mLoadState: MultiStateContainer? = null
@@ -73,42 +70,21 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
             .showLong()
     }
 
-    override fun showProgress(labelId: Int, detailId: Int?) {
-        val message = mContext.getString(labelId)
-        val detailMessage = detailId?.let { mContext.getString(it) }
-        showProgress(message, detailMessage)
+    override fun showProgress(messageId: Int?) {
+        val message = messageId?.let { mContext.getString(it) }
+        showProgress(message)
     }
 
-    override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
-        mKProgressHUD = KProgressHUD.create(mContext, KProgressHUD.Style.SPIN_INDETERMINATE).apply {
-            if (!labelMsg.isNullOrEmpty()) {
-                setLabel(labelMsg.toString())
-            }
-            if (!detailMsg.isNullOrEmpty()) {
-                setDetailsLabel(detailMsg)
-            }
-        }.setCancellable(true).setDimAmount(0.2f).show()
-    }
-
-    override fun updateProgress(detailId: Int) {
-        val message = mContext.getString(detailId)
-        updateProgress(message)
-    }
-
-    override fun updateProgress(detailMsg: String?) {
-        if (detailMsg.isNullOrEmpty()) return
-        if (mKProgressHUD == null) return
-        if (false == mKProgressHUD?.isShowing) return
-        mKProgressHUD?.setDetailsLabel(detailMsg.toString())
+    override fun showProgress(message: CharSequence?) {
+        WaitDialog.show(message)
     }
 
     override fun dismissProgress() {
-        mKProgressHUD?.dismiss()
-        mKProgressHUD = null
+        WaitDialog.dismiss()
     }
 
     override fun isProgressShowing(): Boolean {
-        return mKProgressHUD?.isShowing ?: false
+        return WaitDialog.getInstance().isShow
     }
 
     override fun showLoadingPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {

@@ -28,7 +28,7 @@ plugins {
 
 ```groovy
 plugins {
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
 }
 
@@ -38,12 +38,7 @@ android {
 
 dependencies {
     implementation "com.google.dagger:hilt-android:2.47"
-    kapt "com.google.dagger:hilt-compiler:2.47"
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes true
+    ksp "com.google.dagger:hilt-compiler:2.47"
 }
 ```
 
@@ -71,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.1.8'
+    implementation 'com.github.wxw-9527:MvpArms:2.1.9'
 }
 ```
 

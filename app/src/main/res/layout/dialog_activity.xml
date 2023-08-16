@@ -20,20 +20,6 @@
             android:text="加载进度条（3秒后自动关闭）" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_simple_dialog_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="展示SimpleDialogFragment"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_simple_bottom_dialog_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="展示SimpleBottomDialogFragment"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_show_success_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,6 +38,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="错误提示"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_select_date_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择起始日期"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_simple_custom_view_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示简单自定义弹窗"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_custom_view_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示复杂自定义弹窗"
             android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>

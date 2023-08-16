@@ -68,7 +68,7 @@ dependencies {
     ksp 'com.github.bumptech.glide:compiler:4.15.1'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.15.1'
     // 基于 mmap 的高性能通用 key-value 组件
-    api 'com.tencent:mmkv:1.3.0'
+    api 'com.tencent:mmkv:1.3.1'
     // 通信
     api 'org.greenrobot:eventbus:3.3.1'
     // 日志打印
@@ -82,16 +82,13 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.1'
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
-    api 'com.kongzue.dialogx:DialogX:0.0.48'
-    api 'com.afollestad.material-dialogs:core:3.3.0'
-    api 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
-    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta8'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 日历
     api 'com.github.wxw-9527:CalendarView:1.0.3'
     // 版本更新
-    implementation 'com.github.wxw-9527:UpdateAppUtils:2.3.1'
+    implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
     // 气泡提示
     implementation "com.github.skydoves:balloon:1.5.4"
     // 华为

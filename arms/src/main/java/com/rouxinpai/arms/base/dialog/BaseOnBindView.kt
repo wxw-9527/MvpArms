@@ -1,13 +1,13 @@
-package com.rouxinpai.arms.base.fragment
+package com.rouxinpai.arms.base.dialog
 
-import android.app.Dialog
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.kongzue.dialogx.interfaces.BaseDialog
+import com.kongzue.dialogx.interfaces.OnBindView
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
@@ -17,14 +17,25 @@ import org.greenrobot.eventbus.EventBus
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
- * time   : 2022/12/28 14:45
+ * time   : 2023/8/16 15:00
  * desc   :
  */
-abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment(), IView,
+abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
+    layoutResId: Int,
+    async: Boolean = false
+) : OnBindView<D>(layoutResId, async),
+    DefaultLifecycleObserver,
+    IView,
     OnRetryClickListener {
 
-    private var mBinding: VB? = null
-    val binding: VB get() = mBinding!!
+    // 生命周期管理实例
+    lateinit var lifecycle: Lifecycle
+
+    // 对话框实例
+    lateinit var dialog: D
+
+    // 视图绑定实例
+    lateinit var binding: VB
 
     // 是否使用事件发布-订阅总线
     private var mEventBusEnabled: Boolean = false
@@ -37,38 +48,25 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
      */
     open val stateLayout: View? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireContext())
-    }
+    /**
+     * 获取上下文对象
+     */
+    val context: Context
+        get() = dialog.ownActivity
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // 解析传递至本页的数据
-        val bundle = arguments
-        if (bundle != null) {
-            onParseData(bundle)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        mBinding = onCreateViewBinding(inflater, container)
-        return mBinding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //
-        mViewDelegate = ViewDelegate(requireContext(), stateLayout, this)
+    override fun onBind(dialog: D, v: View) {
         // 初始化
-        onInit(savedInstanceState)
+        this.lifecycle = dialog.lifecycle
+        this.dialog = dialog
+        this.binding = onBindView(v)
+        // 绑定生命周期方法
+        lifecycle.addObserver(this)
+        // 初始化代理类
+        mViewDelegate = ViewDelegate(context, stateLayout, this)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
         // 事件发布-订阅总线
         mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
         if (mEventBusEnabled) {
@@ -76,16 +74,12 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy(owner: LifecycleOwner) {
+        lifecycle.removeObserver(this)
+        super.onDestroy(owner)
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mBinding = null
     }
 
     override fun showSuccessTip(messageId: Int) {
@@ -112,20 +106,12 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         mViewDelegate.showErrorTip(message)
     }
 
-    override fun showProgress(labelId: Int, detailId: Int?) {
-        mViewDelegate.showProgress(labelId, detailId)
+    override fun showProgress(messageId: Int?) {
+        mViewDelegate.showProgress(messageId)
     }
 
-    override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
-        mViewDelegate.showProgress(labelMsg, detailMsg)
-    }
-
-    override fun updateProgress(detailId: Int) {
-        mViewDelegate.updateProgress(detailId)
-    }
-
-    override fun updateProgress(detailMsg: String?) {
-        mViewDelegate.updateProgress(detailMsg)
+    override fun showProgress(message: CharSequence?) {
+        mViewDelegate.showProgress(message)
     }
 
     override fun dismissProgress() {
@@ -158,9 +144,5 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onRetryClick() = Unit
 
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup?): VB
-
-    protected open fun onParseData(bundle: Bundle) = Unit
-
-    protected open fun onInit(savedInstanceState: Bundle?) = Unit
+    abstract fun onBindView(view: View): VB
 }
