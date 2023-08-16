@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.core.os.postDelayed
+import com.blankj.utilcode.util.TimeUtils
 import com.rouxinpai.arms.base.activity.BaseActivity
+import com.rouxinpai.arms.constant.TimeConstants
+import com.rouxinpai.arms.dialog.DateRangeDialog
+import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.DialogActivityBinding
 
@@ -32,6 +36,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         binding.btnShowSuccessTip.setOnClickListener(this)
         binding.btnShowWarningTip.setOnClickListener(this)
         binding.btnShowErrorTip.setOnClickListener(this)
+        binding.btnSelectDateRange.setOnClickListener(this)
         binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
     }
 
@@ -43,6 +48,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
             R.id.btn_show_success_tip -> showSuccessTip()
             R.id.btn_show_warning_tip -> showWarningTip()
             R.id.btn_show_error_tip -> showErrorTip()
+            R.id.btn_select_date_range -> showSelectDateRangeDialog()
             R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
         }
     }
@@ -72,6 +78,31 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showErrorTip() {
         showErrorTip("错误提示，这是一个提示用户系统发生异常")
+    }
+
+    private var mStartCalendar: Calendar? = null
+    private var mEndCalendar: Calendar? = null
+
+    private fun showSelectDateRangeDialog() {
+        DateRangeDialog.show(
+            mStartCalendar,
+            mEndCalendar,
+            object : DateRangeDialog.OnDateRangeSelectedListener {
+                override fun onDateRangeSelected(startCalendar: Calendar?, endCalendar: Calendar?) {
+                    mStartCalendar = startCalendar
+                    mEndCalendar = endCalendar
+                    if (startCalendar == null && endCalendar == null) {
+                        showSuccessTip("清除选中日期范围")
+                    } else {
+                        val startMillis = startCalendar?.timeInMillis ?: System.currentTimeMillis()
+                        val startDate = TimeUtils.millis2String(startMillis, TimeConstants.Y_MO_D)
+                        val endMillis = endCalendar?.timeInMillis ?: System.currentTimeMillis()
+                        val endDate = TimeUtils.millis2String(endMillis, TimeConstants.Y_MO_D)
+                        showSuccessTip("$startDate 至 $endDate")
+                    }
+                }
+            }
+        )
     }
 
     private fun showSimpleCustomViewDialog() {

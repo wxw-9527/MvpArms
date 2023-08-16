@@ -55,6 +55,13 @@
             android:textAllCaps="false" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_select_date_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择起始日期"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_show_simple_custom_view_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

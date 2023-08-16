@@ -1,5 +1,6 @@
 package com.rouxinpai.arms.base.dialog
 
+import android.content.Context
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -47,6 +48,12 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
      */
     open val stateLayout: View? = null
 
+    /**
+     * 获取上下文对象
+     */
+    val context: Context
+        get() = dialog.ownActivity
+
     override fun onBind(dialog: D, v: View) {
         // 初始化
         this.mLifecycle = dialog.lifecycle
@@ -55,7 +62,7 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
         // 绑定生命周期方法
         mLifecycle.addObserver(this)
         // 初始化代理类
-        mViewDelegate = ViewDelegate(dialog.ownActivity, stateLayout, this)
+        mViewDelegate = ViewDelegate(context, stateLayout, this)
     }
 
     abstract fun onBindView(view: View): VB
