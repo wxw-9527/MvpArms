@@ -29,7 +29,7 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     OnRetryClickListener {
 
     // 生命周期管理实例
-    private lateinit var mLifecycle: Lifecycle
+    lateinit var lifecycle: Lifecycle
 
     // 对话框实例
     lateinit var dialog: D
@@ -56,16 +56,14 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
 
     override fun onBind(dialog: D, v: View) {
         // 初始化
-        this.mLifecycle = dialog.lifecycle
+        this.lifecycle = dialog.lifecycle
         this.dialog = dialog
         this.binding = onBindView(v)
         // 绑定生命周期方法
-        mLifecycle.addObserver(this)
+        lifecycle.addObserver(this)
         // 初始化代理类
         mViewDelegate = ViewDelegate(context, stateLayout, this)
     }
-
-    abstract fun onBindView(view: View): VB
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
@@ -77,7 +75,7 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        mLifecycle.removeObserver(this)
+        lifecycle.removeObserver(this)
         super.onDestroy(owner)
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
@@ -153,4 +151,6 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     }
 
     override fun onRetryClick() = Unit
+
+    abstract fun onBindView(view: View): VB
 }

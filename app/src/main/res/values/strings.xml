@@ -17,6 +17,8 @@
     <!-- 切换域名 -->
     <string name="switch_domain">切换域名</string>
     <string name="switch_domain__dialog_message">是否切换域名？</string>
+    <string name="switch_domain__cancel">取消</string>
+    <string name="switch_domain__ok">确定</string>
 
     <!-- 对话框 -->
     <string name="dialog">对话框</string>

@@ -31,25 +31,23 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         super.onInit(savedInstanceState)
         // 绑定监听事件
         binding.btnProgressDialog.setOnClickListener(this)
-        binding.btnSimpleDialogFragment.setOnClickListener(this)
-        binding.btnSimpleBottomDialogFragment.setOnClickListener(this)
         binding.btnShowSuccessTip.setOnClickListener(this)
         binding.btnShowWarningTip.setOnClickListener(this)
         binding.btnShowErrorTip.setOnClickListener(this)
         binding.btnSelectDateRange.setOnClickListener(this)
         binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
+        binding.btnShowCustomViewDialog.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_progress_dialog -> showProgressDialog()
-            R.id.btn_simple_dialog_fragment -> showSimpleDialogFragment()
-            R.id.btn_simple_bottom_dialog_fragment -> showSimpleBottomDialogFragment()
             R.id.btn_show_success_tip -> showSuccessTip()
             R.id.btn_show_warning_tip -> showWarningTip()
             R.id.btn_show_error_tip -> showErrorTip()
             R.id.btn_select_date_range -> showSelectDateRangeDialog()
             R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
+            R.id.btn_show_custom_view_dialog -> showCustomViewDialog()
         }
     }
 
@@ -58,14 +56,6 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         Handler(Looper.getMainLooper()).postDelayed(3 * 1000L) {
             dismissProgress()
         }
-    }
-
-    private fun showSimpleDialogFragment() {
-        SimpleDialogFragment.show(supportFragmentManager)
-    }
-
-    private fun showSimpleBottomDialogFragment() {
-        SimpleBottomDialogFragment.show(supportFragmentManager)
     }
 
     private fun showSuccessTip() {
@@ -107,5 +97,9 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showSimpleCustomViewDialog() {
         SimpleCustomViewDialog.showBottomDialog()
+    }
+
+    private fun showCustomViewDialog() {
+        CustomViewDialog.showBottomDialog()
     }
 }
