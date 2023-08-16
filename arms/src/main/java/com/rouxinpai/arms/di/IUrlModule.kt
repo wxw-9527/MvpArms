@@ -15,7 +15,7 @@ interface IUrlModule {
     fun provideDomainConfigurationUrl(): String
 
     /**
-     *
+     * 获取版本更新地址
      */
     fun provideUpgradeUrl(): String
 }
