@@ -53,5 +53,12 @@
             android:layout_height="wrap_content"
             android:text="错误提示"
             android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_simple_custom_view_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示简单自定义弹窗"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>

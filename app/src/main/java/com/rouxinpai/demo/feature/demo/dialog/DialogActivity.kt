@@ -32,6 +32,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         binding.btnShowSuccessTip.setOnClickListener(this)
         binding.btnShowWarningTip.setOnClickListener(this)
         binding.btnShowErrorTip.setOnClickListener(this)
+        binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -42,6 +43,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
             R.id.btn_show_success_tip -> showSuccessTip()
             R.id.btn_show_warning_tip -> showWarningTip()
             R.id.btn_show_error_tip -> showErrorTip()
+            R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
         }
     }
 
@@ -70,5 +72,9 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showErrorTip() {
         showErrorTip("错误提示，这是一个提示用户系统发生异常")
+    }
+
+    private fun showSimpleCustomViewDialog() {
+        SimpleCustomViewDialog.showBottomDialog()
     }
 }
