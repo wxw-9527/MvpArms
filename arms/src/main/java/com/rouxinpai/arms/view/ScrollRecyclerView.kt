@@ -25,7 +25,7 @@ class ScrollRecyclerView @JvmOverloads constructor(
      * 滑动锁定判断依据，若此标记被置为 true，则意味着滑动由父布局处理，请勿进行任何滚动操作。
      * 具体请参考 {@link #onTouchEvent(MotionEvent)} 的处理方案，其他诸如 ScrollView 处理方式相同。
      */
-    private var mLockScroll: Boolean by Delegates.notNull()
+    private var mLockScroll: Boolean = true
 
     override fun getScrollDistance(): Int {
         val layoutManager = layoutManager as LinearLayoutManager
