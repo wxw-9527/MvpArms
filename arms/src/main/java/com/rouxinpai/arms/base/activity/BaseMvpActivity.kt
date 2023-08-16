@@ -6,6 +6,8 @@ import android.content.IntentFilter
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.kongzue.kongzueupdatesdk.v3.UpdateUtil
+import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.barcode.receiver.BarcodeScanningReceiver
@@ -14,12 +16,8 @@ import com.rouxinpai.arms.base.view.ILoadMore
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.LoadMoreDelegate
 import com.rouxinpai.arms.update.model.UpdateInfo
-import constant.UiType
-import model.UiConfig
-import model.UpdateConfig
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import update.UpdateAppUtils
 import javax.inject.Inject
 
 /**
@@ -36,6 +34,9 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
 
     // 是否使用条码解析
     private var mBarcodeScanningReceiverEnabled: Boolean = false
+
+    // 版本更新实例
+    private var mUpdateUtil: UpdateUtil? = null
 
     // 扫描结果解析广播
     private lateinit var mReceiver: BarcodeScanningReceiver
@@ -72,6 +73,12 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // 终止更新流程，释放内存
+        mUpdateUtil?.recycle()
+    }
+
     @Subscribe(threadMode = ThreadMode.POSTING)
     open fun onBarcodeEvent(event: BarcodeEvent) {
         presenter.getBarcodeInfo(event.barcode)
@@ -90,25 +97,27 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     }
 
     override fun showUpdateInfo(updateInfo: UpdateInfo) {
-        super.showUpdateInfo(updateInfo)
-        // ui配置
-        val uiConfig = UiConfig().apply {
-            uiType = UiType.PLENTIFUL
-        }
-        // 更新配置
-        val updateConfig = UpdateConfig().apply {
-            force = updateInfo.isForceUpgrade
-            isShowNotification = false
-            alwaysShowDownLoadDialog = true
-        }
-        // 检查更新
-        UpdateAppUtils
-            .getInstance()
-            .apkUrl(updateInfo.apkFileUrl)
-            .updateTitle("新版本")
-            .updateContent(updateInfo.clientLog)
-            .uiConfig(uiConfig)
-            .updateConfig(updateConfig)
-            .update()
+        // 初始化
+        mUpdateUtil = UpdateUtil(this)
+        // 开始更新
+        mUpdateUtil
+            ?.showDownloadNotification(
+                getString(R.string.upgrade__upgrading),
+                getString(R.string.upgrade__downloading)
+            )
+            ?.showDownloadProgressDialog(
+                getString(R.string.upgrade__downloading),
+                getString(R.string.upgrade__background_download),
+                getString(R.string.upgrade__cancel)
+            )
+            ?.start(
+                updateInfo.apkFileUrl,
+                updateInfo.clientVersion,
+                updateInfo.clientLog,
+                getString(R.string.upgrade__start),
+                getString(R.string.upgrade__cancel),
+                null,
+                updateInfo.isForceUpgrade
+            )
     }
 }

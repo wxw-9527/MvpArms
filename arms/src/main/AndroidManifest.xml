@@ -17,6 +17,11 @@
     <!-- 发送通知权限 -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- 版本更新用到的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <queries package="${applicationId}">
         <!-- PictureSelector Permission Start -->
         <!-- Android 11 使用相机需要如下代码 -->
@@ -30,4 +35,18 @@
 
     <!-- 华为分析 -->
     <uses-sdk tools:overrideLibrary="com.huawei.agconnect.credential,com.huawei.agconnect.core,com.huawei.agconnect.https,com.huawei.agconnect.datastore" />
+
+    <application>
+
+        <!-- 版本更新相关 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+    </application>
 </manifest>

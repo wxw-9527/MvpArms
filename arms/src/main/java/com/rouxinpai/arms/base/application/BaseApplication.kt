@@ -7,7 +7,6 @@ import com.kongzue.dialogx.DialogX
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
-import update.UpdateAppUtils
 import java.util.*
 
 /**
@@ -37,8 +36,6 @@ abstract class BaseApplication : Application(), IApplication {
         initMmkv()
         // 初始化DialogX
         initDialogX()
-        // 初始化版本更新
-        initUpdater()
     }
 
     override fun finishActivity(vararg cls: Class<*>) {
@@ -96,11 +93,6 @@ abstract class BaseApplication : Application(), IApplication {
     // 初始化DialogX
     private fun initDialogX() {
         DialogX.init(this)
-    }
-
-    // 初始化版本更新框架
-    private fun initUpdater() {
-        UpdateAppUtils.init(this)
     }
 
     // Activity入栈
