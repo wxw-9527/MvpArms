@@ -106,20 +106,12 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
         mViewDelegate.showErrorTip(message)
     }
 
-    override fun showProgress(labelId: Int, detailId: Int?) {
-        mViewDelegate.showProgress(labelId, detailId)
+    override fun showProgress(messageId: Int?) {
+        mViewDelegate.showProgress(messageId)
     }
 
-    override fun showProgress(labelMsg: CharSequence?, detailMsg: String?) {
-        mViewDelegate.showProgress(labelMsg, detailMsg)
-    }
-
-    override fun updateProgress(detailId: Int) {
-        mViewDelegate.updateProgress(detailId)
-    }
-
-    override fun updateProgress(detailMsg: String?) {
-        mViewDelegate.updateProgress(detailMsg)
+    override fun showProgress(message: CharSequence?) {
+        mViewDelegate.showProgress(message)
     }
 
     override fun dismissProgress() {

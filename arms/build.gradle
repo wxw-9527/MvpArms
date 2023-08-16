@@ -83,7 +83,6 @@ dependencies {
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
     api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta8'
-    implementation 'com.github.wxw-9527:KProgressHUD:1.0.0'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 日历

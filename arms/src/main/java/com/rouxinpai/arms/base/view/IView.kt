@@ -57,32 +57,16 @@ interface IView: ILoadMore {
     /**
      * 显示加载进度弹窗
      *
-     * @param labelId   进度条消息文本资源 ID
-     * @param detailId  进度条详情文本资源 ID
+     * @param messageId   进度条消息文本资源 ID
      */
-    fun showProgress(@StringRes labelId: Int, @StringRes detailId: Int? = null)
+    fun showProgress(@StringRes messageId: Int?)
 
     /**
      * 显示加载进度弹窗
      *
-     * @param labelMsg  进度条消息文本
-     * @param detailMsg 进度条详情文本
+     * @param message  进度条消息文本
      */
-    fun showProgress(labelMsg: CharSequence? = null, detailMsg: String? = null)
-
-    /**
-     * 更新进度弹窗的详情文本
-     *
-     * @param detailId  进度条详情文本资源 ID
-     */
-    fun updateProgress(@StringRes detailId: Int)
-
-    /**
-     * 更新进度弹窗的详情文本
-     *
-     * @param detailMsg 进度条详情文本
-     */
-    fun updateProgress(detailMsg: String? = null)
+    fun showProgress(message: CharSequence? = null)
 
     /**
      * 销毁加载进度弹窗

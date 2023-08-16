@@ -14,6 +14,7 @@ import com.rouxinpai.arms.dialog.DateRangeDialog
 import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.DialogActivityBinding
+import timber.log.Timber
 
 /**
  * author : Saxxhw
@@ -53,7 +54,13 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showProgressDialog() {
         showProgress()
+        Handler(Looper.getMainLooper()).postDelayed(1 * 1000L) {
+            Timber.d("进度条状态1 = ${isProgressShowing()}")
+        }
         Handler(Looper.getMainLooper()).postDelayed(3 * 1000L) {
+            Handler(Looper.getMainLooper()).postDelayed(1 * 1000L) {
+                Timber.d("进度条状态2 = ${isProgressShowing()}")
+            }
             dismissProgress()
         }
     }
