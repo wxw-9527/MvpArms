@@ -6,7 +6,10 @@ import android.content.IntentFilter
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.kongzue.dialogx.dialogs.MessageDialog
+import com.kongzue.dialogx.dialogs.WaitDialog
 import com.kongzue.kongzueupdatesdk.v3.UpdateUtil
+import com.kongzue.kongzueupdatesdk.v3.UpdateUtil.OnUpdateStatusChangeListener
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
@@ -97,27 +100,40 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     }
 
     override fun showUpdateInfo(updateInfo: UpdateInfo) {
-        // 初始化
-        mUpdateUtil = UpdateUtil(this)
-        // 开始更新
-        mUpdateUtil
-            ?.showDownloadNotification(
-                getString(R.string.upgrade__upgrading),
-                getString(R.string.upgrade__downloading)
-            )
-            ?.showDownloadProgressDialog(
-                getString(R.string.upgrade__downloading),
-                getString(R.string.upgrade__background_download),
-                getString(R.string.upgrade__cancel)
-            )
-            ?.start(
-                updateInfo.apkFileUrl,
+        MessageDialog
+            .show(
                 updateInfo.clientVersion,
                 updateInfo.clientLog,
-                getString(R.string.upgrade__start),
-                getString(R.string.upgrade__cancel),
-                null,
-                updateInfo.isForceUpgrade
             )
+            .setCancelable(false)
+            .setCancelButton(R.string.upgrade__cancel)
+            .setOkButton(R.string.upgrade__start) { _, _ ->
+                // 初始化
+                mUpdateUtil = UpdateUtil(this)
+                // 开始更新
+                mUpdateUtil
+                    ?.setOnUpdateStatusChangeListener(object : OnUpdateStatusChangeListener {
+
+                        override fun onDownloadStart() {
+                            WaitDialog.show(R.string.upgrade__downloading)
+                        }
+
+                        override fun onDownloading(progress: Int) {
+                            val p = progress.toFloat() / 100
+                            WaitDialog.show(R.string.upgrade__downloading, p)
+                        }
+
+                        override fun onDownloadCompleted() {
+                            WaitDialog.dismiss()
+                        }
+
+                        override fun onInstallStart() {}
+
+                        override fun onDownloadCancel() {}
+                    })
+                    ?.hideDownloadProgressDialog()
+                    ?.start(updateInfo.apkFileUrl)
+                false
+            }
     }
 }
