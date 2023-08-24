@@ -19,5 +19,4 @@ data class ClientMessageEvent(val message: String) {
             EventBus.getDefault().post(ClientMessageEvent(message))
         }
     }
-
 }

@@ -13,13 +13,13 @@ agcp {
 
 android {
     namespace 'com.rouxinpai.demo'
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.rouxinpai.demo"
         minSdk 21
-        targetSdk 33
-        versionCode 223
-        versionName "2.2.3"
+        targetSdk 34
+        versionCode 224
+        versionName "2.2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
