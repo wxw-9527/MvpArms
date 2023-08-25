@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kongzue.dialogx.interfaces.ScrollController
-import kotlin.properties.Delegates
 
 /**
  * author : Saxxhw
@@ -30,10 +29,14 @@ class ScrollRecyclerView @JvmOverloads constructor(
     override fun getScrollDistance(): Int {
         val layoutManager = layoutManager as LinearLayoutManager
         val firstVisibleItem = this.getChildAt(0)
-        val firstItemPosition = layoutManager.findFirstVisibleItemPosition()
-        val itemHeight = firstVisibleItem.height
-        val firstItemBottom = layoutManager.getDecoratedBottom(firstVisibleItem)
-        return (firstItemPosition + 1) * itemHeight - firstItemBottom
+        return if (firstVisibleItem != null) {
+            val itemHeight = firstVisibleItem.height
+            val firstItemBottom = layoutManager.getDecoratedBottom(firstVisibleItem)
+            val firstItemPosition = layoutManager.findFirstVisibleItemPosition()
+            (firstItemPosition + 1) * itemHeight - firstItemBottom
+        } else {
+            0
+        }
     }
 
     override fun isCanScroll(): Boolean {
