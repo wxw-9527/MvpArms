@@ -2,8 +2,12 @@ package com.rouxinpai.arms.base.application
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import com.kongzue.dialogx.DialogX
+import com.kongzue.dialogx.interfaces.ProgressViewInterface
+import com.kongzue.dialogx.style.MaterialStyle
+import com.kongzue.dialogx.util.views.NoArticulatedProgressView
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
@@ -92,6 +96,21 @@ abstract class BaseApplication : Application(), IApplication {
 
     // 初始化DialogX
     private fun initDialogX() {
+        // 去掉动画衔接效果以达到快速响应
+        val materialStyle = object : MaterialStyle() {
+            override fun overrideWaitTipRes(): WaitTipRes {
+                return object : WaitTipRes() {
+                    override fun overrideWaitView(
+                        context: Context,
+                        light: Boolean,
+                    ): ProgressViewInterface {
+                        return NoArticulatedProgressView(context)
+                    }
+                }
+            }
+        }
+        DialogX.globalStyle = materialStyle
+        // 初始化
         DialogX.init(this)
     }
 
