@@ -1,7 +1,6 @@
 package com.rouxinpai.demo.feature.demo.upgrade
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.update.model.ClientNameEnum
 import com.rouxinpai.arms.update.model.ClientTypeEnum
@@ -18,10 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class UpgradeActivity :
     BaseMvpActivity<UpgradeActivityBinding, UpgradeContract.View, UpgradePresenter>(),
     UpgradeContract.View {
-
-    override fun onCreateViewBinding(inflater: LayoutInflater): UpgradeActivityBinding {
-        return UpgradeActivityBinding.inflate(inflater)
-    }
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)

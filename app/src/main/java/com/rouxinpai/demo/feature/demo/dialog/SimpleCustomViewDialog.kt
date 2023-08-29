@@ -2,7 +2,6 @@ package com.rouxinpai.demo.feature.demo.dialog
 
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.LifecycleOwner
 import com.kongzue.dialogx.dialogs.BottomDialog
@@ -41,10 +40,6 @@ class SimpleCustomViewDialog<D : BaseDialog> :
                 .setCustomView(SimpleCustomViewDialog<CustomDialog>())
                 .show()
         }
-    }
-
-    override fun onBindView(view: View): SimpleCustomViewDialogBinding {
-        return SimpleCustomViewDialogBinding.bind(view)
     }
 
     override fun onCreate(owner: LifecycleOwner) {

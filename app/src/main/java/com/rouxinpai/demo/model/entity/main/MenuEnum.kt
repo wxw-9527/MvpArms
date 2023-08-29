@@ -3,6 +3,7 @@ package com.rouxinpai.demo.model.entity.main
 import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
+import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.switchdomain.SwitchDomainActivity
 import com.rouxinpai.demo.feature.demo.upgrade.UpgradeActivity
 
@@ -37,5 +38,10 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
     /**
      * 版本更新
      */
-    UPGRADE(value = "版本更新", clazz = UpgradeActivity::class.java)
+    UPGRADE(value = "版本更新", clazz = UpgradeActivity::class.java),
+
+    /**
+     *
+     */
+    FRAGMENT_DEMO(value = "Fragment示例", clazz = FragmentDemoActivity::class.java)
 }

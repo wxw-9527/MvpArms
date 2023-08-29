@@ -2,13 +2,13 @@ package com.rouxinpai.arms.base.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.EventBusEnabled
+import com.rouxinpai.arms.util.BindingReflex
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
 import com.view.multistatepage.intf.OnRetryClickListener
@@ -38,7 +38,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = onCreateViewBinding(layoutInflater)
+        binding = BindingReflex.reflexViewBinding(this::class.java, layoutInflater)
         setContentView(binding.root)
         onParseData(intent)
         val bundle = intent?.extras
@@ -151,8 +151,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     }
 
     override fun onRetryClick() = Unit
-
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater): VB
 
     protected open fun onParseData(intent: Intent) = Unit
 

@@ -91,5 +91,10 @@
             android:name=".feature.demo.upgrade.UpgradeActivity"
             android:label="@string/upgrade"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.fragment.FragmentDemoActivity"
+            android:label="@string/fragment_demo"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

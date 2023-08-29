@@ -11,6 +11,7 @@ import com.kongzue.dialogx.interfaces.OnBindView
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
+import com.rouxinpai.arms.util.BindingReflex
 import com.view.multistatepage.intf.OnRetryClickListener
 import org.greenrobot.eventbus.EventBus
 
@@ -58,7 +59,7 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
         // 初始化
         this.lifecycle = dialog.lifecycle
         this.dialog = dialog
-        this.binding = onBindView(v)
+        this.binding = BindingReflex.reflexViewBinding(this::class.java, v)
         // 绑定生命周期方法
         lifecycle.addObserver(this)
         // 初始化代理类
@@ -143,6 +144,4 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     }
 
     override fun onRetryClick() = Unit
-
-    abstract fun onBindView(view: View): VB
 }

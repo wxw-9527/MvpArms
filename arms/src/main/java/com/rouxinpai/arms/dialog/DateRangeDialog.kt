@@ -53,10 +53,6 @@ class DateRangeDialog :
     // 监听事件
     private var mOnDateRangeSelectedListener: OnDateRangeSelectedListener? = null
 
-    override fun onBindView(view: View): DateRangeDialogBinding {
-        return DateRangeDialogBinding.bind(view)
-    }
-
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         // 绑定监听事件

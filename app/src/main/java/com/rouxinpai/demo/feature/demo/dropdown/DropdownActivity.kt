@@ -1,7 +1,6 @@
 package com.rouxinpai.demo.feature.demo.dropdown
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.view.DropdownButton
@@ -15,10 +14,6 @@ import com.rouxinpai.demo.databinding.DropdownActivityBinding
  */
 class DropdownActivity : BaseActivity<DropdownActivityBinding>(),
     DropdownButton.OnItemSelectedListener {
-
-    override fun onCreateViewBinding(inflater: LayoutInflater): DropdownActivityBinding {
-        return DropdownActivityBinding.inflate(inflater)
-    }
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)

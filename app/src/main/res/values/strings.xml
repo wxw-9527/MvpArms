@@ -31,4 +31,7 @@
 
     <!-- 版本更新 -->
     <string name="upgrade">版本更新</string>
+
+    <!-- Fragment示例 -->
+    <string name="fragment_demo">Fragment示例</string>
 </resources>
