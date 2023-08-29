@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.fondesa.recyclerviewdivider.dividerBuilder
@@ -69,14 +67,6 @@ class MainActivity : BaseActivity<MainActivityBinding>(), OnItemClickListener {
      * 菜单列表适配器
      */
     private class MenuAdapter : BaseVbAdapter<MainRecycleItemBinding, MenuEnum>() {
-
-        override fun onCreateViewBinding(
-            inflater: LayoutInflater,
-            parent: ViewGroup,
-            viewType: Int
-        ): MainRecycleItemBinding {
-            return MainRecycleItemBinding.inflate(inflater, parent, false)
-        }
 
         override fun onBindView(binding: MainRecycleItemBinding, position: Int, item: MenuEnum) {
             binding.tvText.text = item.value

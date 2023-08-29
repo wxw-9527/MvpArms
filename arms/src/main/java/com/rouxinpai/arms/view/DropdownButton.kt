@@ -5,10 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -166,14 +164,6 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
 
         fun clearSelectedIndex() {
             mSelectedIndex = -1
-        }
-
-        override fun onCreateViewBinding(
-            inflater: LayoutInflater,
-            parent: ViewGroup,
-            viewType: Int
-        ): DropdownButtonRecycleItemBinding {
-            return DropdownButtonRecycleItemBinding.inflate(inflater, parent, false)
         }
 
         override fun onBindView(
