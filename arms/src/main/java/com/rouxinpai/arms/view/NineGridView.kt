@@ -2,9 +2,7 @@ package com.rouxinpai.arms.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
 import androidx.core.content.res.use
@@ -145,13 +143,6 @@ class NineGridView<T : NineGridView.IEntity> @JvmOverloads constructor(
                 return dataSize.plus(1)
             }
             return super.getCount()
-        }
-
-        override fun createBinding(
-            inflater: LayoutInflater,
-            parent: ViewGroup?,
-        ): NineGridViewItemBinding {
-            return NineGridViewItemBinding.inflate(inflater, parent, false)
         }
 
         override fun bindView(binding: NineGridViewItemBinding, position: Int) {

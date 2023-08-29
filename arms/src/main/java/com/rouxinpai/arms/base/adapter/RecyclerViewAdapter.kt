@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.entity.node.BaseNode
 import com.chad.library.adapter.base.provider.BaseItemProvider
 import com.chad.library.adapter.base.provider.BaseNodeProvider
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rouxinpai.arms.util.BindingReflex
 
 /**
  * author : Saxxhw
@@ -22,7 +23,7 @@ open class VbHolder<VB : ViewBinding>(val binding: VB) : BaseViewHolder(binding.
 abstract class BaseVbAdapter<VB : ViewBinding, T>(data: MutableList<T>? = null) : BaseQuickAdapter<T, VbHolder<VB>>(0, data) {
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VbHolder<VB> {
-        val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
+        val binding = BindingReflex.reflexViewBinding<VB>(this::class.java, LayoutInflater.from(parent.context), parent, false)
         return VbHolder(binding)
     }
 
@@ -34,8 +35,6 @@ abstract class BaseVbAdapter<VB : ViewBinding, T>(data: MutableList<T>? = null) 
         super.convert(holder, item, payloads)
         onBindView(holder.binding, holder.layoutPosition, item, payloads)
     }
-
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
@@ -52,7 +51,7 @@ abstract class BaseVBItemProvider<T, VB : ViewBinding> : BaseItemProvider<T>() {
         get() = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val binding = onCreateViewBinding(LayoutInflater.from(parent.context), parent, viewType)
+        val binding = BindingReflex.reflexViewBinding<VB>(this::class.java, LayoutInflater.from(parent.context), parent, false)
         return VbHolder(binding)
     }
 
@@ -71,8 +70,6 @@ abstract class BaseVBItemProvider<T, VB : ViewBinding> : BaseItemProvider<T>() {
         }
     }
 
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int, ): VB
-
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 
     protected open fun onBindView(binding: VB, position: Int, item: T, payloads: List<Any>) {}
@@ -88,7 +85,7 @@ abstract class BaseVBItemProvider<T, VB : ViewBinding> : BaseItemProvider<T>() {
         get() = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val binding = onCreateViewBinding(LayoutInflater.from(context), parent, viewType)
+        val binding = BindingReflex.reflexViewBinding<VB>(this::class.java, LayoutInflater.from(parent.context), parent, false)
         return VbHolder(binding)
     }
 
@@ -126,8 +123,6 @@ abstract class BaseVBItemProvider<T, VB : ViewBinding> : BaseItemProvider<T>() {
             onChildClick(binding, view, position, item)
         }
     }
-
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup, viewType: Int, ): VB
 
     protected abstract fun onBindView(binding: VB, position: Int, item: T)
 

@@ -1,3 +1,6 @@
+# 保留继承了ViewBinding的类不被混淆
+-keep class * extends androidx.viewbinding.ViewBinding { *; }
+
 # PictureSelector：https://github.com/LuckSiege/PictureSelector
 -keep class com.luck.picture.lib.** { *; }
 

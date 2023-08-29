@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import android.widget.BaseAdapter
 import androidx.annotation.IdRes
+import com.rouxinpai.arms.util.BindingReflex
 
 /**
  * author : Saxxhw
@@ -42,7 +43,7 @@ abstract class BaseAdapter<VB : ViewBinding, T> : BaseAdapter() {
         var view = convertView
         val binding: VB
         if (null == view) {
-            binding = createBinding(LayoutInflater.from(parent?.context), parent)
+            binding = BindingReflex.reflexViewBinding(this::class.java, LayoutInflater.from(parent?.context), parent, false)
             view = binding.root
             view.tag = binding
         } else {
@@ -57,8 +58,6 @@ abstract class BaseAdapter<VB : ViewBinding, T> : BaseAdapter() {
     /* ************ 回调 ************ */
 
     /* ************ 公共函数 ************ */
-
-    abstract fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): VB
 
     abstract fun bindView(binding: VB, position: Int)
 
