@@ -1,6 +1,5 @@
 package com.rouxinpai.demo.feature.demo.balloon
 
-import android.view.LayoutInflater
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.demo.databinding.BalloonActivityBinding
 
@@ -10,8 +9,4 @@ import com.rouxinpai.demo.databinding.BalloonActivityBinding
  * time   : 2023/8/3 16:17
  * desc   :
  */
-class BalloonActivity : BaseActivity<BalloonActivityBinding>() {
-    override fun onCreateViewBinding(inflater: LayoutInflater): BalloonActivityBinding {
-        return BalloonActivityBinding.inflate(inflater)
-    }
-}
+class BalloonActivity : BaseActivity<BalloonActivityBinding>()

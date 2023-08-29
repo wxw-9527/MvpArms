@@ -1,7 +1,6 @@
 package com.rouxinpai.demo.feature.demo.switchdomain
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import com.kongzue.dialogx.dialogs.BottomDialog
@@ -19,10 +18,6 @@ import com.rouxinpai.demo.feature.splash.SplashActivity
  * desc   :
  */
 class SwitchDomainActivity : BaseActivity<SwitchDomainActivityBinding>(), OnClickListener {
-
-    override fun onCreateViewBinding(inflater: LayoutInflater): SwitchDomainActivityBinding {
-        return SwitchDomainActivityBinding.inflate(inflater)
-    }
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)

@@ -1,7 +1,6 @@
 package com.rouxinpai.arms.domain
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import com.rouxinpai.arms.R
@@ -21,10 +20,6 @@ abstract class BaseDomainConfigActivity :
     BaseMvpActivity<BaseDomainConfigActivityBinding, BaseDomainConfigContract.View, BaseDomainConfigPresenter>(),
     BaseDomainConfigContract.View,
     OnClickListener {
-
-    override fun onCreateViewBinding(inflater: LayoutInflater): BaseDomainConfigActivityBinding {
-        return BaseDomainConfigActivityBinding.inflate(inflater)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

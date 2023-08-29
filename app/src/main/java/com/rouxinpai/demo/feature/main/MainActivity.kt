@@ -38,10 +38,6 @@ class MainActivity : BaseActivity<MainActivityBinding>(), OnItemClickListener {
     // 菜单列表适配器
     private val mMenuAdapter = MenuAdapter()
 
-    override fun onCreateViewBinding(inflater: LayoutInflater): MainActivityBinding {
-        return MainActivityBinding.inflate(inflater)
-    }
-
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         // 绑定适配器

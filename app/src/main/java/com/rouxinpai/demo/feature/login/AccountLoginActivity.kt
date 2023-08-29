@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import com.bumptech.glide.Glide
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
@@ -36,10 +35,6 @@ class AccountLoginActivity :
             val starter = Intent(context, AccountLoginActivity::class.java)
             context.startActivity(starter)
         }
-    }
-
-    override fun onCreateViewBinding(inflater: LayoutInflater): AccountLoginActivityBinding {
-        return AccountLoginActivityBinding.inflate(inflater)
     }
 
     override fun hideNavButton(): Boolean {

@@ -60,10 +60,6 @@ class CustomViewDialog :
     override val stateLayout: View
         get() = binding.stateLayout
 
-    override fun onBindView(view: View): CustomViewDialogBinding {
-        return CustomViewDialogBinding.bind(view)
-    }
-
     override fun onCreatePresenter(): CustomViewPresenter {
         val accessors = EntryPointAccessors.fromApplication<CustomViewPresenterEntryPoint>(context)
         return accessors.presenter()

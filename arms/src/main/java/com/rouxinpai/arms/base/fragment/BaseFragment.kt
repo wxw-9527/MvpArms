@@ -9,6 +9,7 @@ import androidx.viewbinding.ViewBinding
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
+import com.rouxinpai.arms.util.BindingReflex
 import com.view.multistatepage.intf.OnRetryClickListener
 import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.atomic.AtomicBoolean
@@ -53,7 +54,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        mBinding = onCreateViewBinding(inflater, container)
+        mBinding = BindingReflex.reflexViewBinding(this::class.java, layoutInflater, container, false)
         return mBinding?.root
     }
 
@@ -150,8 +151,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IView, OnRetryClickL
     }
 
     override fun onRetryClick() = Unit
-
-    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, parent: ViewGroup?): VB
 
     protected open fun onParseData(bundle: Bundle) = Unit
 
