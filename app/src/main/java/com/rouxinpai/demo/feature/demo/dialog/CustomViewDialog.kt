@@ -1,5 +1,6 @@
 package com.rouxinpai.demo.feature.demo.dialog
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
@@ -60,8 +61,8 @@ class CustomViewDialog :
     override val stateLayout: View
         get() = binding.stateLayout
 
-    override fun onCreatePresenter(): CustomViewPresenter {
-        val accessors = EntryPointAccessors.fromApplication<CustomViewPresenterEntryPoint>(context)
+    override fun onCreatePresenter(activity: Activity): CustomViewPresenter {
+        val accessors = EntryPointAccessors.fromApplication<CustomViewPresenterEntryPoint>(activity)
         return accessors.presenter()
     }
 
