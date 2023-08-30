@@ -2,6 +2,7 @@
 
 package com.rouxinpai.arms.base.dialog
 
+import android.app.Activity
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
@@ -36,7 +37,7 @@ abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         // 初始化Presenter
-        presenter = onCreatePresenter()
+        presenter = onCreatePresenter(dialog.ownActivity)
         presenter.bind(lifecycle, this as V)
         // 初始化加载更多代理类
         mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
@@ -59,5 +60,5 @@ abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P 
         mLoadMoreDelegate.loadMoreFail()
     }
 
-    abstract fun onCreatePresenter(): P
+    abstract fun onCreatePresenter(activity: Activity): P
 }
