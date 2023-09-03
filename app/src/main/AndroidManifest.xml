@@ -96,5 +96,10 @@
             android:name=".feature.demo.fragment.FragmentDemoActivity"
             android:label="@string/fragment_demo"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.repeatclick.DebounceClickDemoActivity"
+            android:label="@string/debounce_click_demo"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
