@@ -34,4 +34,7 @@
 
     <!-- Fragment示例 -->
     <string name="fragment_demo">Fragment示例</string>
+
+    <!-- 防抖点击示例 -->
+    <string name="debounce_click_demo">防抖点击示例</string>
 </resources>
