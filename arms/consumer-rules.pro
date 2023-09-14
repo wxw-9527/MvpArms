@@ -10,6 +10,7 @@
 -keep class com.rouxinpai.arms.barcode.model.** { <fields>; }
 -keep class com.rouxinpai.arms.domain.model.** { <fields>; }
 -keep class com.rouxinpai.arms.ws.model.** { <fields>; }
+-keep class com.rouxinpai.arms.print.model.** { <fields>; }
 
 # AppGallery Connect
 -ignorewarnings
