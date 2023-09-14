@@ -37,4 +37,7 @@
 
     <!-- 防抖点击示例 -->
     <string name="debounce_click_demo">防抖点击示例</string>
+
+    <!-- 打印示例 -->
+    <string name="print_demo">打印示例</string>
 </resources>

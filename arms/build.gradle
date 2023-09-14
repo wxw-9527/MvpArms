@@ -73,6 +73,8 @@ dependencies {
     api 'org.greenrobot:eventbus:3.3.1'
     // 日志打印
     api 'com.jakewharton.timber:timber:5.0.1'
+    // 权限
+    api 'com.github.permissions-dispatcher:ktx:1.1.4'
     // RecyclerView相关
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
@@ -82,7 +84,7 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.1'
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
-    api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta13'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta11'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 日历
@@ -90,7 +92,9 @@ dependencies {
     // 版本更新
     implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
     // 气泡提示
-    implementation "com.github.skydoves:balloon:1.5.4"
+    implementation 'com.github.skydoves:balloon:1.5.4'
+    // 蓝牙打印机
+    api files('libs/printersdkv5.7.0.jar')
     // 华为
     implementation 'com.huawei.agconnect:agconnect-core:1.9.0.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.9.0.300'

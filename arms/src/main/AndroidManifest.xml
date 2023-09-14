@@ -22,6 +22,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!-- 便携打印机 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <queries package="${applicationId}">
         <!-- PictureSelector Permission Start -->
         <!-- Android 11 使用相机需要如下代码 -->
@@ -48,5 +56,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
+
+        <!-- 打印 -->
+        <activity
+            android:name=".print.PrintActivity"
+            android:label="@string/print__title" />
+
+        <!-- 连接便携打印机 -->
+        <activity
+            android:name=".print.ConnectPortablePrinterActivity"
+            android:label="@string/connect_portable_printer" />
     </application>
 </manifest>

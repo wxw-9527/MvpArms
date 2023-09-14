@@ -6,7 +6,13 @@ package com.rouxinpai.arms.barcode.model
  * time   : 2023/3/24 16:19
  * desc   :
  */
-data class BarcodeInfoVO(val barcode: String, val barType: Int) {
+data class BarcodeInfoVO(
+    val barcode: String,
+    val barType: Int,
+    val purchaseOrderNo: String,
+    val inboundNo: String,
+    val qcTaskNo: String,
+) {
 
     companion object {
 
@@ -14,32 +20,35 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
          *
          */
         fun convertFromDTO(dto: BarcodeInfoDTO): BarcodeInfoVO {
+            var purchaseOrderNo = ""
+            var inboundNo = ""
+            var quality = ""
+            var inboundOrderDetailId = ""
+            var batchCode: String? = null
+            var bomCode: String? = null
+            var quantity = 0f
+            dto.barContextDataList?.forEach {
+                when (it.billTypeCode) {
+                    "purchaseOrderNo" -> purchaseOrderNo = it.billCode
+                    "inboundNo" -> inboundNo = it.billCode
+                    "quality" -> quality = it.billCode
+                    "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
+                    "batchCode" -> batchCode = it.billCode
+                    "bomCode" -> bomCode = it.billCode
+                    "quantity" -> quantity = it.billCode.toFloat()
+                }
+            }
             return BarcodeInfoVO(
                 barcode = dto.barCode,
-                barType = dto.barType
+                barType = dto.barType,
+                purchaseOrderNo = purchaseOrderNo,
+                inboundNo = inboundNo,
+                qcTaskNo = quality,
             ).apply {
                 when {
                     isMaterialBarcode -> {
-                        var purchaseOrderNo = ""
-                        var inboundNo = ""
-                        var inboundOrderDetailId = ""
-                        var batchCode: String? = null
-                        var bomCode: String? = null
-                        var quantity = 0f
-                        dto.barContextDataList?.forEach {
-                            when (it.billTypeCode) {
-                                "purchaseOrderNo" -> purchaseOrderNo = it.billCode
-                                "inboundNo" -> inboundNo = it.billCode
-                                "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
-                                "batchCode" -> batchCode = it.billCode
-                                "bomCode" -> bomCode = it.billCode
-                                "quantity" -> quantity = it.billCode.toFloat()
-                            }
-                        }
                         material = MaterialInfoVO(
-                            inboundOrderCode = inboundNo,
                             inboundOrderDetailId = inboundOrderDetailId,
-                            purchaseOrderNo = purchaseOrderNo,
                             id = dto.materialInfo.materialId,
                             code = dto.materialInfo.materialCode,
                             name = dto.materialInfo.materialName.orEmpty(),
@@ -50,9 +59,9 @@ data class BarcodeInfoVO(val barcode: String, val barType: Int) {
                             quantity = quantity,
                             stockQuantity = dto.materialStockDetail?.storageQuantity,
                             basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity ?: 0f,
-                            warehouseId= dto.materialStockDetail?.warehouseId.orEmpty(),
-                            warehouseCode= dto.materialStockDetail?.warehouseCode.orEmpty(),
-                            warehouseName= dto.materialStockDetail?.warehouseName,
+                            warehouseId = dto.materialStockDetail?.warehouseId.orEmpty(),
+                            warehouseCode = dto.materialStockDetail?.warehouseCode.orEmpty(),
+                            warehouseName = dto.materialStockDetail?.warehouseName,
                             supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
                         )
                     }

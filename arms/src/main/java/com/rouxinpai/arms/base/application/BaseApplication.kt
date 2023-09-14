@@ -11,7 +11,7 @@ import com.kongzue.dialogx.util.views.NoArticulatedProgressView
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
-import java.util.*
+import java.util.Stack
 
 /**
  * author : Saxxhw
@@ -96,22 +96,22 @@ abstract class BaseApplication : Application(), IApplication {
 
     // 初始化DialogX
     private fun initDialogX() {
+        // 初始化
+        DialogX.init(this)
         // 去掉动画衔接效果以达到快速响应
         val materialStyle = object : MaterialStyle() {
+
             override fun overrideWaitTipRes(): WaitTipRes {
+
                 return object : WaitTipRes() {
-                    override fun overrideWaitView(
-                        context: Context,
-                        light: Boolean,
-                    ): ProgressViewInterface {
+
+                    override fun overrideWaitView(context: Context, light: Boolean): ProgressViewInterface {
                         return NoArticulatedProgressView(context)
                     }
                 }
             }
         }
         DialogX.globalStyle = materialStyle
-        // 初始化
-        DialogX.init(this)
     }
 
     // Activity入栈

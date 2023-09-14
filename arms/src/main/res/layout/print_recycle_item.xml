@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="3dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_code"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textColor="#FF252631"
+        android:textSize="14sp"
+        tools:text="D22892024002400" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textColor="#FF252631"
+        android:textSize="14sp"
+        tools:text="株距齿轮拆卸专用工具 COMP" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_barcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:textColor="#FF252631"
+        android:textSize="14sp"
+        tools:text="1012309100000611706117" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#FF252631"
+        android:textSize="14sp"
+        tools:text="已打印" />
+</LinearLayout>

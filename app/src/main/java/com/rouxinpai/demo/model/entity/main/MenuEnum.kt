@@ -4,6 +4,7 @@ import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
+import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
 import com.rouxinpai.demo.feature.demo.switchdomain.SwitchDomainActivity
 import com.rouxinpai.demo.feature.demo.upgrade.UpgradeActivity
@@ -50,4 +51,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 防抖点击
      */
     DEBOUNCE_CLICK_DEMO(value = "防抖点击", clazz = DebounceClickDemoActivity::class.java),
+
+    /**
+     * 打印示例
+     */
+    PRINT_DEMO(value = "打印示例", clazz = PrintDemoActivity::class.java),
 }

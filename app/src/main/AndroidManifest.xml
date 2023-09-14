@@ -74,8 +74,7 @@
 
         <activity
             android:name=".feature.demo.dialog.DialogActivity"
-            android:label="@string/dialog"
-            android:screenOrientation="portrait" />
+            android:label="@string/dialog" />
 
         <activity
             android:name=".feature.demo.balloon.BalloonActivity"
@@ -100,6 +99,11 @@
         <activity
             android:name=".feature.demo.repeatclick.DebounceClickDemoActivity"
             android:label="@string/debounce_click_demo"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.print.PrintDemoActivity"
+            android:label="@string/print_demo"
             android:screenOrientation="portrait" />
     </application>
 </manifest>
