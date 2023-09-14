@@ -15,4 +15,34 @@
     <string name="upgrade__downloading">下载中…</string>
     <string name="upgrade__cancel">暂不更新</string>
     <string name="upgrade__start">开始</string>
+
+    <!-- 便携式打印 -->
+    <string name="print">打印</string>
+    <string name="print__title">条码明细</string>
+    <string name="print__disconnect">断开连接</string>
+    <string name="print__code">编码</string>
+    <string name="print__name">名称</string>
+    <string name="print__barcode">条码</string>
+    <string name="print__status">状态</string>
+    <string name="print__printed">已打印</string>
+    <string name="print__unprinted">未打印</string>
+    <string name="print__connect_printer_and_print">连接打印机并打印</string>
+    <string name="print__select_template">请选择打印模板</string>
+    <string name="print__template_not_found">未查询到打印模板</string>
+    <string name="print__printing">打印中</string>
+    <string name="print__printer_exception">打印机状态异常，请重新连接打印机</string>
+    <string name="print__print_successful">打印成功！</string>
+    <string name="print__print_failed">打印失败，请重新打印</string>
+    <string name="print__barcode_index">条码%1$d</string>
+
+    <!-- 连接便携式打印机 -->
+    <string name="connect_portable_printer">连接打印机</string>
+    <string name="connect_portable_printer__bluetooth_not_supported">当前设备不支持蓝牙</string>
+    <string name="connect_portable_printer__pairing">配对中，请稍后</string>
+    <string name="connect_portable_printer__paired">已配对</string>
+    <string name="connect_portable_printer__unpair">取消配对</string>
+    <string name="connect_portable_printer__connecting">正在连接打印机，请稍后</string>
+    <string name="connect_portable_printer__connect_successful">连接成功</string>
+    <string name="connect_portable_printer__disconnect_success">断开连接成功</string>
+    <string name="connect_portable_printer__connect_fail">连接失败，请重试</string>
 </resources>

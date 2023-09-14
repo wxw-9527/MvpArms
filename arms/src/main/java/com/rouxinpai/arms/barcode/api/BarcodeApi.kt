@@ -25,4 +25,13 @@ interface BarcodeApi {
         @Url url: String = "${DomainUtils.getDomain()}ident/bill-info/query",
         @Body body: RequestBody
     ): Observable<ApiResponse<BarcodeInfoDTO>>
+
+    /**
+     * 批量查询指定条码信息
+     */
+    @POST
+    fun listBarcodeInfos(
+        @Url url: String = "${DomainUtils.getDomain()}ident/bill-info/list",
+        @Body body: RequestBody
+    ): Observable<ApiResponse<List<BarcodeInfoDTO>>>
 }

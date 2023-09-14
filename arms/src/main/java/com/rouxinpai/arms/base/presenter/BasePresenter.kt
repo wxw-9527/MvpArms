@@ -19,6 +19,7 @@ import com.rouxinpai.arms.update.model.ClientTypeEnum
 import com.rouxinpai.arms.update.model.UpdateInfo
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.create
 import timber.log.Timber
@@ -59,16 +60,8 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     override fun getBarcodeInfo(barcode: String) {
         if (false == view?.isProgressShowing()) {
             view?.showProgress()
-            val jsonObject = JsonObject().apply {
-                addProperty("barCode", barcode)
-                add("billTypes", JsonArray().apply {
-                    add("quantity")
-                    add("supplierCode")
-                })
-            }
-            val body = jsonObject.toRequestBody()
             val disposable = retrofit.create<BarcodeApi>()
-                .getBarcodeInfo(body = body)
+                .getBarcodeInfo(body = genGetBarcodeInfoBody(barcode))
                 .compose(schedulersTransformer())
                 .compose(responseTransformer())
                 .map { BarcodeInfoVO.convertFromDTO(it) }
@@ -87,7 +80,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     override fun getUpdateInfo(
         clientType: ClientTypeEnum,
         clientName: ClientNameEnum,
-        channel: String
+        channel: String,
     ) {
         val disposable = retrofit.create<UpdateApi>()
             .getUpdateInfo(
@@ -114,6 +107,22 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         mLifecycle = null
         view = null
         super.onDestroy(owner)
+    }
+
+    /**
+     * 生成获取条码上下文信息入参
+     */
+    open fun genGetBarcodeInfoBody(barcode: String): RequestBody {
+        val jsonObject = JsonObject().apply {
+            addProperty("barCode", barcode)
+            add("billTypes", JsonArray().apply {
+                add("quantity") // 库存数量
+                add("quality") // 质检信息
+                add("inboundNo") // 入库单信息
+                add("supplierCode") // 供应商信息
+            })
+        }
+        return jsonObject.toRequestBody()
     }
 
     /**

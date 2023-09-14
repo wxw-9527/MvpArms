@@ -7,9 +7,7 @@ package com.rouxinpai.arms.barcode.model
  * desc   :
  */
 class MaterialInfoVO(
-    val inboundOrderCode: String,
     val inboundOrderDetailId: String,
-    val purchaseOrderNo: String,
     val id: String,
     val code: String,
     val name: String,
