@@ -1,6 +1,8 @@
 package com.rouxinpai.demo.global
 
 import com.rouxinpai.arms.base.application.BaseApplication
+import com.rouxinpai.arms.domain.util.DomainUtils
+import com.rouxinpai.demo.feature.splash.SplashActivity
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -30,7 +32,14 @@ class Application : BaseApplication() {
     }
 
     override fun onTokenTimeout() {
-
+        // 移除本地缓存的Token
+        DomainUtils.removeAccessToken()
+        // 跳转到登录页面
+        val activity = topActivity
+        if (activity != null) {
+            SplashActivity.start(activity)
+            finishAllActivities()
+        }
     }
 
     override fun convertMaterialUnit(unit: String?): String {

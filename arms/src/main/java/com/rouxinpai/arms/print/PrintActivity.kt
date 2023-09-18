@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.result.ActivityResultLauncher
@@ -21,6 +23,7 @@ import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
+import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.concurrent.thread
 
@@ -100,16 +103,45 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         binding.rvPrintData.adapter = mPrintDataAdapter
         // 添加分割线
         dividerBuilder()
-            .asSpace()
             .size(1, TypedValue.COMPLEX_UNIT_PX)
             .colorRes(com.kongzue.dialogx.R.color.black30)
+            .showLastDivider()
             .build()
             .addTo(binding.rvPrintData)
+        val bottomOffsetDecoration = OffsetDecoration(100f, TypedValue.COMPLEX_UNIT_DIP)
+        binding.rvPrintData.addItemDecoration(bottomOffsetDecoration)
         // 获取条码数据
         presenter.listBarcodeInfos(mBarcodeList)
         // 绑定监听事件
-        binding.btnDisconnect.setOnClickListener(this)
         binding.btnPrint.setOnClickListener(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.print_activity, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (R.id.action_disconnect == id) {
+            onDisconnectClick()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    // 断开连接
+    private fun onDisconnectClick() {
+        // 断开连接
+        mPrinterInstance?.closeConnection()
+        mPrinterInstance = null
+        // 刷新按钮状态
+        refreshButtonStatus()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.action_disconnect)?.isVisible = (mPrinterInstance != null && 0 == mPrinterInstance?.currentStatus)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun showBarcodeInfos(list: List<PrintResultVO>) {
@@ -186,18 +218,8 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.btnDisconnect.id -> onDisconnectClick()
             binding.btnPrint.id -> onPrintClick()
         }
-    }
-
-    // 断开连接
-    private fun onDisconnectClick() {
-        // 断开连接
-        mPrinterInstance?.closeConnection()
-        mPrinterInstance = null
-        // 刷新按钮状态
-        refreshButtonStatus()
     }
 
     // 打印
@@ -234,14 +256,15 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrinterInstance = PrinterInstance.mPrinter
         // 打印机实例
         val printerInstance = mPrinterInstance
+        // 刷新菜单按钮状态
+        invalidateOptionsMenu()
         // 打印机未连接
         if (printerInstance == null || 0 != printerInstance.currentStatus) {
-            binding.btnDisconnect.visibility = View.GONE
             binding.btnPrint.setText(R.string.print__connect_printer_and_print)
         } else {
-            binding.btnDisconnect.visibility = View.VISIBLE
             binding.btnPrint.setText(R.string.print)
         }
+
     }
 
     /**
