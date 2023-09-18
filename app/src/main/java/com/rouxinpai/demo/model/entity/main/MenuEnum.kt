@@ -6,6 +6,7 @@ import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
+import com.rouxinpai.demo.feature.demo.search.SearchEdittextDemoActivity
 import com.rouxinpai.demo.feature.demo.switchdomain.SwitchDomainActivity
 import com.rouxinpai.demo.feature.demo.upgrade.UpgradeActivity
 
@@ -56,4 +57,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 打印示例
      */
     PRINT_DEMO(value = "打印示例", clazz = PrintDemoActivity::class.java),
+
+    /**
+     * 搜索输入框
+     */
+    SEARCH_EDITTEXT(value = "搜索输入框", clazz = SearchEdittextDemoActivity::class.java),
 }
