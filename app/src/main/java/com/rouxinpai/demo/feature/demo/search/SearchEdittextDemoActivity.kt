@@ -26,5 +26,6 @@ class SearchEdittextDemoActivity : BaseActivity<SearchEdittextDemoActivityBindin
 
     override fun onTextChanged(v: View, text: String?) {
         Timber.tag("SearchEdittext").d("text: $text")
+        binding.btnSetText.setText("123")
     }
 }
