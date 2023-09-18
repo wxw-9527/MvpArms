@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.R
 import androidx.appcompat.widget.AppCompatEditText
 import com.jakewharton.rxbinding4.widget.afterTextChangeEvents
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.rouxinpai.arms.model.schedulersTransformer
 import io.reactivex.rxjava3.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
@@ -38,7 +38,7 @@ class SearchEdittext @JvmOverloads constructor(
                 val editable = event.editable
                 !editable.isNullOrEmpty()
             } // 过滤掉空字符串
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .compose(schedulersTransformer())
             .subscribe { text ->
                 mListener?.onTextChanged(this, text.editable?.toString())
             }
