@@ -24,7 +24,7 @@ class DebounceClickDemoActivity: BaseActivity<DebounceClickDemoActivityBinding>(
         binding.btnClickTwo.setOnClickListener(mOnDebounceClick)
     }
 
-    private val mOnDebounceClick = object : OnDebounceClickListener() {
+    private val mOnDebounceClick = object : OnDebounceClickListener(lifecycle) {
 
         override fun onDebounceClick(v: View?) {
             when (v?.id) {

@@ -2,6 +2,12 @@ package com.rouxinpai.arms.view
 
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 /**
  * author : Saxxhw
@@ -9,25 +15,37 @@ import android.view.View.OnClickListener
  * time   : 2023/9/3 15:25
  * desc   :
  */
-abstract class OnDebounceClickListener(private val delayTime: Long = 500L) : OnClickListener {
+abstract class OnDebounceClickListener(
+    private val lifecycle: Lifecycle,
+    private val delayTime: Long = 1000L,
+) : OnClickListener {
 
-    // 最后一次点击时间
-    private var mLastClickTime: Long = 0L
+    private var mDisposable: Disposable? = null
 
-    private fun isFastDoubleClick(): Boolean {
-        val time = System.currentTimeMillis()
-        val timeLength = time - mLastClickTime
-        if (timeLength in 1 until delayTime) {
-            return true
+    init {
+        // 注册生命周期
+        val defaultLifecycleObserver = object : DefaultLifecycleObserver {
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                //
+                lifecycle.removeObserver(this)
+                // 释放资源
+                mDisposable?.dispose()
+                mDisposable = null
+            }
         }
-        mLastClickTime = time
-        return false
+        //
+        lifecycle.addObserver(defaultLifecycleObserver)
     }
 
+
     override fun onClick(v: View?) {
-        // 判断当前点击事件与前一次点击事件时间间隔是否小于阙值
-        if (isFastDoubleClick()) return
-        onDebounceClick(v)
+        mDisposable = v?.clicks()
+            ?.throttleFirst(delayTime, TimeUnit.MILLISECONDS) // 1秒以内第一次点击事件有效
+            ?.subscribe {
+                onDebounceClick(v)
+            }
     }
 
     /**
