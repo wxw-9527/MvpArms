@@ -59,7 +59,7 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
         // 初始化
         this.lifecycle = dialog.lifecycle
         this.dialog = dialog
-        this.binding = BindingReflex.reflexViewBinding(this::class.java, customView)
+        this.binding = BindingReflex.reflexViewBinding(this::class.java, v)
         // 绑定生命周期方法
         lifecycle.addObserver(this)
         // 初始化代理类

@@ -27,13 +27,21 @@
     <string name="print__printed">已打印</string>
     <string name="print__unprinted">未打印</string>
     <string name="print__connect_printer_and_print">连接打印机并打印</string>
-    <string name="print__select_template">请选择打印模板</string>
     <string name="print__template_not_found">未查询到打印模板</string>
     <string name="print__printing">打印中</string>
     <string name="print__printer_exception">打印机状态异常，请重新连接打印机</string>
     <string name="print__print_successful">打印成功！</string>
     <string name="print__print_failed">打印失败，请重新打印</string>
     <string name="print__barcode_index">条码%1$d</string>
+
+    <!-- 打印配置 -->
+    <string name="print_config__title">打印配置</string>
+    <string name="print_config__template">打印模板</string>
+    <string name="print_config__template_hint">请选择打印模板</string>
+    <string name="print_config__copies">打印份数</string>
+    <string name="print_config__copies_hint">打印份数</string>
+    <string name="print_config__cancel">取消</string>
+    <string name="print_config__ok">打印</string>
 
     <!-- 连接便携式打印机 -->
     <string name="connect_portable_printer">连接打印机</string>

@@ -94,8 +94,6 @@
         tools:itemCount="5"
         tools:listitem="@layout/print_recycle_item" />
 
-
-
     <!-- 打印 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_print"

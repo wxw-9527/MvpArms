@@ -20,7 +20,7 @@ import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.print.api.PrintApi
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
-import com.rouxinpai.arms.print.util.BitmapUtil
+import com.rouxinpai.arms.print.util.PrintUtil
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.create
 import javax.inject.Inject
@@ -34,6 +34,10 @@ import javax.inject.Inject
 class PrintPresenter @Inject constructor(@ApplicationContext val context: Context) :
     BasePresenter<PrintContract.View>(),
     PrintContract.Presenter {
+
+    override fun getTemplate(): TemplateVO? {
+        return PrintUtil.getTemplate()
+    }
 
     override fun listBarcodeInfos(barcodeList: List<String>) {
         view?.showLoadingPage()
@@ -86,7 +90,7 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
         addDisposable(disposable)
     }
 
-    override fun genImage(template: TemplateVO, barcodeInfo: BarcodeInfoVO, index: Int) {
+    override fun genImage(template: TemplateVO, barcodeInfo: BarcodeInfoVO, copies: Int, index: Int) {
         val material = barcodeInfo.material
         val body = JsonObject().apply {
             addProperty("printTemplateId", template.id)
@@ -111,14 +115,14 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
                 val byteArray = Base64.decode(data, Base64.DEFAULT)
                 val originalBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                 val zoomedBitmap = Utils.zoomImage(originalBitmap, template.printWith.toDouble(), 0)
-                BitmapUtil.getBinaryzationBitmap(zoomedBitmap)
+                PrintUtil.getBinationalBitmap(zoomedBitmap)
             }
             .subscribeWith(object : DefaultObserver<Bitmap>(view, false) {
 
                 override fun onData(t: Bitmap) {
                     super.onData(t)
                     // 下发打印指令
-                    view?.sendPrintCommand(t, index)
+                    view?.sendPrintCommand(template, t, copies, index)
                 }
             })
         addDisposable(disposable)

@@ -74,11 +74,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        dismissProgress()
-    }
-
     // 初始化标题栏
     private fun initToolbar() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
