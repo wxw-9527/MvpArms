@@ -79,6 +79,10 @@ dependencies {
     // RecyclerView相关
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
+    // 气泡提示
+    implementation 'com.github.skydoves:balloon:1.6.0'
+    // 下拉框
+    api "com.github.skydoves:powerspinner:1.2.7"
     // 工具类
     api 'com.blankj:utilcodex:1.31.1'
     // 图片选择框架
@@ -86,16 +90,16 @@ dependencies {
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
     api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta11'
+    // 版本更新
+    implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 日历
     api 'com.github.wxw-9527:CalendarView:1.0.3'
-    // 版本更新
-    implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
-    // 气泡提示
-    implementation 'com.github.skydoves:balloon:1.6.0'
+    // 步进器
+    api 'com.github.wxw-9527:Stepper:1.1.0'
     // 蓝牙打印机
-    api files('libs/printersdkv5.7.0.jar')
+    implementation files('libs/printersdkv5.7.0.jar')
     // 华为
     implementation 'com.huawei.agconnect:agconnect-core:1.9.0.300'
     implementation 'com.huawei.agconnect:agconnect-crash:1.9.0.300'

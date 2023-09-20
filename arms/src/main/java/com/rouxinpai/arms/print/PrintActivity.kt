@@ -5,13 +5,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import com.fondesa.recyclerviewdivider.dividerBuilder
-import com.kongzue.dialogx.dialogs.BottomMenu
 import com.printer.sdk.PrinterConstants
 import com.printer.sdk.PrinterInstance
 import com.rouxinpai.arms.R
@@ -21,6 +22,7 @@ import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
+import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.concurrent.thread
 
@@ -78,9 +80,6 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     // 打印机实例
     private var mPrinterInstance: PrinterInstance? = null
 
-    // 选中的打印模板
-    private lateinit var mSelectedTemplate: TemplateVO
-
     // 当前打印下标
     private var mIndex = 0
 
@@ -100,95 +99,31 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         binding.rvPrintData.adapter = mPrintDataAdapter
         // 添加分割线
         dividerBuilder()
-            .asSpace()
             .size(1, TypedValue.COMPLEX_UNIT_PX)
             .colorRes(com.kongzue.dialogx.R.color.black30)
+            .showLastDivider()
             .build()
             .addTo(binding.rvPrintData)
+        val bottomOffsetDecoration = OffsetDecoration(100f, TypedValue.COMPLEX_UNIT_DIP)
+        binding.rvPrintData.addItemDecoration(bottomOffsetDecoration)
         // 获取条码数据
         presenter.listBarcodeInfos(mBarcodeList)
         // 绑定监听事件
-        binding.btnDisconnect.setOnClickListener(this)
         binding.btnPrint.setOnClickListener(this)
     }
 
-    override fun showBarcodeInfos(list: List<PrintResultVO>) {
-        // 展示待打印条码信息
-        mPrintDataAdapter.setList(list)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.print_activity, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
-    override fun showTemplates(templateList: List<TemplateVO>) {
-        val itemTextList = templateList.map { it.name }
-        BottomMenu
-            .show(itemTextList)
-            .setTitle(R.string.print__select_template)
-            .setSelection(binding.btnPrint.tag as? Int ?: -1)
-            .setOnMenuItemClickListener { _, _, index ->
-                // 设置选中模板
-                mSelectedTemplate = templateList[index]
-                // 展示进度条
-                showProgress(R.string.print__printing)
-                // 生成图片
-                mIndex = 0 // 重置页码
-                presenter.genImage(mSelectedTemplate, mPrintDataAdapter.getItem(mIndex).barcodeInfo, mIndex)
-                // 返回false自动关闭菜单
-                false
-            }
-
-    }
-
-    override fun sendPrintCommand(bitmap: Bitmap, index: Int) {
-        thread {
-            // 设置打印参数
-            val pageWith = mSelectedTemplate.printWith.toInt()
-            val pageHeight = mSelectedTemplate.printHeight.toInt()
-            mPrinterInstance?.pageSetup(
-                PrinterConstants.LablePaperType.Size_58mm,
-                pageWith,
-                pageHeight
-            )
-            val offset = mSelectedTemplate.offset
-            mPrinterInstance?.drawGraphic(offset, 0, bitmap)
-            mPrinterInstance?.print(PrinterConstants.PRotate.Rotate_0, 1)
-            // 判断是否打印完成
-            val ret = mPrinterInstance?.getPrintingStatus(12 * 1000)
-            // 打印成功
-            if (0 == ret) {
-                // 记录打印成功结果
-                runOnUiThread {
-                    mPrintDataAdapter.getItem(index).printSuccess = true
-                    mPrintDataAdapter.notifyItemChanged(index)
-                }
-                // 变更下标
-                mIndex = (index + 1)
-                // 打印下一条码
-                if (mIndex < mPrintDataAdapter.itemCount) {
-                    presenter.genImage(mSelectedTemplate, mPrintDataAdapter.getItem(mIndex).barcodeInfo, mIndex)
-                }
-                // 打印完成
-                else {
-                    // 设置返回状态
-                    setResult(RESULT_OK)
-                    // 展示提示信息
-                    runOnUiThread {
-                        dismissProgress()
-                        showSuccessTip(R.string.print__print_successful)
-                    }
-                }
-            }
-            // 打印失败
-            else {
-                dismissProgress()
-                runOnUiThread { showWarningTip(R.string.print__print_failed) }
-            }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (R.id.action_disconnect == id) {
+            onDisconnectClick()
+            return true
         }
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            binding.btnDisconnect.id -> onDisconnectClick()
-            binding.btnPrint.id -> onPrintClick()
-        }
+        return super.onOptionsItemSelected(item)
     }
 
     // 断开连接
@@ -198,6 +133,88 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrinterInstance = null
         // 刷新按钮状态
         refreshButtonStatus()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.action_disconnect)?.isVisible = (mPrinterInstance != null && 0 == mPrinterInstance?.currentStatus)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun showBarcodeInfos(list: List<PrintResultVO>) {
+        // 展示待打印条码信息
+        mPrintDataAdapter.setList(list)
+    }
+
+    override fun showTemplates(templateList: List<TemplateVO>) {
+        // 展示打印配置弹窗
+        PrintConfigDialog.show(templateList) { template, copies ->
+            // 展示进度条
+            showProgress(R.string.print__printing)
+            // 重置页码
+            mIndex = 0
+            // 生成图片
+            presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
+        }
+    }
+
+    override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
+        thread {
+            for (i in 1 .. copies) {
+                // 判断是否打印完成
+                val ret = print(template, bitmap)
+                // 最后一份打印完
+                if (i == copies) {
+                    // 打印成功
+                    if (0 == ret) {
+                        // 记录打印成功结果
+                        runOnUiThread {
+                            mPrintDataAdapter.getItem(index).printSuccess = true
+                            mPrintDataAdapter.notifyItemChanged(index)
+                        }
+                        // 变更下标
+                        mIndex = (index + 1)
+                        // 打印下一条码
+                        if (mIndex < mPrintDataAdapter.itemCount) {
+                            presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
+                        }
+                        // 打印完成
+                        else {
+                            // 设置返回状态
+                            setResult(RESULT_OK)
+                            // 展示提示信息
+                            runOnUiThread {
+                                dismissProgress()
+                                showSuccessTip(R.string.print__print_successful)
+                            }
+                        }
+                    }
+                    // 打印失败
+                    else {
+                        dismissProgress()
+                        runOnUiThread { showWarningTip(R.string.print__print_failed) }
+                    }
+                }
+            }
+        }
+    }
+
+    // 打印，耗时操作，需放在子线程中执行
+    private fun print(template: TemplateVO, bitmap: Bitmap): Int? {
+        // 设置打印参数
+        val pageWith = template.printWith.toInt()
+        val pageHeight = template.printHeight.toInt()
+        mPrinterInstance?.pageSetup(PrinterConstants.LablePaperType.Size_58mm, pageWith, pageHeight)
+        val offset = template.offset
+        mPrinterInstance?.drawGraphic(offset, 0, bitmap)
+        mPrinterInstance?.print(PrinterConstants.PRotate.Rotate_0, 1)
+        // 返回打印结果
+        return mPrinterInstance?.getPrintingStatus(12 * 1000)
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            binding.btnPrint.id -> onPrintClick()
+        }
     }
 
     // 打印
@@ -215,6 +232,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
             ConnectPortablePrinterActivity.start(this, mConnectLauncher)
             return
         }
+        // 获取打印模板列表
         presenter.listTemplates()
     }
 
@@ -234,12 +252,12 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrinterInstance = PrinterInstance.mPrinter
         // 打印机实例
         val printerInstance = mPrinterInstance
+        // 刷新菜单按钮状态
+        invalidateOptionsMenu()
         // 打印机未连接
         if (printerInstance == null || 0 != printerInstance.currentStatus) {
-            binding.btnDisconnect.visibility = View.GONE
             binding.btnPrint.setText(R.string.print__connect_printer_and_print)
         } else {
-            binding.btnDisconnect.visibility = View.VISIBLE
             binding.btnPrint.setText(R.string.print)
         }
     }
