@@ -27,6 +27,8 @@ import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterActivityBinding
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterRecycleItemBinding
+import com.rouxinpai.arms.print.model.PrinterStatusEnum
+import com.rouxinpai.arms.print.model.PrinterStatusEnum.*
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import timber.log.Timber
 import kotlin.concurrent.thread
@@ -211,8 +213,10 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
     // 连接打印机
     private fun connectPrinter(device: BluetoothDevice) {
         Timber.d("11、连接打印机")
-        showProgress(R.string.connect_portable_printer__connecting)
+        // 获取打印机实例
         mPrinterInstance = PrinterInstance.getPrinterInstance(device, mHandler)
+        // 连接打印机
+        showProgress(R.string.connect_portable_printer__connecting)
         thread {
             mPrinterInstance?.openConnection()
         }
@@ -224,17 +228,33 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
+                // 连接成功
                 PrinterConstants.Connect.SUCCESS -> {
-                    Timber.d("12、打印机连接成功")
-                    dismissProgress()
-                    showSuccessTip(R.string.connect_portable_printer__connect_successful)
-                    setResult(RESULT_OK)
-                    finish()
+                    val status = mPrinterInstance?.currentStatus
+                    val printerStatusEnum = PrinterStatusEnum.fromStatus(status)
+                    if (NORMAL == printerStatusEnum) {
+                        Timber.d("12、打印机连接成功")
+                        // 提示用户连接成功
+                        dismissProgress()
+                        showSuccessTip(R.string.connect_portable_printer__connect_successful)
+                        // 设置返回值
+                        setResult(RESULT_OK)
+                        finish()
+                    } else {
+                        // 提示用户异常信息
+                        dismissProgress()
+                        showWarningTip(printerStatusEnum.errorMsgResId)
+                        // 断开连接
+                        mPrinterInstance?.closeConnection()
+                        mPrinterInstance = null
+                    }
                 }
+                // 断开连接
                 PrinterConstants.Connect.CLOSED -> {
                     dismissProgress()
                     showSuccessTip(R.string.connect_portable_printer__disconnect_success)
                 }
+                // 其他
                 else -> {
                     Timber.d("13、打印机连接失败")
                     dismissProgress()

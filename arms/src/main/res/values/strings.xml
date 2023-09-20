@@ -34,8 +34,6 @@
     <string name="print__printing">打印中</string>
     <string name="print__printer_exception">打印机状态异常，请重新连接打印机</string>
     <string name="print__print_successful">打印成功！</string>
-    <string name="print__print_failed">打印失败，请重新打印</string>
-    <string name="print__barcode_index">条码%1$d</string>
 
     <!-- 打印配置 -->
     <string name="print_config__title">打印配置</string>
@@ -56,4 +54,22 @@
     <string name="connect_portable_printer__connect_successful">连接成功</string>
     <string name="connect_portable_printer__disconnect_success">断开连接成功</string>
     <string name="connect_portable_printer__connect_fail">连接失败，请重试</string>
+
+    <!-- 打印机状态 -->
+    <string name="printer_status__unknown_error">打印机状态异常</string>
+    <string name="printer_status__normal">打印机状态正常</string>
+    <string name="printer_status__communication_error">打印机通信异常</string>
+    <string name="printer_status__paper_out">打印机缺纸</string>
+    <string name="printer_status__low_paper">打印机纸将尽</string>
+    <string name="printer_status__cover_open">打印机开盖</string>
+
+    <!-- 打印状态 -->
+    <string name="printing_status__completed">打印完成</string>
+    <string name="printing_status__unknown_error">未知异常</string>
+    <string name="printing_status__in_progress">打印机正在打印中</string>
+    <string name="printing_status__paper_out">打印机缺纸</string>
+    <string name="printing_status__cover_open">纸舱盖开盖</string>
+    <string name="printing_status__communication_failed">与打印机通信失败</string>
+    <string name="printing_status__data_send_failed">数据发送失败，通信异常</string>
+    <string name="printing_status__invalid_data_format">接收数据格式不正确</string>
 </resources>

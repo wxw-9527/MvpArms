@@ -21,6 +21,8 @@ import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
 import com.rouxinpai.arms.print.model.PrintResultVO
+import com.rouxinpai.arms.print.model.PrinterStatusEnum
+import com.rouxinpai.arms.print.model.PrintingStatusEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -159,13 +161,23 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
         thread {
-            for (i in 1 .. copies) {
-                // 判断是否打印完成
-                val ret = print(template, bitmap)
-                // 最后一份打印完
-                if (i == copies) {
-                    // 打印成功
-                    if (0 == ret) {
+            for (i in 1..copies) {
+                // 判断打印机状态
+                val printerStatusEnum = PrinterStatusEnum.fromStatus(mPrinterInstance?.currentStatus)
+                // 打印机状态异常
+                if (PrinterStatusEnum.NORMAL != printerStatusEnum) {
+                    runOnUiThread {
+                        dismissProgress()
+                        showWarningTip(printerStatusEnum.errorMsgResId)
+                    }
+                    break
+                }
+                // 获取打印结果
+                val printingStatusEnum = printAndReturnResult(template, bitmap)
+                // 打印成功
+                if (PrintingStatusEnum.COMPLETED == printingStatusEnum) {
+                    // 最后一份打印完
+                    if (i == copies) {
                         // 记录打印成功结果
                         runOnUiThread {
                             mPrintDataAdapter.getItem(index).printSuccess = true
@@ -177,7 +189,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                         if (mIndex < mPrintDataAdapter.itemCount) {
                             presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
                         }
-                        // 打印完成
+                        // 全部打印完成
                         else {
                             // 设置返回状态
                             setResult(RESULT_OK)
@@ -188,18 +200,20 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                             }
                         }
                     }
-                    // 打印失败
-                    else {
+                }
+                // 打印失败
+                else {
+                    runOnUiThread {
                         dismissProgress()
-                        runOnUiThread { showWarningTip(R.string.print__print_failed) }
+                        showWarningTip(printingStatusEnum.errorMsgResId)
                     }
                 }
             }
         }
     }
 
-    // 打印，耗时操作，需放在子线程中执行
-    private fun print(template: TemplateVO, bitmap: Bitmap): Int? {
+    // 打印并返回打印结果，耗时操作，需放在子线程中执行
+    private fun printAndReturnResult(template: TemplateVO, bitmap: Bitmap): PrintingStatusEnum {
         // 设置打印参数
         val pageWith = template.printWith.toInt()
         val pageHeight = template.printHeight.toInt()
@@ -208,7 +222,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrinterInstance?.drawGraphic(offset, 0, bitmap)
         mPrinterInstance?.print(PrinterConstants.PRotate.Rotate_0, 1)
         // 返回打印结果
-        return mPrinterInstance?.getPrintingStatus(12 * 1000)
+        return PrintingStatusEnum.fromStatus(mPrinterInstance?.getPrintingStatus(12 * 1000))
     }
 
     override fun onClick(v: View?) {
@@ -227,8 +241,9 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
             return
         }
         // 打印机状态异常
-        if (0 != printerInstance.currentStatus) {
-            showErrorTip(R.string.print__printer_exception)
+        val printerStatusEnum = PrinterStatusEnum.fromStatus(printerInstance.currentStatus)
+        if (PrinterStatusEnum.NORMAL != printerStatusEnum) {
+            showErrorTip(printerStatusEnum.errorMsgResId)
             ConnectPortablePrinterActivity.start(this, mConnectLauncher)
             return
         }
