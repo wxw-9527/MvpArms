@@ -29,7 +29,7 @@ class DateRangeDialog :
         fun show(
             startCalendar: Calendar? = null,
             endCalendar: Calendar? = null,
-            listener: OnDateRangeSelectedListener? = null
+            listener: OnDateRangeSelectedListener? = null,
         ) {
             val customView = DateRangeDialog().apply {
                 setStartCalendar(startCalendar)
@@ -55,11 +55,6 @@ class DateRangeDialog :
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        // 绑定监听事件
-        binding.calendarView.setOnMonthChangeListener(this)
-        binding.btnClear.setOnClickListener(this)
-        binding.btnCancel.setOnClickListener(this)
-        binding.btnConfirm.setOnClickListener(this)
         // 初始化界面
         val year = binding.calendarView.curYear
         val month = binding.calendarView.curMonth
@@ -71,6 +66,11 @@ class DateRangeDialog :
                 binding.calendarView.scrollToSelectCalendar()
             }
         }
+        // 绑定监听事件
+        binding.calendarView.setOnMonthChangeListener(this)
+        binding.btnClear.setOnClickListener(this)
+        dialog.setCancelButton(R.string.date_range__cancel)
+            .setOkButton(R.string.date_range__ok) { _, _ -> onConfirmClick() }
     }
 
     override fun onMonthChange(year: Int, month: Int) {
@@ -80,8 +80,6 @@ class DateRangeDialog :
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_clear -> onClearClick()
-            R.id.btn_cancel -> onCancelClick()
-            R.id.btn_confirm -> onConfirmClick()
         }
     }
 
@@ -94,24 +92,18 @@ class DateRangeDialog :
     }
 
     /**
-     * 取消按钮点击事件
-     */
-    private fun onCancelClick() {
-        dialog.dismiss()
-    }
-
-    /**
      * 确认按钮点击事件
      */
-    private fun onConfirmClick() {
+    private fun onConfirmClick(): Boolean {
         val list = binding.calendarView.selectCalendarRange
-        if (list.isNullOrEmpty()) {
+        return if (list.isNullOrEmpty()) {
             showWarningTip(R.string.date_range__please_select_the_correct_start_date)
+            true
         } else {
             val startCalendar = list.first()
             val endCalendar = list.last()
             mOnDateRangeSelectedListener?.onDateRangeSelected(startCalendar, endCalendar)
-            dialog.dismiss()
+            false
         }
     }
 

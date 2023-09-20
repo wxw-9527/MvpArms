@@ -69,6 +69,9 @@ class CustomViewDialog :
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         presenter.getCaptchaImage()
+        dialog.setOkButton("确认") { _, _ ->
+            false
+        }
     }
 
     override fun showCaptcha(bitmap: Bitmap) {

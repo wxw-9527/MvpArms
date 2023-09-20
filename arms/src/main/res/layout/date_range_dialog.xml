@@ -23,7 +23,7 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="清除选中"
+        android:text="@string/date_range__clear"
         android:textColor="#FFA7AAB4"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_year_month"
@@ -60,27 +60,4 @@
         app:year_view_month_text_color="#ff0000"
         app:year_view_month_text_size="20sp"
         app:year_view_scheme_color="#f17706" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_cancel"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="取消"
-        android:textColor="#FFA7AAB4"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_confirm"
-        app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
-        app:layout_constraintTop_toTopOf="@+id/btn_confirm" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_confirm"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="确定"
-        android:textColor="#FF417BF4"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
