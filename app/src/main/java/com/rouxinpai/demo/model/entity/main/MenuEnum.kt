@@ -4,6 +4,7 @@ import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
+import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
 import com.rouxinpai.demo.feature.demo.search.SearchEdittextDemoActivity
@@ -62,4 +63,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 搜索输入框
      */
     SEARCH_EDITTEXT(value = "搜索输入框", clazz = SearchEdittextDemoActivity::class.java),
+
+    /**
+     * 消息推送
+     */
+    MESSAGE_DEMO(value = "消息推送", clazz = MessageDemoActivity::class.java)
 }

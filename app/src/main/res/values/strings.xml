@@ -43,4 +43,7 @@
 
     <!-- 搜索输入框 -->
     <string name="search_edittext_demo">搜索输入框</string>
+
+    <!-- 消息 -->
+    <string name="message_demo">消息推送</string>
 </resources>
