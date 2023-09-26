@@ -102,8 +102,7 @@ class WebSocketService : IntentService(SERVICE_NAME) {
     // 建立长链接
     private fun newWebSocket() {
         val mWebSocketRequest: Request = Request.Builder()
-            .url("${DomainUtils.getDomain()}$WS_URL")
-            .addHeader(WS_HEADER_NAME, DomainUtils.getAccessToken().orEmpty())
+            .url("${DomainUtils.getDomain()}$WS_URL?token=${DomainUtils.getAccessToken().orEmpty()}")
             .build()
         mWebSocket = okHttpClient.newWebSocket(mWebSocketRequest, mWebSocketListener)
     }

@@ -27,7 +27,7 @@ import com.rouxinpai.arms.databinding.DropdownButtonRecycleItemBinding
 class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.textViewStyle
+    defStyleAttr: Int = android.R.attr.textViewStyle,
 ) : AppCompatTextView(context, attrs, defStyleAttr),
     OnClickListener {
 
@@ -126,6 +126,13 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
     }
 
     /**
+     * 获取选中项
+     */
+    fun getSelectedItem(): T? {
+        return mMenuAdapter.getSelectedItem()
+    }
+
+    /**
      *
      */
     fun selectItemByPosition(position: Int) {
@@ -141,6 +148,7 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
         }
     }
 
+
     // 菜单列表适配器
     private class MenuAdapter<T : IDropdownEntity> :
         BaseVbAdapter<DropdownButtonRecycleItemBinding, T>() {
@@ -149,12 +157,12 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
         private var mSelectedIndex = -1
 
         /**
-         *
+         * 获取选中项下标
          */
         fun getSelectedIndex() = mSelectedIndex
 
         /**
-         *
+         * 选中指定项
          */
         @SuppressLint("NotifyDataSetChanged")
         fun select(index: Int) {
@@ -162,14 +170,24 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
             notifyDataSetChanged()
         }
 
+        /**
+         * 清空选中状态
+         */
         fun clearSelectedIndex() {
             mSelectedIndex = -1
+        }
+
+        /**
+         * 获取选中项
+         */
+        fun getSelectedItem(): T? {
+            return getItemOrNull(mSelectedIndex)
         }
 
         override fun onBindView(
             binding: DropdownButtonRecycleItemBinding,
             position: Int,
-            item: T
+            item: T,
         ) {
             // 设置选中标志
             val backgroundColor = if (mSelectedIndex == position) {
