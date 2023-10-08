@@ -2,7 +2,10 @@
 
 package com.rouxinpai.arms.base.activity
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.content.IntentFilter
+import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
@@ -19,6 +22,7 @@ import com.rouxinpai.arms.base.view.ILoadMore
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.LoadMoreDelegate
 import com.rouxinpai.arms.update.model.UpdateInfo
+import com.rouxinpai.arms.nfc.util.NfcUtil
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
@@ -38,6 +42,10 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     // 是否使用条码解析
     private var mBarcodeScanningReceiverEnabled: Boolean = false
 
+    // NFC相关
+    private var mNfcAdapter: NfcAdapter? = null
+    private var mNfcPendingIntent: PendingIntent? = null
+
     // 版本更新实例
     private var mUpdateUtil: UpdateUtil? = null
 
@@ -55,11 +63,24 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
+    override fun onStart() {
+        super.onStart()
+        //
+        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(
+            BarcodeScanningReceiverEnabled::class.java
+        )
+        // 初始化NFC相关
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        val intent = Intent(this, javaClass)
+        mNfcPendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+    }
+
     override fun onResume() {
         super.onResume()
-        // 注册广播
-        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         if (mBarcodeScanningReceiverEnabled) {
+            // 设置当该页面处于前台时，NFC标签会直接交给该页面处理
+            mNfcAdapter?.enableForegroundDispatch(this, mNfcPendingIntent, null, null)
+            // 注册广播
             val intentFilter = IntentFilter().apply {
                 BarcodeScanningReceiver.sActions.forEach { action -> addAction(action) }
             }
@@ -70,8 +91,10 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
 
     override fun onPause() {
         super.onPause()
-        // 取消注册广播
         if (mBarcodeScanningReceiverEnabled) {
+            // 当页面不可见时，NFC标签不交给当前页面处理
+            mNfcAdapter?.disableForegroundDispatch(this)
+            // 取消注册广播
             unregisterReceiver(mReceiver)
         }
     }
@@ -80,6 +103,24 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         super.onDestroy()
         // 终止更新流程，释放内存
         mUpdateUtil?.recycle()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        onParseNfcIntent(intent)
+    }
+
+    /**
+     * 解析处理NFC意图
+     */
+    open fun onParseNfcIntent(intent: Intent?) {
+        val ndefText = NfcUtil.readNfcTag(intent)
+        if (ndefText == null) {
+            showWarningTip(R.string.nfc__tag_empty)
+            return
+        }
+        // TODO: 临时方案，后期需优化
+        onBarcodeEvent(BarcodeEvent(ndefText))
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

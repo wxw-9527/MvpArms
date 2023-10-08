@@ -8,9 +8,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.EventBusEnabled
-import com.rouxinpai.arms.util.BindingReflex
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
+import com.rouxinpai.arms.util.BindingReflex
 import com.view.multistatepage.intf.OnRetryClickListener
 import org.greenrobot.eventbus.EventBus
 
@@ -50,17 +50,14 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         onInit(savedInstanceState)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        if (intent != null) {
-            onParseData(intent)
-        }
+    override fun onStart() {
+        super.onStart()
+        //
+        mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
     }
 
     override fun onResume() {
         super.onResume()
-        //
-        mEventBusEnabled = javaClass.isAnnotationPresent(EventBusEnabled::class.java)
         if (mEventBusEnabled) {
             EventBus.getDefault().register(this)
         }
@@ -68,9 +65,15 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
 
     override fun onPause() {
         super.onPause()
-        //
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            onParseData(intent)
         }
     }
 

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- NFC相关 -->
+    <string name="nfc__tag_empty">当前标签未绑定产品SN</string>
+
     <!-- 日期范围选择相关 -->
     <string name="date_range__clear">清除选中</string>
     <string name="date_range__year_month">%1$d年%2$d月</string>
@@ -72,4 +75,14 @@
     <string name="printing_status__communication_failed">与打印机通信失败</string>
     <string name="printing_status__data_send_failed">数据发送失败，通信异常</string>
     <string name="printing_status__invalid_data_format">接收数据格式不正确</string>
+
+    <!-- 二维码绑定NFC标签 -->
+    <string name="qr_code_to_nfc">绑定NFC标签</string>
+    <string name="qr_code_to_nfc__product_sn">产品sn：</string>
+    <string name="qr_code_to_nfc__scan_qr_code_message">按压左右两侧任一黄色按钮进行扫描</string>
+    <string name="qr_code_to_nfc__bind_message">请将NFC标签置于PDA背部上方扫描区域</string>
+    <string name="qr_code_to_nfc__cancel">取消</string>
+    <string name="qr_code_to_nfc__write_successful">标签写入成功</string>
+    <string name="qr_code_to_nfc__write_fail">标签写入失败，请重试</string>
+    <string name="qr_code_to_nfc__incorrect_barcode_type">条码类型错误，请扫描产品SN</string>
 </resources>

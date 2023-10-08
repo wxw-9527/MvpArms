@@ -30,6 +30,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- NFC -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <queries package="${applicationId}">
         <!-- PictureSelector Permission Start -->
         <!-- Android 11 使用相机需要如下代码 -->
@@ -66,5 +72,12 @@
         <activity
             android:name=".print.ConnectPortablePrinterActivity"
             android:label="@string/connect_portable_printer" />
+
+        <!-- 绑定NFC标签 -->
+        <activity
+            android:name=".nfc.QrCodeToNfcActivity"
+            android:label="@string/qr_code_to_nfc"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -1,5 +1,6 @@
 package com.rouxinpai.demo.model.entity.main
 
+import com.rouxinpai.arms.nfc.QrCodeToNfcActivity
 import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
@@ -67,5 +68,10 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
     /**
      * 消息推送
      */
-    MESSAGE_DEMO(value = "消息推送", clazz = MessageDemoActivity::class.java)
+    MESSAGE_DEMO(value = "消息推送", clazz = MessageDemoActivity::class.java),
+
+    /**
+     * 读NFC标签
+     */
+    READ_NFC(value = "绑定NFC标签", clazz = QrCodeToNfcActivity::class.java),
 }
