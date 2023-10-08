@@ -42,7 +42,7 @@ dependencies {
 }
 ```
 
-#### 3、所有使用 Hilt 的应用都必须包含一个带有 @HiltAndroidApp 注解的 Application 类。
+#### 3、所有使用 Hilt 的应用都必须包含一个带有 `@HiltAndroidApp` 注解的 Application 类。
 
 ```kotlin
 @HiltAndroidApp
@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.3.9.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.4.0.00'
 }
 ```
 
@@ -84,31 +84,28 @@ dependencies {
 fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
 ```
 
-重写showUpdateInfo(updateInfo: UpdateInfo)方法可自定义版本更新处理逻辑
+重写`showUpdateInfo(updateInfo: UpdateInfo)`方法可自定义版本更新处理逻辑
 
 ### 五、条码解析服务
 
 #### 1、必须：
 
-在需要解析条码的Activity、Fragment的父Activity类增加@BarcodeScanningReceiverEnabled标记
+在需要解析条码的Activity、Fragment的父Activity类增加`@BarcodeScanningReceiverEnabled`标记
 
 #### 2、仅Activity中使用：
-
-1)仅在该Activity上增加@EventBusEnabled标记
-2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+1) 仅在该Activity上增加@EventBusEnabled标记
+2) 实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
 
 #### 3、仅Fragment中使用：
-
-1)仅在该Fragment上增加@EventBusEnabled标记
-2)实现showBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法处理条码数据
+1) 仅在该Fragment上增加@EventBusEnabled标记
+2) 实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
 
 #### 4、高阶使用
-
-1)覆写Activity或Fragment中的onBarcodeEvent(event: BarcodeEvent)方法可自行处理条码内容
-2)覆写Presenter中的getBarcodeInfo(barcode: String)方法可自行处理条码解析方法
-3)覆写Presenter中的handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)方法可自行处理条码上下文数据
-4)在Activity的onBarcodeEvent(event: BarcodeEvent)方法中调用EventBus.getDefault()
-.cancelEventDelivery(event)可取消事件继续传递
+1) 覆写Activity或Fragment中`的onBarcodeEvent(event: BarcodeEvent)`方法可自行处理条码内容
+2) 覆写Presenter中的`getBarcodeInfo(barcode: String)`方法可自行处理条码解析方法
+3) 覆写Presenter中的`handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法可自行处理条码上下文数据
+4) 在Activity的`onBarcodeEvent(event: BarcodeEvent)`方法中调用`EventBus.getDefault().cancelEventDelivery(event)`可取消事件继续传递
+5) 覆写Activity中的`onParseNfcIntent(intent: Intent?)`方法可自行处理NFC意图
 
 ### 六、华为崩溃信息收集服务、分析服务集成
 
@@ -209,7 +206,14 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
+        return "http://test.zk-work.com/stage-api/system/customer/validCode/"
+    }
+
+    @Provides
+    @Singleton
+    @GetUpgradeUrl
+    override fun provideUpgradeUrl(): String {
+        return "http://test.zk-work.com/stage-api/system/client/info"
     }
 }
 ```
