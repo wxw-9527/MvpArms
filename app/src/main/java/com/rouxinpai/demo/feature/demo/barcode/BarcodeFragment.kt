@@ -2,7 +2,6 @@ package com.rouxinpai.demo.feature.demo.barcode
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.fragment.BaseMvpFragment
 import com.rouxinpai.demo.databinding.BarcodeFragmentBinding
@@ -16,7 +15,6 @@ import kotlin.properties.Delegates
  * desc   :
  */
 @AndroidEntryPoint
-@EventBusEnabled
 class BarcodeFragment :
     BaseMvpFragment<BarcodeFragmentBinding, BarcodeContract.View, BarcodePresenter>(),
     BarcodeContract.View {
@@ -44,6 +42,9 @@ class BarcodeFragment :
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         binding.tvText.text = mPosition.toString()
+        binding.tvText.setOnClickListener {
+            BarcodeDialog.show()
+        }
     }
 
     override fun showBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
