@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.4.0.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.4.0.01'
 }
 ```
 
@@ -88,24 +88,15 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
 
 ### 五、条码解析服务
 
-#### 1、必须：
+#### 1、在需要解析条码的Activity类或Fragment的父Activity类增加`@BarcodeScanningReceiverEnabled`标记，在解析条码的Activity或Fragment类增加`@EventBusEnabled`标记
 
-在需要解析条码的Activity、Fragment的父Activity类增加`@BarcodeScanningReceiverEnabled`标记
+#### 2、实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
 
-#### 2、仅Activity中使用：
-1) 仅在该Activity上增加@EventBusEnabled标记
-2) 实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
-
-#### 3、仅Fragment中使用：
-1) 仅在该Fragment上增加@EventBusEnabled标记
-2) 实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
-
-#### 4、高阶使用
+#### 3、高阶使用
 1) 覆写Activity或Fragment中`的onBarcodeEvent(event: BarcodeEvent)`方法可自行处理条码内容
 2) 覆写Presenter中的`getBarcodeInfo(barcode: String)`方法可自行处理条码解析方法
 3) 覆写Presenter中的`handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法可自行处理条码上下文数据
-4) 在Activity的`onBarcodeEvent(event: BarcodeEvent)`方法中调用`EventBus.getDefault().cancelEventDelivery(event)`可取消事件继续传递
-5) 覆写Activity中的`onParseNfcIntent(intent: Intent?)`方法可自行处理NFC意图
+4) 覆写Activity中的`onParseNfcIntent(intent: Intent?)`方法可自行处理NFC意图
 
 ### 六、华为崩溃信息收集服务、分析服务集成
 

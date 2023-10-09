@@ -56,8 +56,10 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="com.rouxinpai.demo"
                     android:path="/notification"
@@ -112,6 +114,12 @@
         <activity
             android:name=".feature.demo.message.MessageDemoActivity"
             android:label="@string/message_demo"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.barcode.BarcodeActivity"
+            android:label="@string/barcode"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

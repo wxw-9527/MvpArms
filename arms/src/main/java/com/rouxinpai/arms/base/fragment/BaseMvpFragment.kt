@@ -37,8 +37,9 @@ abstract class BaseMvpFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     open fun onBarcodeEvent(event: BarcodeEvent) {
+        event.removeStickyEvent()
         presenter.getBarcodeInfo(event.barcode)
     }
 

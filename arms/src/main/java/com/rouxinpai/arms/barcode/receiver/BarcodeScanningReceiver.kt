@@ -27,7 +27,7 @@ class BarcodeScanningReceiver : BroadcastReceiver() {
         sExtras.forEach { extra ->
             val barcode = intent.getStringExtra(extra)
             if (!barcode.isNullOrBlank()) {
-                BarcodeEvent.post(barcode)
+                BarcodeEvent.postSticky(barcode)
                 return
             }
         }
