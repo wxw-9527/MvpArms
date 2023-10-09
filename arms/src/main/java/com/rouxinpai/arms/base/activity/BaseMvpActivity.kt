@@ -122,7 +122,7 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         BarcodeEvent.postSticky(ndefText)
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true, priority = 0)
     open fun onBarcodeEvent(event: BarcodeEvent) {
         event.removeStickyEvent()
         presenter.getBarcodeInfo(event.barcode)

@@ -1,13 +1,17 @@
 package com.rouxinpai.demo.feature.demo.barcode
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
+import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseSimpleFragmentStateAdapter
+import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.BarcodeActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 @BarcodeScanningReceiverEnabled
+@EventBusEnabled
 class BarcodeActivity :
     BaseMvpActivity<BarcodeActivityBinding, BarcodeContract.View, BarcodePresenter>(),
     BarcodeContract.View {
@@ -31,6 +36,21 @@ class BarcodeActivity :
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, index ->
             tab.text = "页卡-$index"
         }.attach()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.barcode, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_show_dialog -> {
+                BarcodeDialog.show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
