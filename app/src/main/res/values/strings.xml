@@ -46,4 +46,7 @@
 
     <!-- 消息 -->
     <string name="message_demo">消息推送</string>
+
+    <!-- 条码解析 -->
+    <string name="barcode">条码解析</string>
 </resources>

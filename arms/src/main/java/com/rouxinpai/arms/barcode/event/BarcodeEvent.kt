@@ -18,5 +18,19 @@ data class BarcodeEvent(val barcode: String) {
         fun post(barcode: String) {
             EventBus.getDefault().post(BarcodeEvent(barcode))
         }
+
+        /**
+         * 发送事件
+         */
+        fun postSticky(barcode: String) {
+            EventBus.getDefault().postSticky(BarcodeEvent(barcode))
+        }
+    }
+
+    /**
+     * 移除事件
+     */
+    fun removeStickyEvent() {
+        EventBus.getDefault().removeStickyEvent(this)
     }
 }

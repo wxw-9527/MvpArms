@@ -24,4 +24,9 @@
     <style name="ThemeSplash" parent="FullScreenTheme.White">
         <item name="android:windowBackground">@drawable/window_background</item>
     </style>
+
+    <!--  -->
+    <style name="TabTextAppearance">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

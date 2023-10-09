@@ -119,12 +119,12 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             showWarningTip(R.string.nfc__tag_empty)
             return
         }
-        // TODO: 临时方案，后期需优化
-        onBarcodeEvent(BarcodeEvent(ndefText))
+        BarcodeEvent.postSticky(ndefText)
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.POSTING, sticky = true)
     open fun onBarcodeEvent(event: BarcodeEvent) {
+        event.removeStickyEvent()
         presenter.getBarcodeInfo(event.barcode)
     }
 
