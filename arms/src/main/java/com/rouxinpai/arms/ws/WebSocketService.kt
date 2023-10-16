@@ -211,7 +211,8 @@ class WebSocketService : IntentService(SERVICE_NAME) {
 
     // 创建消息通知
     private fun sendNotification(title: String, message: String, intent: Intent) {
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
         val notification = buildNotification(
             false,
             NOTIFICATION_CHANNEL_ID,
