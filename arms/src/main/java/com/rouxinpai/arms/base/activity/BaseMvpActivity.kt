@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
+import android.os.Build
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.module.BaseLoadMoreModule
@@ -66,13 +67,14 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     override fun onStart() {
         super.onStart()
         //
-        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(
-            BarcodeScanningReceiverEnabled::class.java
-        )
+        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         // 初始化NFC相关
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        val intent = Intent(this, javaClass)
-        mNfcPendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        if (mBarcodeScanningReceiverEnabled) {
+            mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            val intent = Intent(this, javaClass)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
+            mNfcPendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
+        }
     }
 
     override fun onResume() {
