@@ -23,11 +23,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         viewBinding true
@@ -43,8 +43,8 @@ dependencies {
     api 'com.google.android.material:material:1.8.0'
     // 官方扩展程序
     api 'androidx.core:core-ktx:1.9.0'
-    api 'androidx.activity:activity-ktx:1.7.0'
-    api 'androidx.fragment:fragment-ktx:1.6.0'
+    api 'androidx.activity:activity-ktx:1.7.2'
+    api 'androidx.fragment:fragment-ktx:1.6.1'
     api 'androidx.work:work-runtime-ktx:2.8.1'
     // 官方控件
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -55,7 +55,7 @@ dependencies {
     ksp 'com.google.dagger:hilt-compiler:2.48'
     // RxJava
     api 'io.reactivex.rxjava3:rxandroid:3.0.2'
-    api 'io.reactivex.rxjava3:rxjava:3.1.6'
+    api 'io.reactivex.rxjava3:rxjava:3.1.8'
     api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
     // 网络请求
     api 'com.squareup.okhttp3:okhttp:4.11.0'
@@ -80,7 +80,7 @@ dependencies {
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 气泡提示
-    implementation 'com.github.skydoves:balloon:1.6.0'
+    implementation 'com.github.skydoves:balloon:1.6.1'
     // 下拉框
     api 'com.github.skydoves:powerspinner:1.2.7'
     // 工具类
@@ -89,7 +89,7 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.1'
     api 'io.github.lucksiege:compress:v3.11.1'
     // 对话框相关
-    api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta18'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.49.beta19'
     // 版本更新
     implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
     // 缺省页
@@ -101,9 +101,9 @@ dependencies {
     // 蓝牙打印机
     implementation files('libs/printersdkv5.7.0.jar')
     // 华为
-    implementation 'com.huawei.agconnect:agconnect-core:1.9.0.300'
-    implementation 'com.huawei.agconnect:agconnect-crash:1.9.0.300'
-    implementation 'com.huawei.agconnect:agconnect-crash-native:1.9.0.300' // 崩溃NDK
+    implementation 'com.huawei.agconnect:agconnect-core:1.9.1.301'
+    implementation 'com.huawei.agconnect:agconnect-crash:1.9.1.301'
+    implementation 'com.huawei.agconnect:agconnect-crash-native:1.9.1.301' // 崩溃NDK
     implementation 'com.huawei.agconnect:agconnect-apms:1.6.2.300' // 性能管理SDK
-    implementation 'com.huawei.hms:hianalytics:6.10.0.300' // 华为分析SDK
+    implementation 'com.huawei.hms:hianalytics:6.12.0.300' // 华为分析SDK
 }

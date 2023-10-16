@@ -20,7 +20,7 @@ android {
 
 ```groovy
 plugins {
-    id 'com.google.dagger.hilt.android' version '2.47' apply false
+    id 'com.google.dagger.hilt.android' version '2.48' apply false
 }
 ```
 
@@ -37,8 +37,8 @@ android {
 }
 
 dependencies {
-    implementation "com.google.dagger:hilt-android:2.47"
-    ksp "com.google.dagger:hilt-compiler:2.47"
+    implementation "com.google.dagger:hilt-android:2.48"
+    ksp "com.google.dagger:hilt-compiler:2.48"
 }
 ```
 
@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.4.1.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.4.2.00'
 }
 ```
 
@@ -124,7 +124,7 @@ dependencyResolutionManagement {
 buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.1' // 华为
-        classpath 'com.huawei.agconnect:agcp:1.9.0.300' // 华为
+        classpath 'com.huawei.agconnect:agcp:1.9.1.301' // 华为
     }
 }
 ```
