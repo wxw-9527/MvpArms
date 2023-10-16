@@ -17,7 +17,9 @@ object HuaweiUtil {
      * 初始化AGConnectInstance
      */
     internal fun initAGConnect(applicationContext: Context) {
-        AGConnectInstance.initialize(applicationContext)
+        if (AGConnectInstance.getInstance() == null) {
+            AGConnectInstance.initialize(applicationContext)
+        }
     }
 
     /**

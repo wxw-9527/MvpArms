@@ -130,7 +130,7 @@ class WebSocketService : IntentService(SERVICE_NAME) {
             super.onMessage(webSocket, text)
             try {
                 val jsonObject = JsonParser.parseString(text).asJsonObject
-                val modelName = jsonObject.get("modelName").asString
+                // val modelName = jsonObject.get("modelName").asString
                 val functionName = jsonObject.get("functionName").asString
                 val params = jsonObject.get("params")
                 if (params.isJsonNull) {

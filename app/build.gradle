@@ -18,8 +18,8 @@ android {
         applicationId "com.rouxinpai.demo"
         minSdk 21
         targetSdk 34
-        versionCode 24101
-        versionName "2.4.1.01"
+        versionCode 24200
+        versionName "2.4.2.00"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        jvmToolchain(17)
     }
     buildFeatures {
         viewBinding true
@@ -45,5 +45,5 @@ dependencies {
     implementation project(path: ':arms')
     // 依赖注入：https://dagger.dev/hilt/
     implementation 'com.google.dagger:hilt-android:2.48'
-    ksp 'com.google.dagger:hilt-compiler:2.47'
+    ksp 'com.google.dagger:hilt-compiler:2.48'
 }
