@@ -20,7 +20,7 @@ android {
 
 ```groovy
 plugins {
-    id 'com.google.dagger.hilt.android' version '2.48' apply false
+    id 'com.google.dagger.hilt.android' version '2.48.1' apply false
 }
 ```
 
@@ -37,8 +37,8 @@ android {
 }
 
 dependencies {
-    implementation "com.google.dagger:hilt-android:2.48"
-    ksp "com.google.dagger:hilt-compiler:2.48"
+    implementation "com.google.dagger:hilt-android:2.48.1"
+    ksp "com.google.dagger:hilt-compiler:2.48.1"
 }
 ```
 
@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.4.2.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.4.2.01'
 }
 ```
 
