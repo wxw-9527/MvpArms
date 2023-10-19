@@ -45,7 +45,6 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
 
     // NFC相关
     private var mNfcAdapter: NfcAdapter? = null
-    private var mNfcPendingIntent: PendingIntent? = null
 
     // 版本更新实例
     private var mUpdateUtil: UpdateUtil? = null
@@ -64,24 +63,17 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
-    override fun onStart() {
-        super.onStart()
-        //
-        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
-        // 初始化NFC相关
-        if (mBarcodeScanningReceiverEnabled) {
-            mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
-            val intent = Intent(this, javaClass)
-            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
-            mNfcPendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
-        }
-    }
-
     override fun onResume() {
         super.onResume()
+        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
         if (mBarcodeScanningReceiverEnabled) {
+            // 初始化NFC相关
+            mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            val intent = Intent(this, javaClass)
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT
+            val nfcPendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
             // 设置当该页面处于前台时，NFC标签会直接交给该页面处理
-            mNfcAdapter?.enableForegroundDispatch(this, mNfcPendingIntent, null, null)
+            mNfcAdapter?.enableForegroundDispatch(this, nfcPendingIntent, null, null)
             // 注册广播
             val intentFilter = IntentFilter().apply {
                 BarcodeScanningReceiver.sActions.forEach { action -> addAction(action) }
