@@ -9,5 +9,6 @@
     android:background="@android:color/transparent"
     android:elevation="0pt"
     app:layout_scrollFlags="scroll|enterAlways|snap"
+    app:subtitleCentered="true"
     app:titleCentered="true"
     tools:viewBindingIgnore="true" />
