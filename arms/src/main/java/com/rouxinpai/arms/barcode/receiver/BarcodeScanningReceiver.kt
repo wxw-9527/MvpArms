@@ -15,9 +15,18 @@ class BarcodeScanningReceiver : BroadcastReceiver() {
 
     companion object {
         // 广播动作
-        val sActions = arrayOf("com.android.scanner.broadcast", "com.kte.scan.result")
+        val sActions = arrayOf(
+            "com.android.scanner.broadcast",
+            "com.kte.scan.result",
+            "nlscan.action.SCANNER_RESULT" // 神锻设备
+        )
+
         //
-        private val sExtras = arrayOf("scandata", "code")
+        private val sExtras = arrayOf(
+            "scandata",
+            "code",
+            "SCAN_BARCODE1" // 神锻设备
+        )
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
