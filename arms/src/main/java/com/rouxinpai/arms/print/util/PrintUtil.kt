@@ -70,7 +70,9 @@ object PrintUtil {
      * 清除全部数据
      */
     fun clearAll() {
-        // 清除 TemplateVO 对象
+        // 清除 [BrandEnum] 对象
+        mBrandEnum = null
+        // 清除 [TemplateVO] 对象
         mTemplateVO = null
         // 清除 MMKV
         mDefaultMMKV.clearAll()
