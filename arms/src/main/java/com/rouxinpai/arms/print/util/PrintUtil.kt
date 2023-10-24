@@ -3,6 +3,7 @@ package com.rouxinpai.arms.print.util
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import com.rouxinpai.arms.print.model.BrandEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.tencent.mmkv.MMKV
 
@@ -19,14 +20,26 @@ object PrintUtil {
         MMKV.defaultMMKV()
     }
 
+    // 常量，用于存储和获取打印机品牌对象的建
+    private const val KEY_BRAND = "key_printer_brand"
+
+    // 保存打印机品牌对象的实例变量
+    private var mBrandEnum: BrandEnum? = null
+
     /**
-     * 清除全部数据
+     * 保存打印机品牌信息
      */
-    fun clearAll() {
-        // 清除 TemplateVO 对象
-        mTemplateVO = null
-        // 清除 MMKV
-        mDefaultMMKV.clearAll()
+    fun setBrandEnum(brandEnum: BrandEnum) {
+        mBrandEnum = brandEnum
+        mDefaultMMKV.encode(KEY_BRAND, brandEnum.brand)
+    }
+
+    /**
+     * 获取已保存的打印机品牌
+     */
+    fun getBrandEnum(): BrandEnum {
+        val brand = mDefaultMMKV.decodeString(KEY_BRAND)
+        return BrandEnum.fromBrand(brand)
     }
 
     // 常量，用于存储和获取 TemplateVO 对象的键
@@ -44,13 +57,23 @@ object PrintUtil {
     }
 
     /**
-     * 获取域名配置信息
+     * 获取已缓存的打印模板
      */
     fun getTemplate(): TemplateVO? {
         if (mTemplateVO == null) {
             mTemplateVO = mDefaultMMKV.decodeParcelable(KEY_TEMPLATE, TemplateVO::class.java)
         }
         return mTemplateVO
+    }
+
+    /**
+     * 清除全部数据
+     */
+    fun clearAll() {
+        // 清除 TemplateVO 对象
+        mTemplateVO = null
+        // 清除 MMKV
+        mDefaultMMKV.clearAll()
     }
 
     /**

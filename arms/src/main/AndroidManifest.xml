@@ -63,6 +63,11 @@
                 android:resource="@xml/file_path" />
         </provider>
 
+        <!-- 打印机设置 -->
+        <activity
+            android:name=".print.PrinterSettingActivity"
+            android:label="@string/printer_setting__label" />
+
         <!-- 打印 -->
         <activity
             android:name=".print.PrintActivity"

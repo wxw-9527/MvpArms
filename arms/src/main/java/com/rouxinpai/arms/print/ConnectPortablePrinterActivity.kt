@@ -202,8 +202,8 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
             Timber.d("7、设备无配对记录，开始配对")
             // 打开输入配对密码的输入框
             showProgress(R.string.connect_portable_printer__pairing)
-            val createBondMethod = BluetoothDevice::createBond
-            createBondMethod.invoke(device)
+            // 配对
+            device.createBond()
         } else {
             // 连接打印机
             connectPrinter(device)

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 打印机设置 -->
+    <string name="printer_setting__label">打印机设置</string>
+    <string name="printer_setting__brand_hint">请选择打印机品牌</string>
+    <string name="printer_setting__hcctg">华辰联创</string>
+    <string name="printer_setting__hrpt">汉印</string>
+    <string name="printer_setting__switch_successful">切换成功</string>
+
     <!-- NFC相关 -->
     <string name="nfc__tag_empty">当前标签未绑定产品SN</string>
 

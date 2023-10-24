@@ -1,6 +1,7 @@
 package com.rouxinpai.demo.model.entity.main
 
 import com.rouxinpai.arms.nfc.QrCodeToNfcActivity
+import com.rouxinpai.arms.print.PrinterSettingActivity
 import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.barcode.BarcodeActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
@@ -55,6 +56,11 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 防抖点击
      */
     DEBOUNCE_CLICK_DEMO(value = "防抖点击", clazz = DebounceClickDemoActivity::class.java),
+
+    /**
+     * 打印机设置
+     */
+    PRINTER_SETTING(value = "打印机设置", clazz = PrinterSettingActivity::class.java),
 
     /**
      * 打印示例
