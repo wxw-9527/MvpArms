@@ -69,6 +69,7 @@ object PrintUtil {
     /**
      * 清除全部数据
      */
+    @JvmStatic
     fun clearAll() {
         // 清除 [BrandEnum] 对象
         mBrandEnum = null

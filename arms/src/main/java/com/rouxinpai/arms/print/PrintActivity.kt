@@ -13,16 +13,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import com.fondesa.recyclerviewdivider.dividerBuilder
-import com.printer.sdk.PrinterConstants
-import com.printer.sdk.PrinterInstance
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
+import com.rouxinpai.arms.print.factory.Printer
+import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.model.PrintResultVO
-import com.rouxinpai.arms.print.model.PrinterStatusEnum
-import com.rouxinpai.arms.print.model.PrintingStatusEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,7 +78,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     private val mPrintDataAdapter = PrintDataAdapter()
 
     // 打印机实例
-    private var mPrinterInstance: PrinterInstance? = null
+    private lateinit var mPrinter: Printer
 
     // 当前打印下标
     private var mIndex = 0
@@ -95,7 +93,9 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        //
+        // 初始化
+        mPrinter = PrinterFactory.createPrinter()
+        // 刷新按钮状态
         refreshButtonStatus()
         // 绑定列表适配器
         binding.rvPrintData.adapter = mPrintDataAdapter
@@ -131,14 +131,13 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     // 断开连接
     private fun onDisconnectClick() {
         // 断开连接
-        mPrinterInstance?.closeConnection()
-        mPrinterInstance = null
+        mPrinter.disconnect()
         // 刷新按钮状态
         refreshButtonStatus()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.action_disconnect)?.isVisible = (mPrinterInstance != null && 0 == mPrinterInstance?.currentStatus)
+        menu?.findItem(R.id.action_disconnect)?.isVisible = mPrinter.isConnected()
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -162,20 +161,18 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
         thread {
             for (i in 1..copies) {
-                // 判断打印机状态
-                val printerStatusEnum = PrinterStatusEnum.fromStatus(mPrinterInstance?.currentStatus)
                 // 打印机状态异常
-                if (PrinterStatusEnum.NORMAL != printerStatusEnum) {
+                if (!mPrinter.isStatusNormal()) {
                     runOnUiThread {
                         dismissProgress()
-                        showWarningTip(printerStatusEnum.errorMsgResId)
+                        showWarningTip(R.string.print__printer_exception)
                     }
                     break
                 }
                 // 获取打印结果
-                val printingStatusEnum = printAndReturnResult(template, bitmap)
+                val isPrintSuccessful = mPrinter.print(template, bitmap)
                 // 打印成功
-                if (PrintingStatusEnum.COMPLETED == printingStatusEnum) {
+                if (isPrintSuccessful) {
                     // 最后一份打印完
                     if (i == copies) {
                         // 记录打印成功结果
@@ -205,24 +202,11 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 else {
                     runOnUiThread {
                         dismissProgress()
-                        showWarningTip(printingStatusEnum.errorMsgResId)
+                        showWarningTip(R.string.print__print_fail)
                     }
                 }
             }
         }
-    }
-
-    // 打印并返回打印结果，耗时操作，需放在子线程中执行
-    private fun printAndReturnResult(template: TemplateVO, bitmap: Bitmap): PrintingStatusEnum {
-        // 设置打印参数
-        val pageWith = template.printWith.toInt()
-        val pageHeight = template.printHeight.toInt()
-        mPrinterInstance?.pageSetup(PrinterConstants.LablePaperType.Size_58mm, pageWith, pageHeight)
-        val offset = template.offset
-        mPrinterInstance?.drawGraphic(offset, 0, bitmap)
-        mPrinterInstance?.print(PrinterConstants.PRotate.Rotate_0, 1)
-        // 返回打印结果
-        return PrintingStatusEnum.fromStatus(mPrinterInstance?.getPrintingStatus(12 * 1000))
     }
 
     override fun onClick(v: View?) {
@@ -233,17 +217,14 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     // 打印
     private fun onPrintClick() {
-        // 打印机实例
-        val printerInstance = mPrinterInstance
         // 打印机未连接
-        if (printerInstance == null) {
+        if (!mPrinter.isConnected()) {
             ConnectPortablePrinterActivity.start(this, mConnectLauncher)
             return
         }
         // 打印机状态异常
-        val printerStatusEnum = PrinterStatusEnum.fromStatus(printerInstance.currentStatus)
-        if (PrinterStatusEnum.NORMAL != printerStatusEnum) {
-            showErrorTip(printerStatusEnum.errorMsgResId)
+        if (!mPrinter.isStatusNormal()) {
+            showErrorTip(R.string.print__printer_exception)
             ConnectPortablePrinterActivity.start(this, mConnectLauncher)
             return
         }
@@ -263,17 +244,13 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     // 刷新按钮状态
     private fun refreshButtonStatus() {
-        // 初始化打印机实例
-        mPrinterInstance = PrinterInstance.mPrinter
-        // 打印机实例
-        val printerInstance = mPrinterInstance
         // 刷新菜单按钮状态
         invalidateOptionsMenu()
         // 打印机未连接
-        if (printerInstance == null || 0 != printerInstance.currentStatus) {
-            binding.btnPrint.setText(R.string.print__connect_printer_and_print)
-        } else {
+        if (mPrinter.isConnected()) {
             binding.btnPrint.setText(R.string.print)
+        } else {
+            binding.btnPrint.setText(R.string.print__connect_printer_and_print)
         }
     }
 

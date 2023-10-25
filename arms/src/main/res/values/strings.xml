@@ -44,6 +44,7 @@
     <string name="print__printing">打印中</string>
     <string name="print__printer_exception">打印机状态异常，请重新连接打印机</string>
     <string name="print__print_successful">打印成功！</string>
+    <string name="print__print_fail">打印失败，请重试</string>
 
     <!-- 打印配置 -->
     <string name="print_config__title">打印配置</string>
@@ -62,7 +63,7 @@
     <string name="connect_portable_printer__unpair">取消配对</string>
     <string name="connect_portable_printer__connecting">正在连接打印机，请稍后</string>
     <string name="connect_portable_printer__connect_successful">连接成功</string>
-    <string name="connect_portable_printer__disconnect_success">断开连接成功</string>
+    <string name="connect_portable_printer__disconnect_success">连接已断开</string>
     <string name="connect_portable_printer__connect_fail">连接失败，请重试</string>
 
     <!-- 打印机状态 -->

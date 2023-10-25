@@ -12,26 +12,25 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.printer.sdk.PrinterConstants
-import com.printer.sdk.PrinterInstance
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterActivityBinding
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterRecycleItemBinding
-import com.rouxinpai.arms.print.model.PrinterStatusEnum
+import com.rouxinpai.arms.print.factory.Printer
+import com.rouxinpai.arms.print.factory.PrinterFactory
+import com.rouxinpai.arms.print.factory.OnConnectListener
 import com.rouxinpai.arms.print.model.PrinterStatusEnum.*
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import timber.log.Timber
-import kotlin.concurrent.thread
 
 /**
  * author : Saxxhw
@@ -40,7 +39,8 @@ import kotlin.concurrent.thread
  * desc   : 连接便携式打印机
  */
 class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivityBinding>(),
-    OnItemClickListener {
+    OnItemClickListener,
+    OnConnectListener {
 
     companion object {
 
@@ -81,10 +81,12 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
     private val mBluetoothDeviceAdapter = BluetoothDeviceAdapter()
 
     // 打印机实例
-    private var mPrinterInstance: PrinterInstance? = null
+    private lateinit var mPrinter: Printer
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
+        // 初始化打印机实例
+        mPrinter = PrinterFactory.createPrinter()
         // 初始化
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         // 判断设备支付支持蓝牙功能
@@ -118,6 +120,7 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         binding.rvBluetoothDevice.adapter = mBluetoothDeviceAdapter
         // 绑定监听事件
         mBluetoothDeviceAdapter.setOnItemClickListener(this)
+        mPrinter.setOnConnectListener(this)
     }
 
     override fun onDestroy() {
@@ -128,6 +131,8 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         }
         // 取消广播注册
         unregisterReceiver(mBluetoothReceiver)
+        // 释放资源
+        mPrinter.destroy()
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -169,7 +174,8 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
                 // 搜索到蓝牙设备
                 BluetoothDevice.ACTION_FOUND -> {
                     val deviceType = device.bluetoothClass?.majorDeviceClass
-                    if ((deviceType == 1536 || deviceType == 7936) && device.type != 2) {
+                    val deviceName = device.name
+                    if ((deviceType == 1536 || deviceType == 7936) && device.type != 2 && (deviceName != null && deviceName.isNotEmpty())) {
                         val list = mBluetoothDeviceAdapter.data
                         if (!list.contains(device)) {
                             mBluetoothDeviceAdapter.addData(device)
@@ -210,58 +216,31 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         }
     }
 
-    // 连接打印机
     private fun connectPrinter(device: BluetoothDevice) {
-        Timber.d("11、连接打印机")
-        // 获取打印机实例
-        mPrinterInstance = PrinterInstance.getPrinterInstance(device, mHandler)
-        // 连接打印机
+        mPrinter.connect(this, device)
+    }
+
+    override fun onConnectStart() {
         showProgress(R.string.connect_portable_printer__connecting)
-        thread {
-            mPrinterInstance?.openConnection()
+    }
+
+    override fun onConnectSuccessful() {
+        dismissProgress()
+        showSuccessTip(R.string.connect_portable_printer__connect_successful)
+        Handler(Looper.getMainLooper()).postDelayed(500L) {
+            setResult(RESULT_OK)
+            finish()
         }
     }
 
-    //
-    private val mHandler = object : Handler(Looper.getMainLooper()) {
+    override fun onConnectClosed() {
+        dismissProgress()
+        showSuccessTip(R.string.connect_portable_printer__disconnect_success)
+    }
 
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            when (msg.what) {
-                // 连接成功
-                PrinterConstants.Connect.SUCCESS -> {
-                    val status = mPrinterInstance?.currentStatus
-                    val printerStatusEnum = PrinterStatusEnum.fromStatus(status)
-                    if (NORMAL == printerStatusEnum) {
-                        Timber.d("12、打印机连接成功")
-                        // 提示用户连接成功
-                        dismissProgress()
-                        showSuccessTip(R.string.connect_portable_printer__connect_successful)
-                        // 设置返回值
-                        setResult(RESULT_OK)
-                        finish()
-                    } else {
-                        // 提示用户异常信息
-                        dismissProgress()
-                        showWarningTip(printerStatusEnum.errorMsgResId)
-                        // 断开连接
-                        mPrinterInstance?.closeConnection()
-                        mPrinterInstance = null
-                    }
-                }
-                // 断开连接
-                PrinterConstants.Connect.CLOSED -> {
-                    dismissProgress()
-                    showSuccessTip(R.string.connect_portable_printer__disconnect_success)
-                }
-                // 其他
-                else -> {
-                    Timber.d("13、打印机连接失败")
-                    dismissProgress()
-                    showErrorTip(R.string.connect_portable_printer__connect_fail)
-                }
-            }
-        }
+    override fun onConnectFail() {
+        dismissProgress()
+        showErrorTip(R.string.connect_portable_printer__connect_fail)
     }
 
     /**

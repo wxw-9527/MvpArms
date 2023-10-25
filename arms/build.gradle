@@ -32,6 +32,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -99,7 +104,9 @@ dependencies {
     // 步进器
     api 'com.github.wxw-9527:Stepper:1.1.0'
     // 蓝牙打印机
-    implementation files('libs/printersdkv5.7.0.jar')
+    implementation files('libs/HCCTG_printersdkv5.7.0.jar')
+    implementation files('libs/HPRT_CPCL_SDK_V1.22.01.jar')
+    implementation files('libs/HPRT_lzo_V1.0.jar')
     // 华为
     implementation 'com.huawei.agconnect:agconnect-core:1.9.1.301'
     implementation 'com.huawei.agconnect:agconnect-crash:1.9.1.301'
