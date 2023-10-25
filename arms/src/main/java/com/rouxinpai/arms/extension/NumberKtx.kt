@@ -15,3 +15,12 @@ fun Float.format(digits: Int = 3): String {
         maximumFractionDigits = digits
     }.format(this)
 }
+
+/**
+ * 修复Float相减计算精度丢失的问题
+ */
+infix fun Float?.subtract(f: Float?): Float {
+    val bigDecimal1 = (this ?: 0f).toBigDecimal()
+    val bigDecimal2 = (f ?: 0f).toBigDecimal()
+    return bigDecimal1.subtract(bigDecimal2).toFloat()
+}
