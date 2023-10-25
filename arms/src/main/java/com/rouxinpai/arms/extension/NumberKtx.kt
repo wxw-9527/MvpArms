@@ -8,7 +8,6 @@ import java.text.NumberFormat
  * time   : 2023/1/9 11:06
  * desc   :
  */
-
 fun Float.format(digits: Int = 3): String {
     return NumberFormat.getNumberInstance().apply {
         isGroupingUsed = false
