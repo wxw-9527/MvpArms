@@ -1,6 +1,6 @@
 package com.rouxinpai.arms.extension
 
-import java.text.NumberFormat
+import java.math.BigDecimal
 
 /**
  * author : Saxxhw
@@ -8,10 +8,14 @@ import java.text.NumberFormat
  * time   : 2023/1/9 11:06
  * desc   :
  */
+fun Float.format(): String {
+    return this.toBigDecimal().format()
+}
 
-fun Float.format(digits: Int = 3): String {
-    return NumberFormat.getNumberInstance().apply {
-        isGroupingUsed = false
-        maximumFractionDigits = digits
-    }.format(this)
+fun Double.format(): String {
+    return this.toBigDecimal().format()
+}
+
+fun BigDecimal.format(): String {
+    return this.stripTrailingZeros().toPlainString()
 }
