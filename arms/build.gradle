@@ -5,8 +5,6 @@ plugins {
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android' // Hilt
     id 'com.huawei.agconnect' // 华为
-    id 'maven-publish'
-    // fix jitpack warning：'Gradle 'publishToMavenLocal' task not found. Please add the 'maven-publish' or 'maven' plugin.'
 }
 
 android {
@@ -115,17 +113,4 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-crash-native:1.9.1.301' // 崩溃NDK
     implementation 'com.huawei.agconnect:agconnect-apms:1.6.2.300' // 性能管理SDK
     implementation 'com.huawei.hms:hianalytics:6.12.0.300' // 华为分析SDK
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.github.wxw-9527'
-                artifactId = 'MvpArms'
-                version = '2.4.5.02'
-            }
-        }
-    }
 }
