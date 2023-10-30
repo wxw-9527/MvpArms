@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android' // Hilt
     id 'com.huawei.agconnect' // 华为
+    id 'maven-publish' // fix jitpack warning：'Gradle 'publishToMavenLocal' task not found. Please add the 'maven-publish' or 'maven' plugin.'
 }
 
 android {

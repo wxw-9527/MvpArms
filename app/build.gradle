@@ -18,8 +18,8 @@ android {
         applicationId "com.rouxinpai.demo"
         minSdk 21
         targetSdk 34
-        versionCode 24500
-        versionName "2.4.5.00"
+        versionCode 24501
+        versionName "2.4.5.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
