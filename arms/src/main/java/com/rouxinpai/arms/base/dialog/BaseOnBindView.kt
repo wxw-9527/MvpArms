@@ -76,8 +76,8 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        lifecycle.removeObserver(this)
         super.onDestroy(owner)
+        dialog.lifecycle.removeObserver(this)
         if (mEventBusEnabled) {
             EventBus.getDefault().unregister(this)
         }

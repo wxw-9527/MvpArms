@@ -1,5 +1,7 @@
 package com.rouxinpai.arms.print.factory
 
+import android.bluetooth.BluetoothDevice
+
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
@@ -8,7 +10,7 @@ package com.rouxinpai.arms.print.factory
  */
 interface OnConnectListener {
     fun onConnectStart()
-    fun onConnectSuccessful()
+    fun onConnectSuccessful(device: BluetoothDevice)
     fun onConnectClosed()
     fun onConnectFail()
 

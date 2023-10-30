@@ -47,7 +47,7 @@ class HrptPrinter : Printer() {
             .subscribe { result ->
                 when (result) {
                     // 连接成功
-                    0 -> onConnectListener?.onConnectSuccessful()
+                    0 -> onConnectListener?.onConnectSuccessful(device)
                     else -> onConnectListener?.onConnectFail()
                 }
             }
@@ -55,7 +55,9 @@ class HrptPrinter : Printer() {
 
     override fun disconnect() {
         // 断开连接
-        PrinterHelper.portClose()
+        if (isConnected()) {
+            PrinterHelper.portClose()
+        }
         // 释放资源
         mDisposable?.dispose()
     }

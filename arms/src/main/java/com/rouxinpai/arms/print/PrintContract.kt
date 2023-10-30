@@ -17,14 +17,12 @@ sealed interface PrintContract {
 
     interface View : IView {
         fun showBarcodeInfos(list: List<PrintResultVO>)
-        fun showTemplates(templateList: List<TemplateVO>)
         fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int)
     }
 
     interface Presenter : IPresenter<View> {
         fun getTemplate(): TemplateVO?
         fun listBarcodeInfos(barcodeList: List<String>)
-        fun listTemplates()
         fun genImage(template: TemplateVO, barcodeInfo: BarcodeInfoVO, copies: Int, index: Int)
     }
 }

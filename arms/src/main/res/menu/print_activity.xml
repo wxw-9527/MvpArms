@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_disconnect"
-        android:title="@string/print__disconnect"
+        android:title="@string/print_config__disconnect"
         app:showAsAction="always" />
 </menu>

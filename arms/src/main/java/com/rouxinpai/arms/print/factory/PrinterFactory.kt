@@ -1,5 +1,6 @@
 package com.rouxinpai.arms.print.factory
 
+import com.rouxinpai.arms.print.model.BrandEnum
 import com.rouxinpai.arms.print.model.BrandEnum.*
 import com.rouxinpai.arms.print.util.PrintUtil
 
@@ -11,8 +12,8 @@ import com.rouxinpai.arms.print.util.PrintUtil
  */
 object PrinterFactory {
 
-    fun createPrinter(): Printer {
-        return when (PrintUtil.getBrandEnum()) {
+    fun createPrinter(brandEnum: BrandEnum = PrintUtil.getBrandEnum()): Printer {
+        return when (brandEnum) {
             HCCTG -> HcctgPrinter.getInstance()
             HPRT -> HrptPrinter.getInstance()
         }

@@ -7,13 +7,27 @@
     android:orientation="vertical"
     tools:context="com.rouxinpai.arms.print.ConnectPortablePrinterActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@id/toolbar"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:titleCentered="true" />
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@id/toolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:titleCentered="true" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp"
+            android:indeterminateTint="@color/black" />
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bluetooth_device"

@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.R
@@ -96,7 +95,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         // 初始化
         mPrinter = PrinterFactory.createPrinter()
         // 刷新按钮状态
-        refreshButtonStatus()
+        invalidateOptionsMenu()
         // 绑定列表适配器
         binding.rvPrintData.adapter = mPrintDataAdapter
         // 添加分割线
@@ -133,7 +132,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         // 断开连接
         mPrinter.disconnect()
         // 刷新按钮状态
-        refreshButtonStatus()
+        invalidateOptionsMenu()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -144,18 +143,6 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     override fun showBarcodeInfos(list: List<PrintResultVO>) {
         // 展示待打印条码信息
         mPrintDataAdapter.setList(list)
-    }
-
-    override fun showTemplates(templateList: List<TemplateVO>) {
-        // 展示打印配置弹窗
-        PrintConfigDialog.show(templateList) { template, copies ->
-            // 展示进度条
-            showProgress(R.string.print__printing)
-            // 重置页码
-            mIndex = 0
-            // 生成图片
-            presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
-        }
     }
 
     override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
@@ -217,41 +204,19 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     // 打印
     private fun onPrintClick() {
-        // 打印机未连接
-        if (!mPrinter.isConnected()) {
-            ConnectPortablePrinterActivity.start(this, mConnectLauncher)
-            return
-        }
-        // 打印机状态异常
-        if (!mPrinter.isStatusNormal()) {
-            showErrorTip(R.string.print__printer_exception)
-            ConnectPortablePrinterActivity.start(this, mConnectLauncher)
-            return
-        }
-        // 获取打印模板列表
-        presenter.listTemplates()
-    }
-
-    // 连接打印机回调
-    private val mConnectLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (RESULT_OK == it.resultCode) {
-            //
-            refreshButtonStatus()
-            // 继续执行打印方法
-            binding.btnPrint.performClick()
-        }
-    }
-
-    // 刷新按钮状态
-    private fun refreshButtonStatus() {
-        // 刷新菜单按钮状态
-        invalidateOptionsMenu()
-        // 打印机未连接
-        if (mPrinter.isConnected()) {
-            binding.btnPrint.setText(R.string.print)
-        } else {
-            binding.btnPrint.setText(R.string.print__connect_printer_and_print)
-        }
+        PrintConfigDialog.show(this,
+            dismiss = {
+                // 刷新按钮状态
+                invalidateOptionsMenu()
+            },
+            success = { template, copies ->
+                // 展示进度条
+                showProgress(R.string.print__printing)
+                // 重置页码
+                mIndex = 0
+                // 生成图片
+                presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
+            })
     }
 
     /**

@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 打印机设置 -->
-    <string name="printer_setting__label">打印机设置</string>
-    <string name="printer_setting__brand_hint">请选择打印机品牌</string>
-    <string name="printer_setting__hcctg">华辰联创</string>
-    <string name="printer_setting__hrpt">汉印</string>
-    <string name="printer_setting__switch_successful">切换成功</string>
-
     <!-- NFC相关 -->
     <string name="nfc__tag_empty">当前标签未绑定产品SN</string>
 
@@ -32,7 +25,6 @@
     <!-- 便携式打印 -->
     <string name="print">打印</string>
     <string name="print__title">条码明细</string>
-    <string name="print__disconnect">断开连接</string>
     <string name="print__code">编码</string>
     <string name="print__name">名称</string>
     <string name="print__barcode">条码</string>
@@ -48,12 +40,19 @@
 
     <!-- 打印配置 -->
     <string name="print_config__title">打印配置</string>
+    <string name="print_config__brand">打印机型号</string>
+    <string name="print_config__brand_hint">请选择打印机型号</string>
     <string name="print_config__template">打印模板</string>
     <string name="print_config__template_hint">请选择打印模板</string>
+    <string name="print_config__printer">打印机</string>
+    <string name="print_config__printer_hint">请连接打印机</string>
+    <string name="print_config__disconnect">断开连接</string>
     <string name="print_config__copies">打印份数</string>
     <string name="print_config__copies_hint">打印份数</string>
     <string name="print_config__cancel">取消</string>
     <string name="print_config__ok">打印</string>
+    <string name="print_config__hcctg">华辰联创</string>
+    <string name="print_config__hrpt">汉印</string>
 
     <!-- 连接便携式打印机 -->
     <string name="connect_portable_printer">连接打印机</string>

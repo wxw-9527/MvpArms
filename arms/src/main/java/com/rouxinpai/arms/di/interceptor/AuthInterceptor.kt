@@ -1,4 +1,4 @@
-package com.rouxinpai.arms.di
+package com.rouxinpai.arms.di.interceptor
 
 import com.rouxinpai.arms.domain.util.DomainUtils
 import okhttp3.Interceptor

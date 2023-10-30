@@ -1,5 +1,6 @@
 package com.rouxinpai.arms.print.util
 
+import android.bluetooth.BluetoothDevice
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
@@ -40,6 +41,27 @@ object PrintUtil {
     fun getBrandEnum(): BrandEnum {
         val brand = mDefaultMMKV.decodeString(KEY_BRAND)
         return BrandEnum.fromBrand(brand)
+    }
+
+    // 常量，用于存储和获取打印机蓝牙设备对象的键
+    private const val KEY_BLUETOOTH_DEVICE = "key_bluetooth_device"
+
+    // 保存打印机打印机蓝牙设备对象的实例变量
+    private var mBluetoothDevice: BluetoothDevice? = null
+
+    /**
+     * 保存打印机打印机蓝牙设备对象
+     */
+    fun setBluetoothDevice(device: BluetoothDevice) {
+        mBluetoothDevice = device
+        mDefaultMMKV.encode(KEY_BLUETOOTH_DEVICE, device)
+    }
+
+    /**
+     * 获取已保存的打印机品牌
+     */
+    fun getBluetoothDevice(): BluetoothDevice? {
+        return mDefaultMMKV.decodeParcelable(KEY_BLUETOOTH_DEVICE, BluetoothDevice::class.java)
     }
 
     // 常量，用于存储和获取 TemplateVO 对象的键

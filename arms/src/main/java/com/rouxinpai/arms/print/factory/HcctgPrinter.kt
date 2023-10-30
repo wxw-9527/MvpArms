@@ -43,8 +43,13 @@ class HcctgPrinter : Printer() {
     // 打印机实例
     private lateinit var mPrinterInstance: PrinterInstance
 
+    //
+    private lateinit var mBluetoothDevice: BluetoothDevice
+
     override fun connect(context: Context, device: BluetoothDevice) {
         onConnectListener?.onConnectStart()
+        // 初始化全局变量
+        mBluetoothDevice = device
         // 获取打印机实例
         mPrinterInstance = PrinterInstance.getPrinterInstance(device, mHandler)
         // 连接打印机
@@ -70,7 +75,7 @@ class HcctgPrinter : Printer() {
                     val printerStatusEnum = PrinterStatusEnum.fromStatus(status)
                     if (PrinterStatusEnum.NORMAL == printerStatusEnum) {
                         Timber.d("12、打印机连接成功")
-                        onConnectListener?.onConnectSuccessful()
+                        onConnectListener?.onConnectSuccessful(mBluetoothDevice)
                     } else {
                         disconnect()
                         onConnectListener?.onConnectFail()
@@ -87,7 +92,9 @@ class HcctgPrinter : Printer() {
 
     override fun disconnect() {
         // 断开连接
-        mPrinterInstance.closeConnection()
+        if (isConnected()) {
+            mPrinterInstance.closeConnection()
+        }
         // 释放资源
         mDisposable?.dispose()
     }

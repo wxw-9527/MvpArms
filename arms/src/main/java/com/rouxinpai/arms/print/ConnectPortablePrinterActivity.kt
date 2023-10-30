@@ -10,13 +10,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -28,7 +24,9 @@ import com.rouxinpai.arms.databinding.ConnectPortablePrinterRecycleItemBinding
 import com.rouxinpai.arms.print.factory.Printer
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.factory.OnConnectListener
+import com.rouxinpai.arms.print.model.ConnectedEvent
 import com.rouxinpai.arms.print.model.PrinterStatusEnum.*
+import com.rouxinpai.arms.print.util.PrintUtil
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import timber.log.Timber
 
@@ -48,7 +46,7 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
          * 启动[ConnectPortablePrinterActivity]页
          */
         @JvmStatic
-        fun start(activity: AppCompatActivity, launcher: ActivityResultLauncher<Intent>) {
+        fun start(activity: AppCompatActivity) {
             // 组装需要的权限
             val permissions = arrayListOf<String>().apply {
                 // 定位权限
@@ -68,7 +66,7 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
                 // 获取权限后执行该方法
                 requiresPermission = {
                     val starter = Intent(activity, ConnectPortablePrinterActivity::class.java)
-                    launcher.launch(starter)
+                    activity.startActivity(starter)
                 }
             ).launch()
         }
@@ -224,13 +222,15 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         showProgress(R.string.connect_portable_printer__connecting)
     }
 
-    override fun onConnectSuccessful() {
+    override fun onConnectSuccessful(device: BluetoothDevice) {
+        // 缓存蓝牙设备信息
+        PrintUtil.setBluetoothDevice(device)
+        // 渲染界面状态
         dismissProgress()
         showSuccessTip(R.string.connect_portable_printer__connect_successful)
-        Handler(Looper.getMainLooper()).postDelayed(500L) {
-            setResult(RESULT_OK)
-            finish()
-        }
+        // 关闭当前页
+        ConnectedEvent.post()
+        finish()
     }
 
     override fun onConnectClosed() {

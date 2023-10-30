@@ -14,12 +14,12 @@ enum class BrandEnum(val brand: String, @StringRes val brandNameResId: Int) {
     /**
      * 华辰联创
      */
-    HCCTG("hcctg", R.string.printer_setting__hcctg),
+    HCCTG("hcctg", R.string.print_config__hcctg),
 
     /**
      * 汉印
      */
-    HPRT("hrpt", R.string.printer_setting__hrpt);
+    HPRT("hrpt", R.string.print_config__hrpt);
 
     companion object {
 

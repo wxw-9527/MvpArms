@@ -20,7 +20,7 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
             PrintActivity.start(
                 this, listOf(
                     "10123091000006117",
-                    "10123091000005164",
+//                    "10123091000005164",
 //                    "10123091000005949",
 //                    "10123091000006388",
 //                    "10123091600000017",

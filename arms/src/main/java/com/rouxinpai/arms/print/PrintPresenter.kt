@@ -7,7 +7,6 @@ import android.util.Base64
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.printer.sdk.utils.Utils
-import com.rouxinpai.arms.R
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.application.BaseApplication
@@ -62,29 +61,6 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
                     super.onData(t)
                     view?.showBarcodeInfos(t)
                     view?.showSuccessPage()
-                }
-            })
-        addDisposable(disposable)
-    }
-
-    override fun listTemplates() {
-        view?.showProgress()
-        val disposable = retrofit.create<PrintApi>()
-            .listTemplates()
-            .compose(schedulersTransformer())
-            .compose(responseTransformer())
-            .map { list -> list.map { dto -> TemplateVO.fromDto(dto) } }
-            .subscribeWith(object : DefaultObserver<List<TemplateVO>>(view, false) {
-
-                override fun onData(t: List<TemplateVO>) {
-                    super.onData(t)
-                    if (t.isEmpty()) {
-                        view?.dismissProgress()
-                        view?.showWarningTip(R.string.print__template_not_found)
-                        return
-                    }
-                    view?.dismissProgress()
-                    view?.showTemplates(t)
                 }
             })
         addDisposable(disposable)

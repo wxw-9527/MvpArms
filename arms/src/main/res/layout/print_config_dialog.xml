@@ -20,10 +20,10 @@
     <com.skydoves.powerspinner.PowerSpinnerView
         android:id="@+id/spinner_template"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="38dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/print_config__shape_stroke"
         android:gravity="center_vertical"
         android:hint="@string/print_config__template_hint"
@@ -42,6 +42,95 @@
         app:spinner_popup_max_height="200dp"
         app:spinner_selected_item_background="#FFE7F3D7" />
 
+    <!-- 打印机型号 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/field_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/print_config__brand"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_brand"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner_brand" />
+
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/spinner_brand"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/print_config__shape_stroke"
+        android:gravity="center_vertical"
+        android:hint="@string/print_config__brand_hint"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_template"
+        app:layout_constraintStart_toStartOf="@+id/spinner_template"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_template"
+        app:spinner_arrow_drawable="@drawable/print_config__ic_arrow_drop_down"
+        app:spinner_item_height="36dp"
+        app:spinner_popup_background="@drawable/print_config__shape_stroke"
+        app:spinner_popup_elevation="0dp"
+        app:spinner_popup_max_height="200dp"
+        app:spinner_selected_item_background="#FFE7F3D7" />
+
+    <!-- 打印机 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/field_printer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/print_config__printer"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/llyt_printer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/llyt_printer" />
+
+    <LinearLayout
+        android:id="@+id/llyt_printer"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:gravity="end"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_template"
+        app:layout_constraintStart_toStartOf="@+id/spinner_template"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_brand">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_printer"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="@string/print_config__printer_hint"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:textColor="#FF417BF4"
+            android:textColorHint="#FF417BF4"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_disconnect"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="8dp"
+            android:gravity="center"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@string/print_config__disconnect"
+            android:textColor="#FF888888"
+            android:textSize="13sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
     <!-- 打印份数 -->
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/field_copies"
@@ -58,15 +147,15 @@
         android:id="@+id/stepper_copies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/spinner_template"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_template"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_brand"
+        app:layout_constraintTop_toBottomOf="@+id/llyt_printer"
         app:stepper_button_size="28dp"
         app:stepper_data_element="INT"
         app:stepper_input_height="36dp"
-        app:stepper_input_text_size="20sp"
+        app:stepper_input_text_size="17sp"
         app:stepper_input_width="86dp"
         app:stepper_padding_input_button="4dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,7 @@ abstract class Printer {
     abstract fun disconnect()
 
     /**
-     * 是否已连接答应
+     * 是否已连接打印机
      */
     abstract fun isConnected(): Boolean
 
