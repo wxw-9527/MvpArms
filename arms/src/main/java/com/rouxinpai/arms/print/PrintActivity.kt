@@ -17,7 +17,7 @@ import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
-import com.rouxinpai.arms.print.factory.Printer
+import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
@@ -77,7 +77,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     private val mPrintDataAdapter = PrintDataAdapter()
 
     // 打印机实例
-    private lateinit var mPrinter: Printer
+    private lateinit var mPrinter: BasePrinter
 
     // 当前打印下标
     private var mIndex = 0

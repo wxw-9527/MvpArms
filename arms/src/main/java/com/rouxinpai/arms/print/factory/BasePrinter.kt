@@ -11,7 +11,7 @@ import com.rouxinpai.arms.print.model.TemplateVO
  * time   : 2023/10/24 14:38
  * desc   :
  */
-abstract class Printer {
+abstract class BasePrinter {
 
     // 连接监听回调
     var onConnectListener: OnConnectListener? = null

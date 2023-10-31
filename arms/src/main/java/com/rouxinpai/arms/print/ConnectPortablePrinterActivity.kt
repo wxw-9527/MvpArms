@@ -21,7 +21,7 @@ import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterActivityBinding
 import com.rouxinpai.arms.databinding.ConnectPortablePrinterRecycleItemBinding
-import com.rouxinpai.arms.print.factory.Printer
+import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.factory.OnConnectListener
 import com.rouxinpai.arms.print.model.ConnectedEvent
@@ -79,7 +79,7 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
     private val mBluetoothDeviceAdapter = BluetoothDeviceAdapter()
 
     // 打印机实例
-    private lateinit var mPrinter: Printer
+    private lateinit var mPrinter: BasePrinter
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)

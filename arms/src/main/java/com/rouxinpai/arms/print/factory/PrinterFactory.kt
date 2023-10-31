@@ -12,7 +12,7 @@ import com.rouxinpai.arms.print.util.PrintUtil
  */
 object PrinterFactory {
 
-    fun createPrinter(brandEnum: BrandEnum = PrintUtil.getBrandEnum()): Printer {
+    fun createPrinter(brandEnum: BrandEnum = PrintUtil.getBrandEnum()): BasePrinter {
         return when (brandEnum) {
             HCCTG -> HcctgPrinter.getInstance()
             HPRT -> HrptPrinter.getInstance()

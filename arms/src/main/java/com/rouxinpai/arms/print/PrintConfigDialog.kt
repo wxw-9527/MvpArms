@@ -15,7 +15,7 @@ import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.dialog.BaseMvpOnBindView
 import com.rouxinpai.arms.databinding.PrintConfigDialogBinding
 import com.rouxinpai.arms.di.DialogPresenterEntryPoint
-import com.rouxinpai.arms.print.factory.Printer
+import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.model.BrandEnum
 import com.rouxinpai.arms.print.model.ConnectedEvent
@@ -76,7 +76,7 @@ class PrintConfigDialog(
     private lateinit var mBrandEnum: BrandEnum
 
     // 打印机实例
-    private lateinit var mPrinter: Printer
+    private lateinit var mPrinter: BasePrinter
 
     // 蓝牙设备对象
     private var mBluetoothDevice: BluetoothDevice? = null

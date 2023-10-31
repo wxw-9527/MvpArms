@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.disposables.Disposable
  * time   : 2023/10/24 14:53
  * desc   :
  */
-class HrptPrinter : Printer() {
+class HrptPrinter : BasePrinter() {
 
     companion object {
 

@@ -13,5 +13,4 @@ interface OnConnectListener {
     fun onConnectSuccessful(device: BluetoothDevice)
     fun onConnectClosed()
     fun onConnectFail()
-
 }

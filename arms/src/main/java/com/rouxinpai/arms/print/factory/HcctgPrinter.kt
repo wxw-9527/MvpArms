@@ -21,7 +21,7 @@ import timber.log.Timber
  * time   : 2023/10/24 14:41
  * desc   :
  */
-class HcctgPrinter : Printer() {
+class HcctgPrinter : BasePrinter() {
 
     companion object {
 
