@@ -3,13 +3,6 @@
     <!-- NFC相关 -->
     <string name="nfc__tag_empty">当前标签未绑定产品SN</string>
 
-    <!-- 日期范围选择相关 -->
-    <string name="date_range__clear">清除选中</string>
-    <string name="date_range__year_month">%1$d年%2$d月</string>
-    <string name="date_range__please_select_the_correct_start_date">请选择正确的起始日期</string>
-    <string name="date_range__cancel">取消</string>
-    <string name="date_range__ok">确认</string>
-
     <!-- 域名配置 -->
     <string name="base_domain_config">域名配置</string>
     <string name="base_domain_config__input_invitation_code">请输入邀请码</string>

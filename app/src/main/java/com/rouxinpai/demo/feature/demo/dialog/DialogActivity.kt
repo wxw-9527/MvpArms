@@ -6,14 +6,14 @@ import android.os.Looper
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.core.os.postDelayed
-import com.blankj.utilcode.util.TimeUtils
+import com.kongzue.dialogx.datepicker.CalendarDialog
+import com.kongzue.dialogx.datepicker.interfaces.OnDateSelected
+import com.kongzue.dialogx.datepicker.interfaces.OnMultiDateSelected
 import com.rouxinpai.arms.base.activity.BaseActivity
-import com.rouxinpai.arms.constant.TimeConstants
-import com.rouxinpai.arms.dialog.DateRangeDialog
-import com.rouxinpai.calendarview.Calendar
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.DialogActivityBinding
 import timber.log.Timber
+import java.util.Calendar
 
 /**
  * author : Saxxhw
@@ -30,6 +30,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         binding.btnShowSuccessTip.setOnClickListener(this)
         binding.btnShowWarningTip.setOnClickListener(this)
         binding.btnShowErrorTip.setOnClickListener(this)
+        binding.btnSelectDate.setOnClickListener(this)
         binding.btnSelectDateRange.setOnClickListener(this)
         binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
         binding.btnShowCustomViewDialog.setOnClickListener(this)
@@ -41,6 +42,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
             R.id.btn_show_success_tip -> showSuccessTip()
             R.id.btn_show_warning_tip -> showWarningTip()
             R.id.btn_show_error_tip -> showErrorTip()
+            R.id.btn_select_date -> showSelectDateDialog()
             R.id.btn_select_date_range -> showSelectDateRangeDialog()
             R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
             R.id.btn_show_custom_view_dialog -> showCustomViewDialog()
@@ -72,29 +74,68 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         showErrorTip("错误提示，这是一个提示用户系统发生异常")
     }
 
+    private var mSelectedCalendar: Calendar? = null
+
+    private fun showSelectDateDialog() {
+        CalendarDialog.build()
+            .apply {
+                val calendar = mSelectedCalendar
+                if (calendar != null) {
+                    setDefaultSelect(
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                    )
+                }
+            }
+            .setShowLunarCalendar(true)
+            .show(object : OnDateSelected() {
+                override fun onSelect(text: String?, year: Int, month: Int, day: Int) {
+                    mSelectedCalendar = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, year)
+                        set(Calendar.MONTH, month)
+                        set(Calendar.DAY_OF_MONTH, day)
+                    }
+                }
+            })
+    }
+
     private var mStartCalendar: Calendar? = null
     private var mEndCalendar: Calendar? = null
 
     private fun showSelectDateRangeDialog() {
-        DateRangeDialog.show(
-            mStartCalendar,
-            mEndCalendar,
-            object : DateRangeDialog.OnDateRangeSelectedListener {
-                override fun onDateRangeSelected(startCalendar: Calendar?, endCalendar: Calendar?) {
-                    mStartCalendar = startCalendar
-                    mEndCalendar = endCalendar
-                    if (startCalendar == null && endCalendar == null) {
-                        showSuccessTip("清除选中日期范围")
-                    } else {
-                        val startMillis = startCalendar?.timeInMillis ?: System.currentTimeMillis()
-                        val startDate = TimeUtils.millis2String(startMillis, TimeConstants.Y_MO_D)
-                        val endMillis = endCalendar?.timeInMillis ?: System.currentTimeMillis()
-                        val endDate = TimeUtils.millis2String(endMillis, TimeConstants.Y_MO_D)
-                        showSuccessTip("$startDate 至 $endDate")
-                    }
+        CalendarDialog.build()
+            .apply {
+                val startCalendar = mStartCalendar
+                val endCalendar = mEndCalendar
+                if (startCalendar != null && endCalendar != null) {
+                    setDefaultSelect(
+                        startCalendar.get(Calendar.YEAR),
+                        startCalendar.get(Calendar.MONTH),
+                        startCalendar.get(Calendar.DAY_OF_MONTH),
+                        endCalendar.get(Calendar.YEAR),
+                        endCalendar.get(Calendar.MONTH),
+                        endCalendar.get(Calendar.DAY_OF_MONTH),
+                    )
                 }
             }
-        )
+            .setMaxMultiDay(7)
+            .setShowLunarCalendar(true)
+            .show(object : OnMultiDateSelected() {
+
+                override fun onSelect(startText: String?, endText: String?, startYear: Int, startMonth: Int, startDay: Int, endYear: Int, endMonth: Int, endDay: Int) {
+                    mStartCalendar = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, startYear)
+                        set(Calendar.MONTH, startMonth)
+                        set(Calendar.DAY_OF_MONTH, startDay)
+                    }
+                    mEndCalendar = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, endYear)
+                        set(Calendar.MONTH, endMonth)
+                        set(Calendar.DAY_OF_MONTH, endDay)
+                    }
+                }
+            })
     }
 
     private fun showSimpleCustomViewDialog() {
