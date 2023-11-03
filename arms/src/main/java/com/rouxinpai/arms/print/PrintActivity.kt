@@ -142,7 +142,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     override fun showBarcodeInfos(list: List<PrintResultVO>) {
         // 展示待打印条码信息
-        mPrintDataAdapter.setList(list)
+        mPrintDataAdapter.submitList(list)
     }
 
     override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
@@ -164,14 +164,17 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                     if (i == copies) {
                         // 记录打印成功结果
                         runOnUiThread {
-                            mPrintDataAdapter.getItem(index).printSuccess = true
+                            mPrintDataAdapter.getItem(index)?.printSuccess = true
                             mPrintDataAdapter.notifyItemChanged(index)
                         }
                         // 变更下标
                         mIndex = (index + 1)
                         // 打印下一条码
                         if (mIndex < mPrintDataAdapter.itemCount) {
-                            presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
+                            val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
+                            if (barcodeInfo != null) {
+                                presenter.genImage(template, barcodeInfo, copies, mIndex)
+                            }
                         }
                         // 全部打印完成
                         else {
@@ -215,7 +218,10 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 // 重置页码
                 mIndex = 0
                 // 生成图片
-                presenter.genImage(template, mPrintDataAdapter.getItem(mIndex).barcodeInfo, copies, mIndex)
+                val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
+                if (barcodeInfo != null) {
+                    presenter.genImage(template, barcodeInfo, copies, mIndex)
+                }
             })
     }
 

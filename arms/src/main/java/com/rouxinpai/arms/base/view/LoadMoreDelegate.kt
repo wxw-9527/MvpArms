@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.base.view
 
-import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.chad.library.adapter.base.QuickAdapterHelper
+import com.chad.library.adapter.base.loadState.LoadState
 
 /**
  * author : Saxxhw
@@ -8,23 +9,21 @@ import com.chad.library.adapter.base.module.BaseLoadMoreModule
  * time   : 2023/6/12 15:35
  * desc   :
  */
-class LoadMoreDelegate(loadMoreModule: BaseLoadMoreModule?) : ILoadMore {
+class LoadMoreDelegate(private val helper: QuickAdapterHelper?) : ILoadMore {
 
-    private var mLoadMoreModule: BaseLoadMoreModule? = null
-
-    init {
-        mLoadMoreModule = loadMoreModule
+    override fun resetLoadMoreState() {
+        helper?.trailingLoadState = LoadState.None
     }
 
     override fun loadMoreComplete() {
-        mLoadMoreModule?.loadMoreComplete()
+        helper?.trailingLoadState = LoadState.NotLoading(true)
     }
 
-    override fun loadMoreEnd(gone: Boolean) {
-        mLoadMoreModule?.loadMoreEnd(gone)
+    override fun loadMoreEnd() {
+        helper?.trailingLoadState = LoadState.NotLoading(false)
     }
 
-    override fun loadMoreFail() {
-        mLoadMoreModule?.loadMoreFail()
+    override fun loadMoreFail(error: Throwable) {
+        helper?.trailingLoadState = LoadState.Error(error)
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.base.activity.BaseActivity
@@ -19,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 @BarcodeScanningReceiverEnabled
-class MainActivity : BaseActivity<MainActivityBinding>(), OnItemClickListener {
+class MainActivity : BaseActivity<MainActivityBinding>(), BaseQuickAdapter.OnItemClickListener<MenuEnum> {
 
     companion object {
 
@@ -50,14 +49,14 @@ class MainActivity : BaseActivity<MainActivityBinding>(), OnItemClickListener {
             .build()
             .addTo(binding.recyclerView)
         // 填充数据
-        mMenuAdapter.setList(values().toList())
+        mMenuAdapter.submitList(values().toList())
         // 绑定监听事件
         mMenuAdapter.setOnItemClickListener(this)
     }
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+    override fun onClick(adapter: BaseQuickAdapter<MenuEnum, *>, view: View, position: Int) {
         // 获取点击的菜单项
-        val item = adapter.getItemOrNull(position) as? MenuEnum ?: return
+        val item = adapter.getItem(position) ?: return
         // 跳转到对应的页面
         val intent = Intent(this, item.clazz)
         startActivity(intent)

@@ -9,7 +9,7 @@ import android.nfc.NfcAdapter
 import android.os.Build
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.chad.library.adapter.base.QuickAdapterHelper
 import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.dialogs.WaitDialog
 import com.kongzue.kongzueupdatesdk.v3.UpdateUtil
@@ -52,15 +52,21 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     // 扫描结果解析广播
     private lateinit var mReceiver: BarcodeScanningReceiver
 
+    // 工具类，用于构造“加载更多”、头部尾部、组合Adapter等功能
+    var adapterHelper: QuickAdapterHelper? = null
+
     // 加载更多代理类实例
     private lateinit var mLoadMoreDelegate: LoadMoreDelegate
 
-    open val mLoadMoreModule: BaseLoadMoreModule? = null
-
     override fun onInit(savedInstanceState: Bundle?) {
+        // 绑定生命周期
         presenter.bind(lifecycle, this as V)
+        // 初始化加载更多代理类
+        adapterHelper = onCreateAdapterHelper()
+        if (adapterHelper != null) {
+            mLoadMoreDelegate = LoadMoreDelegate(adapterHelper)
+        }
         super.onInit(savedInstanceState)
-        mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
     override fun onResume() {
@@ -122,16 +128,20 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         presenter.getBarcodeInfo(event.barcode)
     }
 
+    override fun resetLoadMoreState() {
+        mLoadMoreDelegate.resetLoadMoreState()
+    }
+
     override fun loadMoreComplete() {
         mLoadMoreDelegate.loadMoreComplete()
     }
 
-    override fun loadMoreEnd(gone: Boolean) {
-        mLoadMoreDelegate.loadMoreEnd(gone)
+    override fun loadMoreEnd() {
+        mLoadMoreDelegate.loadMoreEnd()
     }
 
-    override fun loadMoreFail() {
-        mLoadMoreDelegate.loadMoreFail()
+    override fun loadMoreFail(error: Throwable) {
+        mLoadMoreDelegate.loadMoreFail(error)
     }
 
     override fun showUpdateInfo(updateInfo: UpdateInfo) {
@@ -171,4 +181,9 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
                 false
             }
     }
+
+    /**
+     * 创建QuickAdapterHelper实例
+     */
+    open fun onCreateAdapterHelper(): QuickAdapterHelper? = null
 }

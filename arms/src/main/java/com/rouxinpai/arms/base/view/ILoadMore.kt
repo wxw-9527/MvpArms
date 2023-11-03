@@ -9,19 +9,22 @@ package com.rouxinpai.arms.base.view
 interface ILoadMore {
 
     /**
+     * 重置“加载更多”状态
+     */
+    fun resetLoadMoreState() {}
+
+    /**
      * 本次数据加载完毕
      */
     fun loadMoreComplete() {}
 
     /**
      * 所有数据加载完成
-     *
-     * @param gone 是否隐藏加载更多组件
      */
-    fun loadMoreEnd(gone: Boolean = false) {}
+    fun loadMoreEnd() {}
 
     /**
      * 本次数据加载错误
      */
-    fun loadMoreFail() {}
+    fun loadMoreFail(error: Throwable) {}
 }

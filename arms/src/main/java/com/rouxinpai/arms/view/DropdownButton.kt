@@ -59,7 +59,7 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
     }
 
     override fun onClick(v: View?) {
-        if (mMenuAdapter.data.isEmpty()) {
+        if (mMenuAdapter.items.isEmpty()) {
             return
         }
         CustomDialog.show(mOnBindView)
@@ -106,15 +106,15 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
         // 清除选中下标
         mMenuAdapter.clearSelectedIndex()
         // 清除数据
-        mMenuAdapter.data.clear()
+        mMenuAdapter.submitList(null)
     }
 
     /**
      * 填充列表数据
      */
-    fun setList(list: Collection<T>?) {
+    fun setList(list: List<T>?) {
         if (list != null) {
-            mMenuAdapter.setList(list)
+            mMenuAdapter.submitList(list)
         }
     }
 
@@ -137,7 +137,7 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
      */
     fun selectItemByPosition(position: Int) {
         // 获取选中项
-        val item = mMenuAdapter.getItemOrNull(position = position)
+        val item = mMenuAdapter.getItem(position = position)
         if (item != null) {
             // 渲染界面数据
             text = item.getShowText()
@@ -181,7 +181,7 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
          * 获取选中项
          */
         fun getSelectedItem(): T? {
-            return getItemOrNull(mSelectedIndex)
+            return getItem(mSelectedIndex)
         }
 
         override fun onBindView(

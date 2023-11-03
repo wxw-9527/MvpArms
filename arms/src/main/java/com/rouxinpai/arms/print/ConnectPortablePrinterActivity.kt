@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
@@ -37,7 +36,7 @@ import timber.log.Timber
  * desc   : 连接便携式打印机
  */
 class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivityBinding>(),
-    OnItemClickListener,
+    BaseQuickAdapter.OnItemClickListener<BluetoothDevice>,
     OnConnectListener {
 
     companion object {
@@ -133,8 +132,8 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
         mPrinter.destroy()
     }
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        val item = adapter.getItemOrNull(position) as? BluetoothDevice ?: return
+    override fun onClick(adapter: BaseQuickAdapter<BluetoothDevice, *>, view: View, position: Int) {
+        val item = adapter.getItem(position) ?: return
         bondDevice(item)
     }
 
@@ -174,9 +173,9 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
                     val deviceType = device.bluetoothClass?.majorDeviceClass
                     val deviceName = device.name
                     if ((deviceType == 1536 || deviceType == 7936) && device.type != 2 && (deviceName != null && deviceName.isNotEmpty())) {
-                        val list = mBluetoothDeviceAdapter.data
+                        val list = mBluetoothDeviceAdapter.items
                         if (!list.contains(device)) {
-                            mBluetoothDeviceAdapter.addData(device)
+                            mBluetoothDeviceAdapter.add(device)
                         }
                     }
                 }

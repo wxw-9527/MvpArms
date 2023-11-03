@@ -4,7 +4,7 @@ package com.rouxinpai.arms.base.fragment
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.module.BaseLoadMoreModule
+import com.chad.library.adapter.base.QuickAdapterHelper
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.presenter.IPresenter
 import com.rouxinpai.arms.base.view.ILoadMore
@@ -26,15 +26,21 @@ abstract class BaseMvpFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     @Inject
     lateinit var presenter: P
 
+    // 工具类，用于构造“加载更多”、头部尾部、组合Adapter等功能
+    var adapterHelper: QuickAdapterHelper? = null
+
     // 加载更多代理类实例
     private lateinit var mLoadMoreDelegate: LoadMoreDelegate
 
-    open val mLoadMoreModule: BaseLoadMoreModule? = null
-
     override fun onInit(savedInstanceState: Bundle?) {
+        // 绑定生命周期
         presenter.bind(lifecycle, this as V)
+        // 初始化加载更多代理类
+        adapterHelper = onCreateAdapterHelper()
+        if (adapterHelper != null) {
+            mLoadMoreDelegate = LoadMoreDelegate(adapterHelper)
+        }
         super.onInit(savedInstanceState)
-        mLoadMoreDelegate = LoadMoreDelegate(mLoadMoreModule)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true, priority = 1)
@@ -43,15 +49,24 @@ abstract class BaseMvpFragment<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         presenter.getBarcodeInfo(event.barcode)
     }
 
+    override fun resetLoadMoreState() {
+        mLoadMoreDelegate.resetLoadMoreState()
+    }
+
     override fun loadMoreComplete() {
         mLoadMoreDelegate.loadMoreComplete()
     }
 
-    override fun loadMoreEnd(gone: Boolean) {
-        mLoadMoreDelegate.loadMoreEnd(gone)
+    override fun loadMoreEnd() {
+        mLoadMoreDelegate.loadMoreEnd()
     }
 
-    override fun loadMoreFail() {
-        mLoadMoreDelegate.loadMoreFail()
+    override fun loadMoreFail(error: Throwable) {
+        mLoadMoreDelegate.loadMoreFail(error)
     }
+
+    /**
+     * 创建QuickAdapterHelper实例
+     */
+    open fun onCreateAdapterHelper(): QuickAdapterHelper? = null
 }
