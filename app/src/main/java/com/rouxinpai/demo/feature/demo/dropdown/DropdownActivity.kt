@@ -54,6 +54,12 @@ class DropdownActivity : BaseActivity<DropdownActivityBinding>(),
 
         binding.btnClear.setOnClickListener {
             binding.dropdownMenu2.clear()
+            binding.dropdownMenu2.setList(
+                listOf(
+                    DropdownEntity("6", "选项666"),
+                    DropdownEntity("7", "选项777"),
+                )
+            )
         }
     }
 

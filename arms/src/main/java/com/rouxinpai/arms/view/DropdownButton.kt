@@ -105,17 +105,13 @@ class DropdownButton<T : DropdownButton.IDropdownEntity> @JvmOverloads construct
         tag = null
         // 清除选中下标
         mMenuAdapter.clearSelectedIndex()
-        // 清除数据
-        mMenuAdapter.submitList(null)
     }
 
     /**
      * 填充列表数据
      */
     fun setList(list: List<T>?) {
-        if (list != null) {
-            mMenuAdapter.submitList(list)
-        }
+        mMenuAdapter.submitList(list)
     }
 
     /**
