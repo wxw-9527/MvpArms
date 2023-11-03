@@ -9,6 +9,4 @@ import com.rouxinpai.demo.databinding.FragmentDemoFragmentBinding
  * time   : 2023/8/29 16:36
  * desc   :
  */
-class FragmentDemoFragment: BaseFragment<FragmentDemoFragmentBinding>() {
-
-}
+class FragmentDemoFragment : BaseFragment<FragmentDemoFragmentBinding>()

@@ -30,7 +30,7 @@ class DebounceClickDemoActivity: BaseActivity<DebounceClickDemoActivityBinding>(
             when (v?.id) {
                 R.id.btn_click -> {
                     Timber.d("按钮被点击 ------> ${TimeUtils.getNowString(TimeUtils.getSafeDateFormat(TimeConstants.FULL))}")
-                    binding.btnClickTwo.setText("123")
+                    binding.btnClickTwo.text = "123"
                 }
                 R.id.btn_click_two -> {
                     Timber.d("按钮222被点击 ------> ${TimeUtils.getNowString(TimeUtils.getSafeDateFormat(TimeConstants.FULL))}")

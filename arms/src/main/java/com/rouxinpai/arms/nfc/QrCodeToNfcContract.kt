@@ -11,11 +11,7 @@ import com.rouxinpai.arms.base.view.IView
  */
 sealed interface QrCodeToNfcContract {
 
-    interface View : IView {
+    interface View : IView
 
-    }
-
-    interface Presenter : IPresenter<View> {
-
-    }
+    interface Presenter : IPresenter<View>
 }

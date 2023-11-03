@@ -10,5 +10,4 @@ import javax.inject.Inject
  * desc   :
  */
 class QrCodeToNfcPresenter @Inject constructor() : BasePresenter<QrCodeToNfcContract.View>(),
-    QrCodeToNfcContract.Presenter {
-}
+    QrCodeToNfcContract.Presenter
