@@ -49,4 +49,7 @@
 
     <!-- 条码解析 -->
     <string name="barcode">条码解析</string>
+
+    <!-- 列表-加载更多 -->
+    <string name="rv_load_more">列表-加载更多</string>
 </resources>

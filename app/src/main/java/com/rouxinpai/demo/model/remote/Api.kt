@@ -1,6 +1,8 @@
 package com.rouxinpai.demo.model.remote
 
+import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.bean.ApiResponse
+import com.rouxinpai.demo.model.entity.demo.rv.MaterialDTO
 import com.rouxinpai.demo.model.entity.login.AccessTokenDTO
 import com.rouxinpai.demo.model.entity.login.CaptchaDTO
 import io.reactivex.rxjava3.core.Observable
@@ -32,4 +34,13 @@ interface Api {
         @Url url: String,
         @Body requestBody: RequestBody
     ): Observable<ApiResponse<AccessTokenDTO>>
+
+    /**
+     * 获取物料列表
+     */
+    @POST
+    fun listMaterials(
+        @Url url: String = "${DomainUtils.getDomain()}cloud-master-data/material/selectMaterialAndStockControlList",
+        @Body body: RequestBody,
+    ): Observable<ApiResponse<List<MaterialDTO>>>
 }

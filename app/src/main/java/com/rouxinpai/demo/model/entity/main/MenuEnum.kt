@@ -9,6 +9,7 @@ import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
+import com.rouxinpai.demo.feature.demo.rv.RvLoadMoreActivity
 import com.rouxinpai.demo.feature.demo.search.SearchEdittextDemoActivity
 import com.rouxinpai.demo.feature.demo.switchdomain.SwitchDomainActivity
 import com.rouxinpai.demo.feature.demo.upgrade.UpgradeActivity
@@ -80,4 +81,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 条码解析
      */
     BARCODE(value = "条码解析", clazz = BarcodeActivity::class.java),
+
+    /**
+     * 列表-加载更多
+     */
+    RV_LOAD_MORE(value = "列表-加载更多", clazz = RvLoadMoreActivity::class.java),
 }

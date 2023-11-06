@@ -16,11 +16,11 @@ class LoadMoreDelegate(private val helper: QuickAdapterHelper?) : ILoadMore {
     }
 
     override fun loadMoreComplete() {
-        helper?.trailingLoadState = LoadState.NotLoading(true)
+        helper?.trailingLoadState = LoadState.NotLoading(false)
     }
 
     override fun loadMoreEnd() {
-        helper?.trailingLoadState = LoadState.NotLoading(false)
+        helper?.trailingLoadState = LoadState.NotLoading(true)
     }
 
     override fun loadMoreFail(error: Throwable) {
