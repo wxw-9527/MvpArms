@@ -33,7 +33,8 @@ class RvLoadMorePresenter @Inject constructor() : BasePresenter<RvLoadMoreContra
 
     override fun listMaterials() {
         view?.showLoadingPage()
-        view?.resetLoadMoreState()
+        // view?.resetLoadMoreState()
+        mPageNum = 1 // 重置页码
         val body = genBody() // 拼装请求参数
         val disposable = retrofit.create<Api>()
             .listMaterials(body = body)
