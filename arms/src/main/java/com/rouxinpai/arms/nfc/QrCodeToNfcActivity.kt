@@ -64,7 +64,9 @@ class QrCodeToNfcActivity :
         // 待写入字符串不为空且写入弹窗展示时，执行写入流程
         val pendingText = mPendingText
         if (!pendingText.isNullOrEmpty()) {
-            val writeSuccessful = NfcUtil.writeTag(intent, pendingText)
+            val length = pendingText.length
+            val text = "$length$pendingText" // 拼接长度信息
+            val writeSuccessful = NfcUtil.writeTag(intent, text)
             if (writeSuccessful) {
                 // 触发取消按钮点击事件重置页面状态
                 binding.btnCancel.performClick()

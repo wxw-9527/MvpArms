@@ -109,11 +109,13 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
      */
     open fun onParseNfcIntent(intent: Intent?) {
         val ndefText = NfcUtil.readNfcTag(intent)
-        if (ndefText == null) {
+        // 将字符串前两位去除，获得真实的字符串
+        val text = ndefText?.substring(2)
+        if (text == null) {
             showWarningTip(R.string.nfc__tag_empty)
             return
         }
-        BarcodeEvent.postSticky(ndefText)
+        BarcodeEvent.postSticky(text)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true, priority = 0)

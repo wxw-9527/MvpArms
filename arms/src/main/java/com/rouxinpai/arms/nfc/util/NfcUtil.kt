@@ -61,12 +61,7 @@ object NfcUtil {
         val languageCodeLength = payload[0] and 0x3f
         // 下面开始NDEF文本数据第二个字节，语言编码
         // 获得语言编码
-        return String(
-            payload,
-            languageCodeLength + 1,
-            payload.size - languageCodeLength - 1,
-            textEncoding
-        )
+        return String(payload, languageCodeLength + 1, payload.size - languageCodeLength - 1, textEncoding)
     }
 
     /**
