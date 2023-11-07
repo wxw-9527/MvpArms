@@ -56,7 +56,6 @@ abstract class BaseVbAdapter<VB : ViewBinding, T : Any>(items: List<T> = emptyLi
         item: T?,
         payloads: List<Any>,
     ) {
-        super.onBindViewHolder(holder, position, item, payloads)
         if (item != null) {
             onBindView(holder.binding, position, item, payloads)
         }
@@ -90,7 +89,6 @@ abstract class BaseVbOnMultiItem<T : Any, VB : ViewBinding> :
     }
 
     override fun onBind(holder: VbHolder<VB>, position: Int, item: T?, payloads: List<Any>) {
-        super.onBind(holder, position, item, payloads)
         if (item != null) {
             onBindView(holder.binding, position, item, payloads)
         }
@@ -135,7 +133,6 @@ abstract class BaseVbDifferAdapter<T : Any, VB : ViewBinding>(
         item: T?,
         payloads: List<Any>,
     ) {
-        super.onBindViewHolder(holder, position, item, payloads)
         if (item != null) {
             onBindView(holder.binding, position, item, payloads)
         }
