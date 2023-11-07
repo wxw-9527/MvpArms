@@ -83,7 +83,7 @@ dependencies {
     // 权限
     api 'com.github.permissions-dispatcher:ktx:1.1.4'
     // RecyclerView相关
-    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.2'
+    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.3'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 气泡提示
     implementation 'com.github.skydoves:balloon:1.6.1'
@@ -124,7 +124,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.4.6.04'
+                version = '2.4.6.05'
             }
         }
     }
