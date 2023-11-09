@@ -2,8 +2,11 @@ package com.rouxinpai.demo.feature.domain
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.rouxinpai.arms.domain.BaseDomainConfigActivity
+import com.rouxinpai.arms.extension.format
 import com.rouxinpai.demo.feature.login.AccountLoginActivity
+import timber.log.Timber
 
 /**
  * author : Saxxhw
@@ -22,6 +25,15 @@ class DomainConfigActivity : BaseDomainConfigActivity() {
         fun start(context: Context) {
             val starter = Intent(context, DomainConfigActivity::class.java)
             context.startActivity(starter)
+        }
+    }
+
+    override fun onInit(savedInstanceState: Bundle?) {
+        super.onInit(savedInstanceState)
+        // 测试
+        val list = listOf(0.0f, 0f, 1.0f, 1f, 1.00f, 1.10f, 1.01f, 1.11f, 1.0110f, 1.011f)
+        list.forEach {
+            Timber.d("------> ${it.format()}")
         }
     }
 

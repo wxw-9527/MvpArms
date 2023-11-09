@@ -17,7 +17,13 @@ fun Double.format(): String {
 }
 
 fun BigDecimal.format(): String {
-    return this.stripTrailingZeros().toPlainString()
+    val str = this.stripTrailingZeros().toPlainString()
+    // 如果以.0结尾，去掉.0（修复java的bug，在java1.8中已修复）
+    return if (str.endsWith(".0")) {
+        str.substring(0, str.length - 2)
+    } else {
+        str
+    }
 }
 
 /**
