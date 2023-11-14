@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.rouxinpai.arms.domain.BaseDomainConfigActivity
 import com.rouxinpai.arms.extension.format
+import com.rouxinpai.arms.extension.subtract
 import com.rouxinpai.demo.feature.login.AccountLoginActivity
 import timber.log.Timber
 
@@ -30,11 +31,14 @@ class DomainConfigActivity : BaseDomainConfigActivity() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        // 测试
+        // 测试format()方法
         val list = listOf(0.0f, 0f, 1.0f, 1f, 1.00f, 1.10f, 1.01f, 1.11f, 1.0110f, 1.011f)
         list.forEach {
             Timber.d("------> ${it.format()}")
         }
+        // 测试subtract()方法
+        Timber.d("------> ${1.0f - 0.9f}")
+        Timber.d("------> ${1.0f subtract 0.9f}")
     }
 
     override fun toLoginPage() {

@@ -23,8 +23,6 @@ fun BigDecimal.format(): String {
 /**
  * 修复Float相减计算精度丢失的问题
  */
-infix fun Float?.subtract(f: Float?): Float {
-    val bigDecimal1 = (this ?: 0f).toBigDecimal()
-    val bigDecimal2 = (f ?: 0f).toBigDecimal()
-    return bigDecimal1.subtract(bigDecimal2).toFloat()
+infix fun Float?.subtract(that: Float?): Float {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
 }
