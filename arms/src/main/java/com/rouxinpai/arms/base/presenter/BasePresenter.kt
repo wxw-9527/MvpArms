@@ -102,10 +102,10 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        mDisposable.clear()
-        mLifecycle?.removeObserver(this)
-        mLifecycle = null
-        view = null
+        mDisposable.clear() // 清除所有订阅
+        mLifecycle?.removeObserver(this) // 移除生命周期监听
+        mLifecycle = null // 清除生命周期引用
+        view = null // 清除 View 引用
         super.onDestroy(owner)
     }
 
