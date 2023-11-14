@@ -26,3 +26,10 @@ fun BigDecimal.format(): String {
 infix fun Float?.subtract(that: Float?): Float {
     return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
 }
+
+/**
+ * 修复Double相减计算精度丢失的问题
+ */
+infix fun Double?.subtract(that: Double?): Float {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+}
