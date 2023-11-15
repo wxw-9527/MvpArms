@@ -19,6 +19,7 @@ import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.model.BrandEnum
 import com.rouxinpai.arms.print.model.ConnectedEvent
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.print.util.PrintUtil
 import com.skydoves.powerspinner.DefaultSpinnerAdapter
@@ -36,7 +37,7 @@ import org.greenrobot.eventbus.ThreadMode
 @EventBusEnabled
 class PrintConfigDialog(
     private val activity: AppCompatActivity,
-    private val success: (template: TemplateVO, copies: Int) -> Unit,
+    private val success: (template: TemplateVO, copies: Int, direction: DirectionEnum) -> Unit,
 ) : BaseMvpOnBindView<BottomDialog, PrintConfigDialogBinding, PrintConfigContract.View, PrintConfigPresenter>(
     R.layout.print_config_dialog
 ), PrintConfigContract.View,
@@ -50,7 +51,7 @@ class PrintConfigDialog(
         fun show(
             activity: AppCompatActivity,
             dismiss: () -> Unit,
-            success: (template: TemplateVO, copies: Int) -> Unit,
+            success: (template: TemplateVO, copies: Int, direction: DirectionEnum) -> Unit,
         ) {
             val view = PrintConfigDialog(activity, success)
             BottomDialog.build()
@@ -75,6 +76,10 @@ class PrintConfigDialog(
     private lateinit var mBrandEnumList: List<BrandEnum>
     private lateinit var mBrandEnum: BrandEnum
 
+    // 打印方向
+    private lateinit var mDirectionEnumList: List<DirectionEnum>
+    private lateinit var mDirectionEnum: DirectionEnum
+
     // 打印机实例
     private lateinit var mPrinter: BasePrinter
 
@@ -95,6 +100,8 @@ class PrintConfigDialog(
         // 全局变量初始化
         mBrandEnumList = BrandEnum.values().asList()
         mBrandEnum = PrintUtil.getBrandEnum()
+        mDirectionEnumList = DirectionEnum.values().asList()
+        mDirectionEnum = PrintUtil.getDirectionEnum()
         // 打印模板相关初始化
         with(binding.spinnerTemplate) {
             setSpinnerAdapter(DefaultSpinnerAdapter(this))
@@ -116,6 +123,14 @@ class PrintConfigDialog(
             setMinValue(1f)
             setMaxValue(12f)
             setValue(1f)
+        }
+        // 打印方向初始化
+        with(binding.spinnerDirection) {
+            setSpinnerAdapter(DefaultSpinnerAdapter(this))
+            setOnSpinnerOutsideTouchListener { _, _ -> dismiss() }
+            setOnSpinnerItemSelectedListener(mOnDirectionItemSelectedListener)
+            setItems(mDirectionEnumList.map { context.getString(it.textResId) })
+            selectItemByIndex(mDirectionEnumList.indexOf(mDirectionEnum))
         }
         // 绑定监听事件
         binding.btnPrinter.setOnClickListener(this)
@@ -162,7 +177,7 @@ class PrintConfigDialog(
             return@OnDialogButtonClickListener true
         }
         //
-        success.invoke(template, copies)
+        success.invoke(template, copies, mDirectionEnum)
         false
     }
 
@@ -190,6 +205,16 @@ class PrintConfigDialog(
                 // 断开打印机连接
                 onDisconnectClick()
             }
+        }
+    }
+
+    // 打印方向选中监听
+    private val mOnDirectionItemSelectedListener = OnSpinnerItemSelectedListener<String> { oldIndex, _, newIndex, _ ->
+        if (newIndex != oldIndex) {
+            // 设置选中
+            mDirectionEnum = mDirectionEnumList[newIndex]
+            // 缓存选中打印方向
+            PrintUtil.setDirectionEnum(mDirectionEnum)
         }
     }
 

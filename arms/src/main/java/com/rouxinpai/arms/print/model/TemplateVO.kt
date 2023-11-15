@@ -17,7 +17,8 @@ data class TemplateVO(
     val mediaSizeHeight: Float,
     val printWith: Float,
     val printHeight: Float,
-    val offset: Int,
+    val offsetX: Int,
+    val offsetY: Int,
 ) : Parcelable {
 
     companion object {
@@ -33,8 +34,10 @@ data class TemplateVO(
                 mediaSizeHeight = dto.mediaSizeHeight,
                 printWith = (dto.mediaSizeWidth * 10) * 0.724f,
                 printHeight = (dto.mediaSizeHeight * 10) * 0.724f,
-                offset = if (100f == dto.mediaSizeWidth && 100f == dto.mediaSizeHeight) 32 else 224
+                offsetX = ((864 - 8 * dto.mediaSizeWidth) / 2).toInt(),
+                offsetY = ((864 - 8 * dto.mediaSizeHeight) / 2).toInt()
             )
         }
     }
 }
+

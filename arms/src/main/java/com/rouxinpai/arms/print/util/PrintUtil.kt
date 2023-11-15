@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import com.rouxinpai.arms.print.model.BrandEnum
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.tencent.mmkv.MMKV
 
@@ -86,6 +87,33 @@ object PrintUtil {
             mTemplateVO = mDefaultMMKV.decodeParcelable(KEY_TEMPLATE, TemplateVO::class.java)
         }
         return mTemplateVO
+    }
+
+    // 常量，用于存储和获取 DirectionEnum 对象的键
+    private const val KEY_DIRECTION = "key_direction"
+
+    // 保存 DirectionEnum 对象的实例变量
+    private var mDirection: DirectionEnum = DirectionEnum.HORIZONTAL
+
+    /**
+     * 保存打印方向信息
+     */
+    fun setDirectionEnum(direction: DirectionEnum) {
+        mDirection = direction
+        mDefaultMMKV.encode(KEY_DIRECTION, direction.value)
+    }
+
+    /**
+     * 获取已缓存的打印方向
+     */
+    fun getDirectionEnum(): DirectionEnum {
+        mDirection = DirectionEnum.fromValue(
+            mDefaultMMKV.decodeInt(
+                KEY_DIRECTION,
+                DirectionEnum.HORIZONTAL.value
+            )
+        )
+        return mDirection
     }
 
     /**

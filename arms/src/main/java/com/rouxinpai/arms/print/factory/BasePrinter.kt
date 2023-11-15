@@ -3,6 +3,7 @@ package com.rouxinpai.arms.print.factory
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.graphics.Bitmap
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 
 /**
@@ -48,5 +49,5 @@ abstract class BasePrinter {
 
     abstract fun isStatusNormal(): Boolean
 
-    abstract fun print(template: TemplateVO, bitmap: Bitmap): Boolean
+    abstract fun print(template: TemplateVO, direction: DirectionEnum, bitmap: Bitmap): Boolean
 }

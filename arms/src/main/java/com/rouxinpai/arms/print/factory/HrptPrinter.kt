@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.graphics.Bitmap
 import com.rouxinpai.arms.model.schedulersTransformer
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import cpcl.PrinterHelper
 import io.reactivex.rxjava3.core.Observable
@@ -70,7 +71,7 @@ class HrptPrinter : BasePrinter() {
         return 0 == PrinterHelper.getPrinterStatus()
     }
 
-    override fun print(template: TemplateVO, bitmap: Bitmap): Boolean {
+    override fun print(template: TemplateVO, direction: DirectionEnum, bitmap: Bitmap): Boolean {
         return PrinterHelper.printBitmap(0, 0, 0, bitmap, 1, true, 1) > 0
     }
 }

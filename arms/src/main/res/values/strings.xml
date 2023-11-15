@@ -41,7 +41,11 @@
     <string name="print_config__printer_hint">请连接打印机</string>
     <string name="print_config__disconnect">断开连接</string>
     <string name="print_config__copies">打印份数</string>
-    <string name="print_config__copies_hint">打印份数</string>
+    <string name="print_config__copies_hint">请输入打印份数</string>
+    <string name="print_config__direction">打印方向</string>
+    <string name="print_config__direction_hint">请选择打印方向</string>
+    <string name="print_config__horizontal">横向</string>
+    <string name="print_config__vertical">纵向</string>
     <string name="print_config__cancel">取消</string>
     <string name="print_config__ok">打印</string>
     <string name="print_config__hcctg">华辰联创</string>

@@ -3,6 +3,7 @@ package com.rouxinpai.arms.print
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.util.Base64
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -17,6 +18,7 @@ import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.print.api.PrintApi
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.print.util.PrintUtil
@@ -66,7 +68,13 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
         addDisposable(disposable)
     }
 
-    override fun genImage(template: TemplateVO, barcodeInfo: BarcodeInfoVO, copies: Int, index: Int) {
+    override fun genImage(
+        template: TemplateVO,
+        barcodeInfo: BarcodeInfoVO,
+        copies: Int,
+        direction: DirectionEnum,
+        index: Int,
+    ) {
         val material = barcodeInfo.material
         val body = JsonObject().apply {
             addProperty("printTemplateId", template.id)
@@ -91,16 +99,32 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
                 val byteArray = Base64.decode(data, Base64.DEFAULT)
                 val originalBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                 val zoomedBitmap = Utils.zoomImage(originalBitmap, template.printWith.toDouble(), 0)
-                PrintUtil.getBinationalBitmap(zoomedBitmap)
+                val rotatedBitmap = rotateBitmap(zoomedBitmap, direction) // 旋转
+                val binationalBitmap = PrintUtil.getBinationalBitmap(rotatedBitmap) // 二值化
+                binationalBitmap
             }
             .subscribeWith(object : DefaultObserver<Bitmap>(view, false) {
 
                 override fun onData(t: Bitmap) {
                     super.onData(t)
                     // 下发打印指令
-                    view?.sendPrintCommand(template, t, copies, index)
+                    view?.sendPrintCommand(template, t, copies, direction, index)
                 }
             })
         addDisposable(disposable)
+    }
+
+    /**
+     * 旋转Bitmap
+     */
+    private fun rotateBitmap(bitmap: Bitmap, direction: DirectionEnum): Bitmap {
+        return when (direction) {
+            DirectionEnum.VERTICAL -> {
+                val matrix = Matrix()
+                matrix.postRotate(90f)
+                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+            }
+            else -> bitmap
+        }
     }
 }

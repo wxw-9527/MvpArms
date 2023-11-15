@@ -19,6 +19,7 @@ import com.rouxinpai.arms.databinding.PrintActivityBinding
 import com.rouxinpai.arms.databinding.PrintRecycleItemBinding
 import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
+import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.view.OffsetDecoration
@@ -145,7 +146,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrintDataAdapter.submitList(list)
     }
 
-    override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, index: Int) {
+    override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, direction: DirectionEnum, index: Int) {
         thread {
             for (i in 1..copies) {
                 // 打印机状态异常
@@ -157,7 +158,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                     break
                 }
                 // 获取打印结果
-                val isPrintSuccessful = mPrinter.print(template, bitmap)
+                val isPrintSuccessful = mPrinter.print(template, direction, bitmap)
                 // 打印成功
                 if (isPrintSuccessful) {
                     // 最后一份打印完
@@ -173,7 +174,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                         if (mIndex < mPrintDataAdapter.itemCount) {
                             val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
                             if (barcodeInfo != null) {
-                                presenter.genImage(template, barcodeInfo, copies, mIndex)
+                                presenter.genImage(template, barcodeInfo, copies, direction, mIndex)
                             }
                         }
                         // 全部打印完成
@@ -212,7 +213,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 // 刷新按钮状态
                 invalidateOptionsMenu()
             },
-            success = { template, copies ->
+            success = { template, copies, direction ->
                 // 展示进度条
                 showProgress(R.string.print__printing)
                 // 重置页码
@@ -220,7 +221,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 // 生成图片
                 val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
                 if (barcodeInfo != null) {
-                    presenter.genImage(template, barcodeInfo, copies, mIndex)
+                    presenter.genImage(template, barcodeInfo, copies, direction, mIndex)
                 }
             })
     }

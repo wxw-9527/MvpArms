@@ -9,6 +9,8 @@ import android.os.Message
 import com.printer.sdk.PrinterConstants
 import com.printer.sdk.PrinterInstance
 import com.rouxinpai.arms.model.schedulersTransformer
+import com.rouxinpai.arms.print.model.DirectionEnum
+import com.rouxinpai.arms.print.model.DirectionEnum.*
 import com.rouxinpai.arms.print.model.PrinterStatusEnum
 import com.rouxinpai.arms.print.model.TemplateVO
 import io.reactivex.rxjava3.core.Observable
@@ -107,14 +109,22 @@ class HcctgPrinter : BasePrinter() {
         return 0 == mPrinterInstance.currentStatus
     }
 
-    override fun print(template: TemplateVO, bitmap: Bitmap): Boolean {
+    override fun print(template: TemplateVO, direction: DirectionEnum, bitmap: Bitmap): Boolean {
         // 设置打印参数
         val pageWith = template.printWith.toInt()
         val pageHeight = template.printHeight.toInt()
-        mPrinterInstance.pageSetup(PrinterConstants.LablePaperType.Size_58mm, pageWith, pageHeight)
-        val offset = template.offset
-        mPrinterInstance.drawGraphic(offset, 0, bitmap)
-        mPrinterInstance.print(PrinterConstants.PRotate.Rotate_0, 1)
+        when (direction) {
+            HORIZONTAL -> {
+                mPrinterInstance.pageSetup(PrinterConstants.LablePaperType.Size_58mm, pageWith, pageHeight)
+                mPrinterInstance.drawGraphic(template.offsetX, 0, bitmap)
+                mPrinterInstance.print(PrinterConstants.PRotate.Rotate_0, 1)
+            }
+            VERTICAL -> {
+                mPrinterInstance.pageSetup(PrinterConstants.LablePaperType.Size_58mm, pageHeight, pageWith)
+                mPrinterInstance.drawGraphic(template.offsetY, 0, bitmap)
+                mPrinterInstance.print(PrinterConstants.PRotate.Rotate_0, 1)
+            }
+        }
         // 返回打印结果
         return 0 == mPrinterInstance.getPrintingStatus(12 * 1000)
     }
