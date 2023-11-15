@@ -66,12 +66,14 @@
         <!-- 打印 -->
         <activity
             android:name=".print.PrintActivity"
-            android:label="@string/print__title" />
+            android:label="@string/print__title"
+            android:theme="@style/PrintTheme" />
 
         <!-- 连接便携打印机 -->
         <activity
             android:name=".print.ConnectPortablePrinterActivity"
-            android:label="@string/connect_portable_printer" />
+            android:label="@string/connect_portable_printer"
+            android:theme="@style/PrintTheme" />
 
         <!-- 绑定NFC标签 -->
         <activity
