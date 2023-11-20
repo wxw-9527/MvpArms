@@ -115,8 +115,8 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
      */
     open fun onParseNfcIntent(intent: Intent?) {
         val ndefText = NfcUtil.readNfcTag(intent)
-        // 将字符串前两位去除，获得真实的字符串
-        val text = ndefText?.substring(2)
+        // 将字符串前指定长度去除，获得真实的字符串
+        val text = ndefText?.substring(NfcUtil.FLAG_LENGTH)
         if (text == null) {
             showWarningTip(R.string.nfc__tag_empty)
             return

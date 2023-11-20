@@ -64,22 +64,60 @@ class QrCodeToNfcActivity :
         // 待写入字符串不为空且写入弹窗展示时，执行写入流程
         val pendingText = mPendingText
         if (!pendingText.isNullOrEmpty()) {
-            val length = pendingText.length
-            val text = "$length$pendingText" // 拼接长度信息
-            val writeSuccessful = NfcUtil.writeTag(intent, text)
+            val writeSuccessful = tryWriteNfcTag(intent, pendingText)
             if (writeSuccessful) {
-                // 触发取消按钮点击事件重置页面状态
-                binding.btnCancel.performClick()
-                // 设置成功状态
-                setResult(RESULT_OK)
-                // 提示
-                showSuccessTip(R.string.qr_code_to_nfc__write_successful)
+                // 如果标签写入成功
+                handleWriteSuccess()
             } else {
-                showErrorTip(R.string.qr_code_to_nfc__write_fail)
+                // 如果标签写入失败
+                handleWriteFailure()
             }
             return
         }
+        // 如果标签写入失败或者没有待写入文本
         super.onParseNfcIntent(intent)
+    }
+
+    /**
+     * 尝试写入NFC标签
+     * @param intent Intent? NFC扫描到的Intent
+     * @param text String 待写入文本
+     * @return Boolean 是否写入成功
+     */
+    private fun tryWriteNfcTag(intent: Intent?, text: String): Boolean {
+        val textToWrite = formatTextForNfc(text)
+        return NfcUtil.writeTag(intent, textToWrite)
+    }
+
+    /**
+     * 格式化待写入文本
+     * @param text String 待写入文本
+     * @return String 格式化后的文本
+     */
+    private fun formatTextForNfc(text: String): String {
+        // 确保文本长度为2位，不足前面补0
+        val length = text.length.toString().padStart(NfcUtil.FLAG_LENGTH, '0')
+        return "$length$text"
+    }
+
+    /**
+     * 处理写入成功
+     */
+    private fun handleWriteSuccess() {
+        // 触发取消按钮点击事件重置页面状态
+        binding.btnCancel.performClick()
+        // 设置成功状态
+        setResult(RESULT_OK)
+        // 提示写入成功
+        showSuccessTip(R.string.qr_code_to_nfc__write_successful)
+    }
+
+    /**
+     * 处理写入失败
+     */
+    private fun handleWriteFailure() {
+        // 提示写入失败
+        showErrorTip(R.string.qr_code_to_nfc__write_fail)
     }
 
     override fun showBarcodeInfo(barcodeInfo: BarcodeInfoVO) {

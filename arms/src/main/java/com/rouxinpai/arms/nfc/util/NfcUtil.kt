@@ -26,6 +26,11 @@ import kotlin.text.Charsets.UTF_8
 object NfcUtil {
 
     /**
+     * 标志位长度
+     */
+    const val FLAG_LENGTH = 2
+
+    /**
      * 读取NFC标签文本数据
      */
     fun readNfcTag(intent: Intent?): String? {
