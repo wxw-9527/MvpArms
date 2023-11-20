@@ -86,7 +86,7 @@ dependencies {
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.3'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 气泡提示
-    implementation 'com.github.skydoves:balloon:1.6.1'
+    implementation 'com.github.skydoves:balloon:1.6.3'
     // 下拉框
     api 'com.github.skydoves:powerspinner:1.2.7'
     // 工具类
@@ -124,7 +124,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.4.8.01'
+                version = '2.4.9.00'
             }
         }
     }
