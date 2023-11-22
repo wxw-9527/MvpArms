@@ -22,6 +22,7 @@ class MaterialInfoVO(
     val warehouseId: String,
     val warehouseCode: String,
     val warehouseName: String?,
+    val snList: List<String>,
     val supplier: SupplierVO?
 ) {
 

@@ -8,7 +8,7 @@ package com.rouxinpai.arms.barcode.model
  */
 data class BarcodeInfoVO(
     val barcode: String,
-    val barType: Int,
+    val barTypeEnum: BarTypeEnum,
     val purchaseOrderNo: String,
     val inboundNo: String,
     val qcTaskNo: String,
@@ -28,6 +28,7 @@ data class BarcodeInfoVO(
             var bomCode: String? = null
             var quantity = 0f
             var color = ""
+            val snList = arrayListOf<String>()
             dto.barContextDataList?.forEach {
                 when (it.billTypeCode) {
                     "purchaseOrderNo" -> purchaseOrderNo = it.billCode
@@ -38,11 +39,12 @@ data class BarcodeInfoVO(
                     "bomCode" -> bomCode = it.billCode
                     "quantity" -> quantity = it.billCode.toFloat()
                     "color" -> color = it.billCode
+                    "sn" -> snList.add(it.billCode)
                 }
             }
             return BarcodeInfoVO(
                 barcode = dto.barCode,
-                barType = dto.barType,
+                barTypeEnum = BarTypeEnum.getBarTypeEnum(dto.barType),
                 purchaseOrderNo = purchaseOrderNo,
                 inboundNo = inboundNo,
                 qcTaskNo = quality,
@@ -65,6 +67,7 @@ data class BarcodeInfoVO(
                             warehouseId = dto.materialStockDetail?.warehouseId.orEmpty(),
                             warehouseCode = dto.materialStockDetail?.warehouseCode.orEmpty(),
                             warehouseName = dto.materialStockDetail?.warehouseName,
+                            snList = snList,
                             supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
                         )
                     }
@@ -80,17 +83,13 @@ data class BarcodeInfoVO(
                 }
             }
         }
-
-        // 条码类型
-        private const val TYPE_MATERIAL = 1 // 物料
-        private const val TYPE_WAREHOUSE_LOCATION = 14 // 库位
     }
 
     /**
      * 物料条码
      */
     val isMaterialBarcode: Boolean
-        get() = (TYPE_MATERIAL == barType)
+        get() = (BarTypeEnum.MATERIAL == barTypeEnum)
 
     /**
      * 物料信息
@@ -101,7 +100,7 @@ data class BarcodeInfoVO(
      * 库位码
      */
     val isWarehouseLocationBarcode: Boolean
-        get() = (TYPE_WAREHOUSE_LOCATION == barType)
+        get() = (BarTypeEnum.WAREHOUSE == barTypeEnum)
 
     /**
      * 库位信息
