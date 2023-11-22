@@ -39,7 +39,8 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
 //                    "10123090100000019",
 //                    "10123090100000018",
 //                    "10123090100000017"
-                )
+                ),
+                true
             )
         }
     }

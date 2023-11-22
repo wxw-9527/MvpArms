@@ -4,13 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
+import androidx.core.os.postDelayed
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
@@ -25,6 +29,7 @@ import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.concurrent.thread
+import kotlin.properties.Delegates
 
 /**
  * author : Saxxhw
@@ -41,6 +46,8 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
         // 参数传递标志
         private const val ARG_BARCODE_LIST = "arg_barcode_list" // 条码列表
+        private const val ARG_IS_FINISH = "arg_is_finish" // 打印完成是否关闭页面
+        private const val DEFAULT_IS_FINISH = false
 
         /**
          * 启动[PrintActivity]页
@@ -50,9 +57,10 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
             context: Context,
             launcher: ActivityResultLauncher<Intent>,
             barcodeList: List<String>,
+            isFinish: Boolean = DEFAULT_IS_FINISH,
         ) {
             val starter = Intent(context, PrintActivity::class.java).apply {
-                val bundle = bundleOf(ARG_BARCODE_LIST to barcodeList)
+                val bundle = bundleOf(ARG_BARCODE_LIST to barcodeList, ARG_IS_FINISH to isFinish)
                 putExtras(bundle)
             }
             launcher.launch(starter)
@@ -62,9 +70,9 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
          * 启动[PrintActivity]页
          */
         @JvmStatic
-        fun start(context: Context, barcodeList: List<String>) {
+        fun start(context: Context, barcodeList: List<String>, isFinish: Boolean = DEFAULT_IS_FINISH) {
             val starter = Intent(context, PrintActivity::class.java).apply {
-                val bundle = bundleOf(ARG_BARCODE_LIST to barcodeList)
+                val bundle = bundleOf(ARG_BARCODE_LIST to barcodeList, ARG_IS_FINISH to isFinish)
                 putExtras(bundle)
             }
             context.startActivity(starter)
@@ -73,6 +81,9 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     // 条码列表
     private lateinit var mBarcodeList: List<String>
+
+    // 是否打印完成后关闭页面
+    private var mIsFinish: Boolean by Delegates.notNull()
 
     // 打印数据集列表适配器
     private val mPrintDataAdapter = PrintDataAdapter()
@@ -89,6 +100,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     override fun onParseData(bundle: Bundle) {
         super.onParseData(bundle)
         mBarcodeList = bundle.getStringArrayList(ARG_BARCODE_LIST).orEmpty()
+        mIsFinish = bundle.getBoolean(ARG_IS_FINISH, DEFAULT_IS_FINISH)
     }
 
     override fun onInit(savedInstanceState: Bundle?) {
@@ -146,15 +158,18 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
         mPrintDataAdapter.submitList(list)
     }
 
-    override fun sendPrintCommand(template: TemplateVO, bitmap: Bitmap, copies: Int, direction: DirectionEnum, index: Int) {
+    override fun sendPrintCommand(
+        template: TemplateVO,
+        bitmap: Bitmap,
+        copies: Int,
+        direction: DirectionEnum,
+        index: Int,
+    ) {
         thread {
             for (i in 1..copies) {
                 // 打印机状态异常
                 if (!mPrinter.isStatusNormal()) {
-                    runOnUiThread {
-                        dismissProgress()
-                        showWarningTip(R.string.print__printer_exception)
-                    }
+                    showWarningTipAndDismissProgress(R.string.print__printer_exception)
                     break
                 }
                 // 获取打印结果
@@ -179,24 +194,43 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                         }
                         // 全部打印完成
                         else {
+                            // 展示提示信息
+                            showSuccessTipAndDismissProgress(R.string.print__print_successful)
                             // 设置返回状态
                             setResult(RESULT_OK)
-                            // 展示提示信息
-                            runOnUiThread {
-                                dismissProgress()
-                                showSuccessTip(R.string.print__print_successful)
+                            if (mIsFinish) {
+                                Handler(Looper.getMainLooper()).postDelayed(500) {
+                                    finish()
+                                }
                             }
                         }
                     }
                 }
                 // 打印失败
                 else {
-                    runOnUiThread {
-                        dismissProgress()
-                        showWarningTip(R.string.print__print_fail)
-                    }
+                    showWarningTipAndDismissProgress(R.string.print__print_fail)
                 }
             }
+        }
+    }
+
+    /**
+     * 展示警告提示并关闭进度条
+     */
+    private fun showWarningTipAndDismissProgress(@StringRes id: Int) {
+        runOnUiThread {
+            dismissProgress()
+            showWarningTip(id)
+        }
+    }
+
+    /**
+     * 展示成功提示并关闭进度条
+     */
+    private fun showSuccessTipAndDismissProgress(@StringRes id: Int) {
+        runOnUiThread {
+            dismissProgress()
+            showSuccessTip(id)
         }
     }
 
