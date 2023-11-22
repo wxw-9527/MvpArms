@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter4.BaseQuickAdapter
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.base.activity.BaseActivity

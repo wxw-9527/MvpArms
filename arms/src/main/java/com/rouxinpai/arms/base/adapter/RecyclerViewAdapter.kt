@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.BaseDifferAdapter
-import com.chad.library.adapter.base.BaseMultiItemAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseSingleItemAdapter
+import com.chad.library.adapter4.BaseDifferAdapter
+import com.chad.library.adapter4.BaseMultiItemAdapter
+import com.chad.library.adapter4.BaseQuickAdapter
+import com.chad.library.adapter4.BaseSingleItemAdapter
 import com.rouxinpai.arms.util.BindingReflex
 
 /**

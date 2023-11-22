@@ -13,6 +13,7 @@ class MaterialInfoVO(
     val name: String,
     val spec: String,
     val unit: String,
+    val color: String,
     val batchCode: String?,
     val bomCode: String?,
     val quantity: Float,

@@ -50,6 +50,7 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
                 add("quality") // 质检信息
                 add("inboundNo") // 入库单信息
                 add("supplierCode") // 供应商信息
+                add("color") // 物料颜色
             })
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
@@ -81,6 +82,7 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
             val printDataObject = JsonObject().apply {
                 addProperty("materialName", material.name)
                 addProperty("materialCode", material.code)
+                addProperty("materialColor", material.color)
                 addProperty("barCode", barcodeInfo.barcode)
                 addProperty("receivedQuantityUnit", material.quantity.format() + (context.applicationContext as BaseApplication).convertMaterialUnit(material.unit))
                 addProperty("batchCode", material.batchCode)

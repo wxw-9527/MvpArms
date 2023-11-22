@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.chad.library.adapter.base.QuickAdapterHelper
-import com.chad.library.adapter.base.loadState.trailing.TrailingLoadStateAdapter
+import com.chad.library.adapter4.QuickAdapterHelper
+import com.chad.library.adapter4.loadState.trailing.TrailingLoadStateAdapter
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter

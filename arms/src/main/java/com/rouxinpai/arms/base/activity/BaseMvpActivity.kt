@@ -9,7 +9,7 @@ import android.nfc.NfcAdapter
 import android.os.Build
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.QuickAdapterHelper
+import com.chad.library.adapter4.QuickAdapterHelper
 import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.dialogs.WaitDialog
 import com.kongzue.kongzueupdatesdk.v3.UpdateUtil

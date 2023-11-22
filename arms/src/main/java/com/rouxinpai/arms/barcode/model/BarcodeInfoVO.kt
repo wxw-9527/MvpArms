@@ -27,6 +27,7 @@ data class BarcodeInfoVO(
             var batchCode: String? = null
             var bomCode: String? = null
             var quantity = 0f
+            var color = ""
             dto.barContextDataList?.forEach {
                 when (it.billTypeCode) {
                     "purchaseOrderNo" -> purchaseOrderNo = it.billCode
@@ -36,6 +37,7 @@ data class BarcodeInfoVO(
                     "batchCode" -> batchCode = it.billCode
                     "bomCode" -> bomCode = it.billCode
                     "quantity" -> quantity = it.billCode.toFloat()
+                    "color" -> color = it.billCode
                 }
             }
             return BarcodeInfoVO(
@@ -54,6 +56,7 @@ data class BarcodeInfoVO(
                             name = dto.materialInfo.materialName.orEmpty(),
                             spec = dto.materialInfo.materialSpec.orEmpty(),
                             unit = dto.materialInfo.materialUnit.orEmpty(),
+                            color = color,
                             batchCode = batchCode,
                             bomCode = bomCode,
                             quantity = quantity,

@@ -1,7 +1,7 @@
 package com.rouxinpai.arms.base.view
 
-import com.chad.library.adapter.base.QuickAdapterHelper
-import com.chad.library.adapter.base.loadState.LoadState
+import com.chad.library.adapter4.QuickAdapterHelper
+import com.chad.library.adapter4.loadState.LoadState
 
 /**
  * author : Saxxhw

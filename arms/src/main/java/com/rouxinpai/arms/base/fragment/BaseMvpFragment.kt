@@ -4,7 +4,7 @@ package com.rouxinpai.arms.base.fragment
 
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
-import com.chad.library.adapter.base.QuickAdapterHelper
+import com.chad.library.adapter4.QuickAdapterHelper
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.base.presenter.IPresenter
 import com.rouxinpai.arms.base.view.ILoadMore
