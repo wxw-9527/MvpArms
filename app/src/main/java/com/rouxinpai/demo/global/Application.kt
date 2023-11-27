@@ -1,6 +1,7 @@
 package com.rouxinpai.demo.global
 
 import com.rouxinpai.arms.base.application.BaseApplication
+import com.rouxinpai.arms.dict.util.DictUtil
 import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.demo.feature.splash.SplashActivity
 import dagger.hilt.android.HiltAndroidApp
@@ -29,6 +30,7 @@ class Application : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        DictUtil.getInstance().init(this, debug)
     }
 
     override fun onTokenTimeout() {

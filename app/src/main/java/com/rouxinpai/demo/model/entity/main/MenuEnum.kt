@@ -4,6 +4,7 @@ import com.rouxinpai.arms.nfc.QrCodeToNfcActivity
 import com.rouxinpai.demo.feature.demo.balloon.BalloonActivity
 import com.rouxinpai.demo.feature.demo.barcode.BarcodeActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
+import com.rouxinpai.demo.feature.demo.dict.DictActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
@@ -86,4 +87,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 列表-加载更多
      */
     RV_LOAD_MORE(value = "列表-加载更多", clazz = RvLoadMoreActivity::class.java),
+
+    /**
+     * 字典
+     */
+    DICT(value = "字典", clazz = DictActivity::class.java),
 }

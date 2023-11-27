@@ -127,5 +127,10 @@
             android:name=".feature.demo.rv.RvLoadMoreActivity"
             android:label="@string/rv_load_more"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.dict.DictActivity"
+            android:label="@string/dict"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

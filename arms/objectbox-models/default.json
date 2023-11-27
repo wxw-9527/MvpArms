@@ -1,0 +1,86 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:1157118743012801361",
+      "lastPropertyId": "4:1949354018263534009",
+      "name": "CustomerDictItemVO",
+      "properties": [
+        {
+          "id": "1:960390146397476746",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2203677902773999529",
+          "name": "code",
+          "type": 9
+        },
+        {
+          "id": "3:4608093144082736447",
+          "name": "key",
+          "type": 9
+        },
+        {
+          "id": "4:1949354018263534009",
+          "name": "value",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:319580929647369995",
+      "lastPropertyId": "6:4594834561507143695",
+      "name": "DictItemVO",
+      "properties": [
+        {
+          "id": "1:5019426299819814451",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2540064135974394697",
+          "name": "dictCode",
+          "type": 9
+        },
+        {
+          "id": "3:1762337223295851059",
+          "name": "dictLabel",
+          "type": 9
+        },
+        {
+          "id": "4:7508144680244133306",
+          "name": "dictValue",
+          "type": 9
+        },
+        {
+          "id": "5:2107980065170559105",
+          "name": "dictType",
+          "type": 9
+        },
+        {
+          "id": "6:4594834561507143695",
+          "name": "dictSort",
+          "type": 5
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:319580929647369995",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

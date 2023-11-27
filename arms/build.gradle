@@ -76,6 +76,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.16.0'
     // 基于 mmap 的高性能通用 key-value 组件
     api 'com.tencent:mmkv:1.3.2'
+    // ObjectBox
+    debugApi 'io.objectbox:objectbox-android-objectbrowser:3.7.1'
+    releaseApi 'io.objectbox:objectbox-android:3.7.1'
     // 通信
     api 'org.greenrobot:eventbus:3.3.1'
     // 日志打印
@@ -116,6 +119,8 @@ dependencies {
     implementation 'com.huawei.hms:hianalytics:6.12.0.300' // 华为分析SDK
 }
 
+apply plugin: 'io.objectbox' // ObjectBox
+
 // fix jitpack warning：'Gradle 'publishToMavenLocal' task not found. Please add the 'maven-publish' or 'maven' plugin.'
 afterEvaluate {
     publishing {
@@ -124,7 +129,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.5.2.00'
+                version = '2.5.3.00'
             }
         }
     }

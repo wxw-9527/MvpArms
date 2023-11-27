@@ -9,6 +9,15 @@ import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.di.qualifier.GetUpgradeUrl
+import com.rouxinpai.arms.dict.api.DictApi
+import com.rouxinpai.arms.dict.model.CustomerDictEnum
+import com.rouxinpai.arms.dict.model.CustomerDictItemVO
+import com.rouxinpai.arms.dict.model.DictEnum
+import com.rouxinpai.arms.dict.model.DictItemVO
+import com.rouxinpai.arms.dict.model.SysNormalDisableEnum
+import com.rouxinpai.arms.dict.util.DictUtil
+import com.rouxinpai.arms.extension.eq
+import com.rouxinpai.arms.extension.oneOf
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
@@ -17,6 +26,7 @@ import com.rouxinpai.arms.update.api.UpdateApi
 import com.rouxinpai.arms.update.model.ClientNameEnum
 import com.rouxinpai.arms.update.model.ClientTypeEnum
 import com.rouxinpai.arms.update.model.UpdateInfo
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import okhttp3.RequestBody
@@ -55,6 +65,74 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     override fun addDisposable(disposable: Disposable) {
         mDisposable.add(disposable)
+    }
+
+    override fun listDictItems(showProgress: Boolean) {
+        if (showProgress) view?.showProgress()
+        // 系统字典数据
+        val dictBody = JsonObject().apply {
+            addProperty("orderBy", "dictSort")
+            addProperty("isAsc", true)
+            val queryFields = JsonArray().apply {
+                add("status" eq SysNormalDisableEnum.NORMAL.status) // 查询正常状态的数据
+                val codes = DictEnum.values().joinToString(",") { it.code }
+                add("dictType" oneOf codes)
+            }
+            add("queryFields", queryFields)
+        }.toRequestBody()
+        val dictObserver = retrofit.create<DictApi>()
+            .listDictItems(body = dictBody)
+            .compose(schedulersTransformer())
+            .compose(responseTransformer())
+            .map { list -> list.map { dto -> DictItemVO.fromDto(dto) } }
+        // 客户自定义字典数据
+        val customerDictBody = JsonObject().apply {
+            val queryFields = JsonArray().apply {
+                add("status" eq SysNormalDisableEnum.NORMAL.status) // 查询正常状态的数据
+                val codes = CustomerDictEnum.values().joinToString(",") { it.code }
+                add("code" oneOf codes)
+            }
+            add("queryFields", queryFields)
+        }.toRequestBody()
+        val customerDictObserver = retrofit.create<DictApi>()
+            .listCustomerDictItems(body = customerDictBody)
+            .compose(schedulersTransformer())
+            .compose(responseTransformer())
+            .map { data -> data.map { CustomerDictItemVO.fromDto(it) } }
+        // 合并请求
+        val disposable = Observable.zip(
+            dictObserver,
+            customerDictObserver
+        ) { dictList, customerDictList ->
+            Pair(dictList, customerDictList)
+        }.subscribeWith(object :
+            DefaultObserver<Pair<List<DictItemVO>, List<CustomerDictItemVO>>>(view) {
+
+            override fun onData(t: Pair<List<DictItemVO>, List<CustomerDictItemVO>>) {
+                super.onData(t)
+                handleDictData(t.first)
+                handleCustomerDictData(t.second)
+                // 关闭进度条
+                if (showProgress) view?.dismissProgress()
+            }
+        })
+        addDisposable(disposable)
+    }
+
+    /**
+     * 处理系统字典数据
+     */
+    open fun handleDictData(items: List<DictItemVO>) {
+        // 缓存系统字典数据
+        DictUtil.getInstance().putDictData(items)
+    }
+
+    /**
+     * 处理客户自定义字典数据
+     */
+    open fun handleCustomerDictData(items: List<CustomerDictItemVO>) {
+        // 缓存客户自定义字典数据
+        DictUtil.getInstance().putCustomerDictData(items)
     }
 
     override fun getBarcodeInfo(barcode: String) {

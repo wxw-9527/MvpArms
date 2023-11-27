@@ -20,6 +20,11 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
     fun addDisposable(disposable: Disposable)
 
     /**
+     * 缓存字典数据
+     */
+    fun listDictItems(showProgress: Boolean = false)
+
+    /**
      * 解析条码数据
      * @param barcode 条码
      */

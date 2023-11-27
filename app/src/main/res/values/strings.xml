@@ -52,4 +52,7 @@
 
     <!-- 列表-加载更多 -->
     <string name="rv_load_more">列表-加载更多</string>
+
+    <!-- 字典 -->
+    <string name="dict">字典</string>
 </resources>
