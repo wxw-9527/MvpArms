@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.dict.util
 
 import android.content.Context
+import com.blankj.utilcode.util.PathUtils
 import com.rouxinpai.arms.dict.model.CustomerDictEnum
 import com.rouxinpai.arms.dict.model.CustomerDictItemVO
 import com.rouxinpai.arms.dict.model.CustomerDictItemVO_
@@ -13,6 +14,7 @@ import io.objectbox.android.Admin
 import io.objectbox.kotlin.boxFor
 import io.objectbox.kotlin.equal
 import timber.log.Timber
+import java.io.File
 
 /**
  * author : Saxxhw
@@ -50,6 +52,7 @@ class DictUtil {
     fun init(context: Context, isDebug: Boolean) {
         store = MyObjectBox.builder()
             .androidContext(context.applicationContext)
+            .directory(File(PathUtils.getInternalAppDbsPath(), "objectbox"))
             .build()
         if (isDebug) {
             val started = Admin(store).start(context)
@@ -66,6 +69,7 @@ class DictUtil {
      * 缓存系统字典数据
      */
     fun putDictData(list: List<DictItemVO>) {
+        store.deleteAllFiles()
         mDictBox.removeAll()
         mDictBox.put(list)
     }
