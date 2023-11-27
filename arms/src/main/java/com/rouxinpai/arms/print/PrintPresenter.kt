@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.util.Base64
+import com.blankj.utilcode.util.TimeUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.printer.sdk.utils.Utils
@@ -83,13 +84,14 @@ class PrintPresenter @Inject constructor() :
                 addProperty("materialName", material.name)
                 addProperty("materialCode", material.code)
                 addProperty("materialColor", material.color)
+                addProperty("materialUnit", unit)
                 addProperty("barCode", barcodeInfo.barcode)
                 addProperty("receivedQuantityUnit", material.quantity.format() + unit)
                 addProperty("batchCode", material.batchCode)
                 addProperty("sn", barcodeInfo.barcode)
                 addProperty("spec", material.spec)
                 addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
-                addProperty("copies", 1)
+                addProperty("printTime", TimeUtils.getNowString())
             }
             add("printDataObject", printDataObject)
         }.toRequestBody()
