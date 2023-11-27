@@ -63,11 +63,6 @@ interface IApplication : Application.ActivityLifecycleCallbacks {
      */
     fun onTokenTimeout()
 
-    /**
-     * 转换物料单位
-     */
-    fun convertMaterialUnit(unit: String?): String? = unit
-
     override fun onActivityStarted(activity: Activity) = Unit
 
     override fun onActivityResumed(activity: Activity) = Unit

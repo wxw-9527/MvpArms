@@ -1,6 +1,5 @@
 package com.rouxinpai.arms.print
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -10,8 +9,8 @@ import com.google.gson.JsonObject
 import com.printer.sdk.utils.Utils
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
-import com.rouxinpai.arms.base.application.BaseApplication
 import com.rouxinpai.arms.base.presenter.BasePresenter
+import com.rouxinpai.arms.dict.util.DictUtil
 import com.rouxinpai.arms.extension.format
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
@@ -22,7 +21,6 @@ import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.print.util.PrintUtil
-import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.create
 import javax.inject.Inject
 
@@ -32,7 +30,7 @@ import javax.inject.Inject
  * time   : 2023/9/11 16:13
  * desc   :
  */
-class PrintPresenter @Inject constructor(@ApplicationContext val context: Context) :
+class PrintPresenter @Inject constructor() :
     BasePresenter<PrintContract.View>(),
     PrintContract.Presenter {
 
@@ -80,12 +78,13 @@ class PrintPresenter @Inject constructor(@ApplicationContext val context: Contex
         val material = barcodeInfo.material
         val body = JsonObject().apply {
             addProperty("printTemplateId", template.id)
+            val unit = (DictUtil.getInstance().convertMaterialUnit(material.unit)?.value ?: material.unit)
             val printDataObject = JsonObject().apply {
                 addProperty("materialName", material.name)
                 addProperty("materialCode", material.code)
                 addProperty("materialColor", material.color)
                 addProperty("barCode", barcodeInfo.barcode)
-                addProperty("receivedQuantityUnit", material.quantity.format() + (context.applicationContext as BaseApplication).convertMaterialUnit(material.unit))
+                addProperty("receivedQuantityUnit", material.quantity.format() + unit)
                 addProperty("batchCode", material.batchCode)
                 addProperty("sn", barcodeInfo.barcode)
                 addProperty("spec", material.spec)

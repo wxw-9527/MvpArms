@@ -43,8 +43,4 @@ class Application : BaseApplication() {
             finishAllActivities()
         }
     }
-
-    override fun convertMaterialUnit(unit: String?): String {
-        return "测试单位"
-    }
 }
