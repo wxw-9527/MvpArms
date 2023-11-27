@@ -12,4 +12,5 @@ data class DictItemDTO(
     val dictValue: String,
     val dictType: String,
     val dictSort: Int,
+    val cssClass: String?
 )

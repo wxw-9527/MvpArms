@@ -17,6 +17,7 @@ data class DictItemVO(
     val dictValue: String,
     val dictType: String,
     val dictSort: Int,
+    val cssClass: String?
 ) {
 
     companion object {
@@ -31,7 +32,8 @@ data class DictItemVO(
                 dictLabel = dto.dictLabel,
                 dictValue = dto.dictValue,
                 dictType = dto.dictType,
-                dictSort = dto.dictSort
+                dictSort = dto.dictSort,
+                cssClass = dto.cssClass
             )
         }
     }
