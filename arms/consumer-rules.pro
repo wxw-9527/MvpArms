@@ -11,6 +11,7 @@
 -keep class com.rouxinpai.arms.domain.model.** { <fields>; }
 -keep class com.rouxinpai.arms.ws.model.** { <fields>; }
 -keep class com.rouxinpai.arms.print.model.** { <fields>; }
+-keep class com.rouxinpai.arms.dict.model.** { <fields>; }
 
 # AppGallery Connect
 -ignorewarnings
