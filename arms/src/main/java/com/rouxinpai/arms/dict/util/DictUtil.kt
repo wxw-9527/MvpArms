@@ -69,7 +69,6 @@ class DictUtil {
      * 缓存系统字典数据
      */
     fun putDictData(list: List<DictItemVO>) {
-        store.deleteAllFiles()
         mDictBox.removeAll()
         mDictBox.put(list)
     }
