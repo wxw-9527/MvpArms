@@ -23,7 +23,7 @@ sealed interface DictApi {
      */
     @POST
     fun listCustomerDictItems(
-        @Url url: String = "${DomainUtils.getDomain()}cloud-master-data/customerDictData/selectDictDataList",
+        @Url url: String = "${DomainUtils.getDomain()}cloud-master-data/customerDictData/page",
         @Body body: RequestBody,
     ): Observable<ApiResponse<List<CustomerDictItemDTO>>>
 

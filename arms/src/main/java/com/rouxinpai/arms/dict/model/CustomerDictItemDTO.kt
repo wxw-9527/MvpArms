@@ -7,8 +7,11 @@ package com.rouxinpai.arms.dict.model
  * desc   :
  */
 data class CustomerDictItemDTO(
+    val id: String,
     val code: String,
     val dictDataKey: String,
     val dictDataValue: String,
     val status: Int,
+    val isAllowModification: Int,
+    val type: Int,
 )
