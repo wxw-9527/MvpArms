@@ -18,14 +18,16 @@ class BarcodeScanningReceiver : BroadcastReceiver() {
         val sActions = arrayOf(
             "com.android.scanner.broadcast",
             "com.kte.scan.result",
-            "nlscan.action.SCANNER_RESULT" // 神锻设备
+            "nlscan.action.SCANNER_RESULT", // 神锻设备
+            "com.speedata.showdecodedata", // 新设备
         )
 
         //
         private val sExtras = arrayOf(
             "scandata",
             "code",
-            "SCAN_BARCODE1" // 神锻设备
+            "SCAN_BARCODE1", // 神锻设备
+            "message", // 新设备
         )
     }
 

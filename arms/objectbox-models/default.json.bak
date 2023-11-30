@@ -39,7 +39,7 @@
     },
     {
       "id": "2:319580929647369995",
-      "lastPropertyId": "6:4594834561507143695",
+      "lastPropertyId": "7:5931138783730909765",
       "name": "DictItemVO",
       "properties": [
         {
@@ -72,6 +72,11 @@
           "id": "6:4594834561507143695",
           "name": "dictSort",
           "type": 5
+        },
+        {
+          "id": "7:5931138783730909765",
+          "name": "cssClass",
+          "type": 9
         }
       ],
       "relations": []

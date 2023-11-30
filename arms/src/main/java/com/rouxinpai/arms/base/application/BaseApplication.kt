@@ -8,6 +8,7 @@ import com.kongzue.dialogx.DialogX
 import com.kongzue.dialogx.interfaces.ProgressViewInterface
 import com.kongzue.dialogx.style.MaterialStyle
 import com.kongzue.dialogx.util.views.NoArticulatedProgressView
+import com.rouxinpai.arms.dict.util.DictUtil
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
@@ -38,6 +39,8 @@ abstract class BaseApplication : Application(), IApplication {
         HuaweiUtil.initHwCrashHandler(debug)
         // 初始化MMKV
         initMmkv()
+        // 初始化本地数据库
+        initObjectBox()
         // 初始化DialogX
         initDialogX()
     }
@@ -114,6 +117,11 @@ abstract class BaseApplication : Application(), IApplication {
         DialogX.globalStyle = materialStyle
     }
 
+    // 初始化本地数据库
+    private fun initObjectBox() {
+        DictUtil.getInstance().init(this, debug)
+    }
+
     // Activity入栈
     private fun addActivity(activity: Activity) {
         mActivities.add(activity)
@@ -129,4 +137,3 @@ abstract class BaseApplication : Application(), IApplication {
         activity.finish()
     }
 }
-
