@@ -44,6 +44,6 @@ dependencies {
     //
     implementation project(path: ':arms')
     // 依赖注入：https://dagger.dev/hilt/
-    implementation 'com.google.dagger:hilt-android:2.48.1'
-    ksp 'com.google.dagger:hilt-compiler:2.48.1'
+    implementation 'com.google.dagger:hilt-android:2.49'
+    ksp 'com.google.dagger:hilt-compiler:2.49'
 }
