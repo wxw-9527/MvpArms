@@ -75,7 +75,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             addProperty("isAsc", true)
             val queryFields = JsonArray().apply {
                 add("status" eq SysNormalDisableEnum.NORMAL.status) // 查询正常状态的数据
-                val codes = DictEnum.values().joinToString(",") { it.code }
+                val codes = DictEnum.entries.joinToString(",") { it.code }
                 add("dictType" oneOf codes)
             }
             add("queryFields", queryFields)
@@ -89,7 +89,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         val customerDictBody = JsonObject().apply {
             val queryFields = JsonArray().apply {
                 add("status" eq SysNormalDisableEnum.NORMAL.status) // 查询正常状态的数据
-                val codes = CustomerDictEnum.values().joinToString(",") { it.code }
+                val codes = CustomerDictEnum.entries.joinToString(",") { it.code }
                 add("code" oneOf codes)
             }
             add("queryFields", queryFields)
