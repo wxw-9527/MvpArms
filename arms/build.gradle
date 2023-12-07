@@ -86,7 +86,7 @@ dependencies {
     // 权限
     api 'com.github.permissions-dispatcher:ktx:1.1.4'
     // RecyclerView相关
-    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.1'
+    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.2'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 气泡提示
     implementation 'com.github.skydoves:balloon:1.6.3'
@@ -107,6 +107,8 @@ dependencies {
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器
     api 'com.github.wxw-9527:Stepper:1.1.0'
+    // 图片查看库
+    implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.1.9'
     // 蓝牙打印机
     implementation files('libs/HCCTG_printersdkv5.7.0.jar')
     implementation files('libs/HPRT_CPCL_SDK_V1.22.01.jar')
@@ -129,7 +131,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.5.7.00'
+                version = '2.5.8.00'
             }
         }
     }

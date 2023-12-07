@@ -30,7 +30,6 @@ class Application : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        DictUtil.getInstance().init(this, debug)
     }
 
     override fun onTokenTimeout() {

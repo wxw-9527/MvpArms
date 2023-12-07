@@ -8,6 +8,7 @@ import com.rouxinpai.demo.feature.demo.dict.DictActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
+import com.rouxinpai.demo.feature.demo.openimage.OpenImageActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
 import com.rouxinpai.demo.feature.demo.rv.RvLoadMoreActivity
@@ -92,4 +93,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 字典
      */
     DICT(value = "字典", clazz = DictActivity::class.java),
+
+    /**
+     * 图片预览
+     */
+    OPEN_IMAGE(value = "图片预览", clazz = OpenImageActivity::class.java),
 }

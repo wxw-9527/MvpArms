@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.adapter.BaseAdapter
 import com.rouxinpai.arms.databinding.NineGridViewItemBinding
+import com.rouxinpai.arms.extension.show
 
 /**
  * author : Saxxhw
@@ -61,8 +62,16 @@ class NineGridView<T : NineGridView.IEntity> @JvmOverloads constructor(
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (mAdapter.editable && position >= mAdapter.dataSize) {
-            mOnAddClickListener?.onAddClick()
+        if (position >= mAdapter.dataSize) {
+            if (mAdapter.editable) {
+                mOnAddClickListener?.onAddClick()
+            }
+        } else {
+            this.show(
+                R.id.iv_image,
+                mAdapter.getList().map { it.path },
+                position
+            )
         }
     }
 

@@ -55,4 +55,7 @@
 
     <!-- 字典 -->
     <string name="dict">字典</string>
+
+    <!-- 图片预览 -->
+    <string name="open_image">图片预览</string>
 </resources>

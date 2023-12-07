@@ -132,5 +132,10 @@
             android:name=".feature.demo.dict.DictActivity"
             android:label="@string/dict"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.openimage.OpenImageActivity"
+            android:label="@string/open_image"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
