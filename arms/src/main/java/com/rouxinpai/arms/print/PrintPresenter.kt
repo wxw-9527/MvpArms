@@ -58,6 +58,7 @@ class PrintPresenter @Inject constructor() :
             .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { data -> data.map { PrintResultVO.fail(BarcodeInfoVO.convertFromDTO(it)) } }
+            .map { data -> barcodeList.mapNotNull { barcode -> data.find { barcode == it.barcodeInfo.barcode } } }
             .subscribeWith(object : DefaultObserver<List<PrintResultVO>>(view) {
 
                 override fun onData(t: List<PrintResultVO>) {
