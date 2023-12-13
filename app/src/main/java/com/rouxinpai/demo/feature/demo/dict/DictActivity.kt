@@ -1,6 +1,5 @@
 package com.rouxinpai.demo.feature.demo.dict
 
-import android.os.Bundle
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.dict.util.DictUtil
 import com.rouxinpai.demo.databinding.DictActivityBinding
