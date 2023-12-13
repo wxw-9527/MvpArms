@@ -17,4 +17,9 @@ enum class DictEnum(val code: String) {
      * 质检任务状态
      */
     QUALITY_TASK_STATUS("quality_task_status"), // 质检
+
+    /**
+     * 赋码规则
+     */
+    CODING_RULE("coding_rule"), // 仓储
 }

@@ -109,6 +109,24 @@ class DictUtil {
         return qualityTaskStatusList.find { status == it.dictValue }
     }
 
+    /**
+     * 赋码规则字典
+     */
+    val codingRuleList: List<DictItemVO> by lazy(LazyThreadSafetyMode.NONE) {
+        mDictBox
+            .query(DictItemVO_.dictType equal DictEnum.CODING_RULE.code)
+            .build()
+            .find()
+    }
+
+    /**
+     * 转换赋码规则
+     */
+    fun convertCodingRule(rule: String?): DictItemVO? {
+        if (rule == null) return null
+        return codingRuleList.find { rule == it.dictValue }
+    }
+
     /* *************************************** 客户自定义字典 *************************************** */
 
     // 客户自定义数据字典

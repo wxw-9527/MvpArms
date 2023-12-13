@@ -2,6 +2,7 @@ package com.rouxinpai.demo.feature.demo.dict
 
 import androidx.lifecycle.LifecycleOwner
 import com.rouxinpai.arms.base.presenter.BasePresenter
+import com.rouxinpai.arms.dict.model.CustomerDictItemVO
 import javax.inject.Inject
 
 /**
@@ -15,5 +16,10 @@ class DictPresenter @Inject constructor() : BasePresenter<DictContract.View>(),
 
     override fun onCreate(owner: LifecycleOwner) {
         listDictItems()
+    }
+
+    override fun handleCustomerDictData(items: List<CustomerDictItemVO>) {
+        super.handleCustomerDictData(items)
+        view?.showDictData()
     }
 }

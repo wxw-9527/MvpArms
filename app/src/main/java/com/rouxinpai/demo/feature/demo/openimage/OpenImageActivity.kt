@@ -32,6 +32,7 @@ class OpenImageActivity: BaseActivity<OpenImageActivityBinding>() {
         }
 
         binding.ngvPhoto.setNewList(mImageUrlList.map { ImageEntity(it) })
+        binding.ngvPhoto.setEditable(false)
     }
 }
 

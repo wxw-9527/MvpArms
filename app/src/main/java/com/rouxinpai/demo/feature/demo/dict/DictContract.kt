@@ -11,7 +11,9 @@ import com.rouxinpai.arms.base.view.IView
  */
 sealed interface DictContract {
 
-    interface View: IView
+    interface View: IView {
+        fun showDictData()
+    }
 
     interface Presenter: IPresenter<View>
 }
