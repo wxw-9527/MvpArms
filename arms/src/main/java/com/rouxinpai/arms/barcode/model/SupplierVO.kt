@@ -10,9 +10,12 @@ class SupplierVO(
     val supplierId: String,
     val supplierCode: String,
     val supplierName: String,
+    val shortName: String?,
     val contact: String?,
     val contactTel: String?,
     val contactAddress: String?,
+    val supplierStatus: Int,
+    val remark: String?,
 ) {
 
     companion object {
@@ -25,9 +28,12 @@ class SupplierVO(
                 supplierId = dto.supplierId,
                 supplierCode = dto.supplierCode,
                 supplierName = dto.supplierName,
+                shortName = dto.shortName,
                 contact = dto.contact,
                 contactTel = dto.contactTel,
                 contactAddress = dto.contactAddress,
+                supplierStatus = dto.supplierStatus,
+                remark = dto.remark,
             )
         }
     }
