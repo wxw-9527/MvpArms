@@ -201,6 +201,18 @@ infix fun String.like(that: String?): JsonObject? {
 }
 
 /**
+ * 中缀函数，构建表示模糊匹配操作的 JsonObject。接收一个 String 作为左操作数（字段名）和一个可为空的 String 作为右操作数（值）。
+ */
+infix fun String.orLike(that: String?): JsonObject? {
+    if (that.isNullOrEmpty()) return null
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("fieldName", this)
+    jsonObject.addProperty("operation", "orLike")
+    jsonObject.addProperty("value", that)
+    return jsonObject
+}
+
+/**
  * 中缀函数，构建表示不模糊匹配操作的 JsonObject。接收一个 String 作为左操作数（字段名）和一个可为空的 String 作为右操作数（值）。
  */
 infix fun String.notLike(that: String?): JsonObject? {
