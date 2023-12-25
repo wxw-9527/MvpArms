@@ -16,5 +16,5 @@ data class BarcodeInfoDTO(
     val materialInfo: MaterialInfoDTO,
     @SerializedName("materialStockDetailVO") val materialStockDetail: MaterialStockDetailDTO?,
     val warehouseInfo: WarehouseInfoDTO,
-    val supplierVo: SupplierDTO?
+    val supplierVO: SupplierDTO?
 )

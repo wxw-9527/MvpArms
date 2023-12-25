@@ -68,7 +68,7 @@ data class BarcodeInfoVO(
                             warehouseCode = dto.materialStockDetail?.warehouseCode.orEmpty(),
                             warehouseName = dto.materialStockDetail?.warehouseName,
                             snList = snList,
-                            supplier = dto.supplierVo?.let { SupplierVO.fromDTO(it) }
+                            supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) }
                         )
                     }
                     isWarehouseLocationBarcode -> {
