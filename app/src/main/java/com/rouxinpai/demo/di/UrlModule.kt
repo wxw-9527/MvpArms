@@ -23,13 +23,13 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
+        return "http://test.zk-work.com/stage-api/system/customer/validCode/"
     }
 
     @Provides
     @Singleton
     @GetUpgradeUrl
     override fun provideUpgradeUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/client/info"
+        return "http://test.zk-work.com/stage-api/system/client/info"
     }
 }

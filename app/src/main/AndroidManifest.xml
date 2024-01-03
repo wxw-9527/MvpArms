@@ -12,6 +12,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        tools:replace="android:allowBackup"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MvpArms"
@@ -136,6 +137,11 @@
         <activity
             android:name=".feature.demo.openimage.OpenImageActivity"
             android:label="@string/open_image"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.filedownload.FileDownloadActivity"
+            android:label="@string/file_download"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

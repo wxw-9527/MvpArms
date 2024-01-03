@@ -18,12 +18,8 @@ class MaterialInfoVO(
     val bomCode: String?,
     val quantity: Float,
     val stockQuantity: Float?,
-    val basicPackagingQuantity: Float,
-    val warehouseId: String,
-    val warehouseCode: String,
-    val warehouseName: String?,
+    val supplier: SupplierVO?,
     val snList: List<String>,
-    val supplier: SupplierVO?
 ) {
 
     /**

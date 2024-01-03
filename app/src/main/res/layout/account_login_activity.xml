@@ -1,115 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".feature.login.AccountLoginActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_bg"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="331dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/login_ic_bg"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_slogan"
-        android:layout_width="169dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="134dp"
-        android:src="@drawable/login_ic_slogan"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="331dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/login_ic_bg"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_slogan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="@string/login__slogan"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/iv_slogan"
-        app:layout_constraintTop_toBottomOf="@+id/iv_slogan" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_slogan"
+            android:layout_width="169dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="134dp"
+            android:src="@drawable/login_ic_slogan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32.5dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/login_round_shape"
-        android:hint="@string/login__account"
-        android:imeOptions="actionNext"
-        android:theme="@style/Login.EditText"
-        app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_slogan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/login__slogan"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/iv_slogan"
+            app:layout_constraintTop_toBottomOf="@+id/iv_slogan" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_password"
-        android:layout_width="0px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/login_round_shape"
-        android:hint="@string/login__password"
-        android:imeOptions="actionNext"
-        android:inputType="textPassword"
-        android:maxLength="16"
-        android:theme="@style/Login.EditText"
-        app:layout_constraintEnd_toEndOf="@+id/et_account"
-        app:layout_constraintStart_toStartOf="@+id/et_account"
-        app:layout_constraintTop_toBottomOf="@+id/et_account" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32.5dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/login_round_shape"
+            android:hint="@string/login__account"
+            android:imeOptions="actionNext"
+            android:theme="@style/Login.EditText"
+            app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_captcha"
-        android:layout_width="0px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/login_round_shape"
-        android:hint="@string/login__captcha"
-        android:imeOptions="actionDone"
-        android:inputType="numberSigned"
-        android:maxLength="6"
-        android:theme="@style/Login.EditText"
-        app:layout_constraintEnd_toStartOf="@+id/iv_captcha"
-        app:layout_constraintStart_toStartOf="@+id/et_account"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_password"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/login_round_shape"
+            android:hint="@string/login__password"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:maxLength="16"
+            android:theme="@style/Login.EditText"
+            app:layout_constraintEnd_toEndOf="@+id/et_account"
+            app:layout_constraintStart_toStartOf="@+id/et_account"
+            app:layout_constraintTop_toBottomOf="@+id/et_account" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_captcha"
-        android:layout_width="120dp"
-        android:layout_height="0px"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_captcha"
-        app:layout_constraintEnd_toEndOf="@+id/et_account"
-        app:layout_constraintStart_toEndOf="@+id/et_captcha"
-        app:layout_constraintTop_toTopOf="@+id/et_captcha" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_captcha"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/login_round_shape"
+            android:hint="@string/login__captcha"
+            android:imeOptions="actionDone"
+            android:inputType="numberSigned"
+            android:maxLength="6"
+            android:theme="@style/Login.EditText"
+            app:layout_constraintEnd_toStartOf="@+id/iv_captcha"
+            app:layout_constraintStart_toStartOf="@+id/et_account"
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/cb_remember_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:checked="true"
-        android:text="@string/login__remember_me"
-        android:textColor="#FF0A1629"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/et_captcha"
-        app:layout_constraintTop_toBottomOf="@+id/et_captcha" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_captcha"
+            android:layout_width="120dp"
+            android:layout_height="0px"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_captcha"
+            app:layout_constraintEnd_toEndOf="@+id/et_account"
+            app:layout_constraintStart_toEndOf="@+id/et_captcha"
+            app:layout_constraintTop_toTopOf="@+id/et_captcha" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_in_now"
-        android:layout_width="0pt"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FF2F72FF"
-        android:paddingVertical="13.5dp"
-        android:text="@string/login__sign_in_now"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/et_account"
-        app:layout_constraintStart_toStartOf="@+id/et_account"
-        app:layout_constraintTop_toBottomOf="@+id/cb_remember_me" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_remember_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:checked="true"
+            android:text="@string/login__remember_me"
+            android:textColor="#FF0A1629"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/et_captcha"
+            app:layout_constraintTop_toBottomOf="@+id/et_captcha" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_sign_in_now"
+            android:layout_width="0pt"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="#FF2F72FF"
+            android:paddingVertical="13.5dp"
+            android:text="@string/login__sign_in_now"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/et_account"
+            app:layout_constraintStart_toStartOf="@+id/et_account"
+            app:layout_constraintTop_toBottomOf="@+id/cb_remember_me" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

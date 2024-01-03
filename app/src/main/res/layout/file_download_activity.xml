@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.demo.filedownload.FileDownloadActivity">
+
+    <include layout="@layout/include_toolbar" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16pt"
+        android:layout_marginTop="32pt"
+        android:hint="请输入下载地址"
+        android:text="http://oss.manufacture.beststory.com.cn/dongfeng-oss/2023/12/26/3abc377f-0324-443e-835f-3d12d8623a1a.apk"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16pt"
+        android:layout_marginTop="8pt"
+        android:max="100"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/et_url" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0pt"
+        app:layout_constraintBottom_toTopOf="@+id/btn_download"
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp" />
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#26cc5c"
+        android:text="下载文件"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

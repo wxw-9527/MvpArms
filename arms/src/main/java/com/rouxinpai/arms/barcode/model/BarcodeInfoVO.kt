@@ -62,13 +62,9 @@ data class BarcodeInfoVO(
                             batchCode = batchCode,
                             bomCode = bomCode,
                             quantity = quantity,
-                            stockQuantity = dto.materialStockDetail?.storageQuantity,
-                            basicPackagingQuantity = dto.materialInfo.basicPackagingQuantity ?: 0f,
-                            warehouseId = dto.materialStockDetail?.warehouseId.orEmpty(),
-                            warehouseCode = dto.materialStockDetail?.warehouseCode.orEmpty(),
-                            warehouseName = dto.materialStockDetail?.warehouseName,
+                            stockQuantity = if (dto.itemVOList.isNullOrEmpty()) null else dto.itemVOList.map { it.storageQuantity }.sum(),
+                            supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) },
                             snList = snList,
-                            supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) }
                         )
                     }
                     isWarehouseLocationBarcode -> {

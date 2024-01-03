@@ -14,4 +14,5 @@ data class MaterialStockDetailDTO(
     val warehouseId: String,
     val warehouseCode: String,
     val warehouseName: String?,
+    val supplierCode: String?,
 )

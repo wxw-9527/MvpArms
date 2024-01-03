@@ -98,7 +98,7 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.2'
     api 'io.github.lucksiege:compress:v3.11.2'
     // 对话框相关
-    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta3'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta4'
     api 'com.github.kongzue.DialogXSample:DatePicker:0.0.10'
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.10'
     // 版本更新
@@ -131,7 +131,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.6.3.00'
+                version = '2.6.4.00'
             }
         }
     }

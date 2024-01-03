@@ -58,4 +58,7 @@
 
     <!-- 图片预览 -->
     <string name="open_image">图片预览</string>
+
+    <!-- 文件下载 -->
+    <string name="file_download">文件下载</string>
 </resources>

@@ -6,6 +6,7 @@ import com.rouxinpai.demo.feature.demo.barcode.BarcodeActivity
 import com.rouxinpai.demo.feature.demo.dialog.DialogActivity
 import com.rouxinpai.demo.feature.demo.dict.DictActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
+import com.rouxinpai.demo.feature.demo.filedownload.FileDownloadActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
 import com.rouxinpai.demo.feature.demo.openimage.OpenImageActivity
@@ -98,4 +99,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 图片预览
      */
     OPEN_IMAGE(value = "图片预览", clazz = OpenImageActivity::class.java),
+
+    /**
+     * 文件下载
+     */
+    FILE_DOWNLOAD(value = "文件下载", clazz = FileDownloadActivity::class.java),
 }
