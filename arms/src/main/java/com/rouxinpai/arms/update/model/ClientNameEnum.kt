@@ -26,5 +26,10 @@ enum class ClientNameEnum(val value: String) {
     /**
      * 设备管理
      */
-    DM("dm");
+    DM("dm"),
+
+    /**
+     * 小工具
+     */
+    TOOL("tool");
 }

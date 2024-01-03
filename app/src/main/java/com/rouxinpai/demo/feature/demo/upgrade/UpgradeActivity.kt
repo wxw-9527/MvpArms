@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.update.model.ClientNameEnum
 import com.rouxinpai.arms.update.model.ClientTypeEnum
+import com.rouxinpai.arms.util.DownloadUtil
 import com.rouxinpai.demo.databinding.UpgradeActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,8 +21,14 @@ class UpgradeActivity :
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
+        DownloadUtil.getInstance().register()
         binding.btnCheckVersion.setOnClickListener {
             presenter.getUpdateInfo(ClientTypeEnum.ANDROID, ClientNameEnum.DM, "arms")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DownloadUtil.getInstance().unRegister()
     }
 }

@@ -9,11 +9,11 @@ import android.nfc.NfcAdapter
 import android.os.Build
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.PathUtils
 import com.chad.library.adapter4.QuickAdapterHelper
 import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.dialogs.WaitDialog
-import com.kongzue.kongzueupdatesdk.v3.UpdateUtil
-import com.kongzue.kongzueupdatesdk.v3.UpdateUtil.OnUpdateStatusChangeListener
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.barcode.event.BarcodeEvent
@@ -24,8 +24,10 @@ import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.LoadMoreDelegate
 import com.rouxinpai.arms.update.model.UpdateInfo
 import com.rouxinpai.arms.nfc.util.NfcUtil
+import com.rouxinpai.arms.util.DownloadUtil
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -45,9 +47,6 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
 
     // NFC相关
     private var mNfcAdapter: NfcAdapter? = null
-
-    // 版本更新实例
-    private var mUpdateUtil: UpdateUtil? = null
 
     // 扫描结果解析广播
     private lateinit var mReceiver: BarcodeScanningReceiver
@@ -97,12 +96,6 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             // 取消注册广播
             unregisterReceiver(mReceiver)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // 终止更新流程，释放内存
-        mUpdateUtil?.recycle()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -155,33 +148,34 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             .setCancelable(false)
             .setCancelButton(R.string.upgrade__cancel)
             .setOkButton(R.string.upgrade__start) { _, _ ->
-                // 初始化
-                mUpdateUtil = UpdateUtil(this)
-                // 开始更新
-                mUpdateUtil
-                    ?.setOnUpdateStatusChangeListener(object : OnUpdateStatusChangeListener {
-
-                        override fun onDownloadStart() {
-                            WaitDialog.show(R.string.upgrade__downloading)
-                        }
-
-                        override fun onDownloading(progress: Int) {
-                            val p = progress.toFloat() / 100
-                            WaitDialog.show(R.string.upgrade__downloading, p)
-                        }
-
-                        override fun onDownloadCompleted() {
-                            WaitDialog.dismiss()
-                        }
-
-                        override fun onInstallStart() {}
-
-                        override fun onDownloadCancel() {}
-                    })
-                    ?.hideDownloadProgressDialog()
-                    ?.start(updateInfo.apkFileUrl)
+                val url = updateInfo.apkFileUrl
+                val apkPath = PathUtils.getExternalAppFilesPath() + File.separator + packageName
+                DownloadUtil.getInstance()
+                    .startDownload(url, apkPath, mOnDownloadListener)
                 false
             }
+    }
+
+    // 版本更新状态监听
+    private val mOnDownloadListener = object : DownloadUtil.OnDownloadListener {
+
+        override fun onDownloadStart() {
+            WaitDialog.show(R.string.upgrade__downloading)
+        }
+
+        override fun onDownloading(percent: Int) {
+            WaitDialog.show(R.string.upgrade__downloading, percent.toFloat() / 100)
+        }
+
+        override fun onDownloadFail(e: Exception?) {
+            WaitDialog.dismiss()
+            showWarningTip(R.string.upgrade__download_fail)
+        }
+
+        override fun onDownloadComplete(file: File) {
+            WaitDialog.dismiss()
+            AppUtils.installApp(file)
+        }
     }
 
     /**

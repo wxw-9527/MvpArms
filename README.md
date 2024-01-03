@@ -72,7 +72,7 @@ dependencies {
 
 ### 四、使用版本更新功能
 
-在需要检测新版本的页面P层调用以下方法检查新版本
+#### 1、在需要检测新版本的页面P层调用以下方法检查新版本
 
 ```kotlin
 /**
@@ -83,8 +83,21 @@ dependencies {
  */
 fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
 ```
+#### 2、在需要检测新版本的页面调用以下方法
 
-重写`showUpdateInfo(updateInfo: UpdateInfo)`方法可自定义版本更新处理逻辑
+```kotlin
+override fun onInit(savedInstanceState: Bundle?) {
+    super.onInit(savedInstanceState)
+    DownloadUtil.getInstance().register()
+}
+
+override fun onDestroy() {
+    super.onDestroy()
+    DownloadUtil.getInstance().unRegister()
+}
+```
+
+#### 3、重写`showUpdateInfo(updateInfo: UpdateInfo)`方法可自定义版本更新处理逻辑
 
 ### 五、条码解析服务
 
