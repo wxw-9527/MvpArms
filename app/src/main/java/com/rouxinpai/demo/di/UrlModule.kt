@@ -24,6 +24,7 @@ object UrlModule : IUrlModule {
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
         return "http://test.zk-work.com/stage-api/system/customer/validCode/"
+        // return "http://admin.manufacture.beststory.com.cn/stage-api/system/customer/validCode/"
     }
 
     @Provides
@@ -31,5 +32,6 @@ object UrlModule : IUrlModule {
     @GetUpgradeUrl
     override fun provideUpgradeUrl(): String {
         return "http://test.zk-work.com/stage-api/system/client/info"
+        // return "http://admin.manufacture.beststory.com.cn/stage-api/system/client/info"
     }
 }

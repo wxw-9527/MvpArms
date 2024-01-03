@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
     id 'com.google.devtools.ksp'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android' // Hilt
@@ -103,6 +104,9 @@ dependencies {
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.10'
     // 版本更新
     implementation 'com.github.kongzue:KongzueUpdateSDK:3.0.2'
+    // 文件下载
+    implementation 'me.laoyuyu.aria:core:3.8.16'
+    kapt 'me.laoyuyu.aria:compiler:3.8.16'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器
@@ -131,7 +135,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.6.4.00'
+                version = '2.6.5.00'
             }
         }
     }

@@ -49,7 +49,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), BaseQuickAdapter.OnIte
             .build()
             .addTo(binding.recyclerView)
         // 填充数据
-        mMenuAdapter.submitList(values().toList())
+        mMenuAdapter.submitList(entries)
         // 绑定监听事件
         mMenuAdapter.setOnItemClickListener(this)
     }

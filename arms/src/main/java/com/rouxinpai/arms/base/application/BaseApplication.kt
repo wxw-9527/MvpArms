@@ -9,6 +9,7 @@ import com.kongzue.dialogx.interfaces.ProgressViewInterface
 import com.kongzue.dialogx.style.MaterialStyle
 import com.kongzue.dialogx.util.views.NoArticulatedProgressView
 import com.rouxinpai.arms.dict.util.DictUtil
+import com.rouxinpai.arms.util.DownloadUtil
 import com.rouxinpai.arms.util.HuaweiUtil
 import com.tencent.mmkv.MMKV
 import timber.log.Timber
@@ -43,6 +44,8 @@ abstract class BaseApplication : Application(), IApplication {
         initObjectBox()
         // 初始化DialogX
         initDialogX()
+        // 初始化文件下载工具类
+        initDownloadUtil()
     }
 
     override fun finishActivity(vararg cls: Class<*>) {
@@ -97,6 +100,11 @@ abstract class BaseApplication : Application(), IApplication {
         Timber.d("mmkv root：$rootDir")
     }
 
+    // 初始化本地数据库
+    private fun initObjectBox() {
+        DictUtil.getInstance().init(this, debug)
+    }
+
     // 初始化DialogX
     private fun initDialogX() {
         // 初始化
@@ -117,9 +125,9 @@ abstract class BaseApplication : Application(), IApplication {
         DialogX.globalStyle = materialStyle
     }
 
-    // 初始化本地数据库
-    private fun initObjectBox() {
-        DictUtil.getInstance().init(this, debug)
+    // 初始化文件下载工具类
+    private fun initDownloadUtil() {
+        DownloadUtil.getInstance().init(this)
     }
 
     // Activity入栈
