@@ -29,7 +29,6 @@ import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.view.OffsetDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.concurrent.thread
-import kotlin.properties.Delegates
 
 /**
  * author : Saxxhw
@@ -80,10 +79,10 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
     }
 
     // 条码列表
-    private lateinit var mBarcodeList: List<String>
+    private var mBarcodeList: List<String> = emptyList()
 
     // 是否打印完成后关闭页面
-    private var mIsFinish: Boolean by Delegates.notNull()
+    private var mIsFinish: Boolean = DEFAULT_IS_FINISH
 
     // 打印数据集列表适配器
     private val mPrintDataAdapter = PrintDataAdapter()
