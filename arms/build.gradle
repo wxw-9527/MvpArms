@@ -87,7 +87,7 @@ dependencies {
     // 权限
     api 'com.github.permissions-dispatcher:ktx:1.1.4'
     // RecyclerView相关
-    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.3'
+    api 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
     // 气泡提示
     implementation 'com.github.skydoves:balloon:1.6.4'
@@ -99,7 +99,7 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.2'
     api 'io.github.lucksiege:compress:v3.11.2'
     // 对话框相关
-    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta4'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta5'
     api 'com.github.kongzue.DialogXSample:DatePicker:0.0.10'
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.10'
     // 文件下载
@@ -108,7 +108,7 @@ dependencies {
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器
-    api 'com.github.wxw-9527:Stepper:1.1.0'
+    api 'com.github.wxw-9527:Stepper:1.1.1'
     // 图片查看库
     implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.2.0'
     // 蓝牙打印机
@@ -133,7 +133,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.6.6.00'
+                version = '2.6.7.00'
             }
         }
     }

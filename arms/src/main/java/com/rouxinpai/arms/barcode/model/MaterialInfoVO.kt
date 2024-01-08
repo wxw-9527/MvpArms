@@ -20,6 +20,7 @@ class MaterialInfoVO(
     val stockQuantity: Float?,
     val supplier: SupplierVO?,
     val snList: List<String>,
+    val locationList: List<WarehouseInfoVO>,
 ) {
 
     /**
