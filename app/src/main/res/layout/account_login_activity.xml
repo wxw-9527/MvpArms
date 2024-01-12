@@ -48,6 +48,7 @@
             android:background="@drawable/login_round_shape"
             android:hint="@string/login__account"
             android:imeOptions="actionNext"
+            android:text="zhangxing"
             android:theme="@style/Login.EditText"
             app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
 
@@ -61,6 +62,7 @@
             android:imeOptions="actionNext"
             android:inputType="textPassword"
             android:maxLength="16"
+            android:text="123456"
             android:theme="@style/Login.EditText"
             app:layout_constraintEnd_toEndOf="@+id/et_account"
             app:layout_constraintStart_toStartOf="@+id/et_account"
