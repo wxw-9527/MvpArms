@@ -106,7 +106,7 @@ class HcctgPrinter : BasePrinter() {
     }
 
     override fun isStatusNormal(): Boolean {
-        return 0 == mPrinterInstance.currentStatus
+        return ::mPrinterInstance.isInitialized && 0 == mPrinterInstance.currentStatus
     }
 
     override fun print(template: TemplateVO, direction: DirectionEnum, bitmap: Bitmap): Boolean {

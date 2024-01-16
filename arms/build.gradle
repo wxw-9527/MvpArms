@@ -133,7 +133,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.6.9.01'
+                version = '2.7.0.00'
             }
         }
     }
