@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.rouxinpai.arms.print
 
 import android.Manifest
@@ -25,7 +23,6 @@ import com.rouxinpai.arms.print.factory.BasePrinter
 import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.factory.OnConnectListener
 import com.rouxinpai.arms.print.model.ConnectedEvent
-import com.rouxinpai.arms.print.model.PrinterStatusEnum.*
 import com.rouxinpai.arms.print.util.PrintUtil
 import permissions.dispatcher.ktx.constructPermissionsRequest
 import timber.log.Timber
