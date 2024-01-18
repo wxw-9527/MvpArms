@@ -19,6 +19,11 @@ enum class CustomerDictEnum(val code: String) {
     MATERIAL_COLOR("material_colour"), // 仓储、质检、看板
 
     /**
+     * 制作区分
+     */
+    PRODUCT_PARTITION("product_partition"), // 仓储
+
+    /**
      * 判定方法
      */
     JUDGE_METHOD("judge_method"), // 质检

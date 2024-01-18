@@ -154,7 +154,7 @@ class DictUtil {
      * 转换物料单位
      */
     fun convertMaterialUnit(unit: String?): CustomerDictItemVO? {
-        return materialUnitList.find { it.key == unit }
+        return materialUnitList.find { unit == it.key }
     }
 
     /**
@@ -171,7 +171,7 @@ class DictUtil {
      * 转换物料颜色
      */
     fun convertMaterialColor(color: String?): CustomerDictItemVO? {
-        return materialColorList.find { it.key == color }
+        return materialColorList.find { color == it.key }
     }
 
     /**
@@ -188,7 +188,7 @@ class DictUtil {
      * 转换判定方法
      */
     fun convertJudgeMethod(method: String?): CustomerDictItemVO? {
-        return judgeMethodList.find { it.key == method }
+        return judgeMethodList.find { method == it.key }
     }
 
     /**
@@ -196,5 +196,22 @@ class DictUtil {
      */
     fun convertJudgeMethod(array: Array<String>): List<CustomerDictItemVO> {
         return array.mapNotNull { convertJudgeMethod(it) }
+    }
+
+    /**
+     * 制作区分字典
+     */
+    val productPartitionList by lazy(LazyThreadSafetyMode.NONE) {
+        mCustomerDictBox
+            .query(CustomerDictItemVO_.code equal CustomerDictEnum.PRODUCT_PARTITION.code)
+            .build()
+            .find()
+    }
+
+    /**
+     * 转换制作区分
+     */
+    fun convertProductPartition(productPartition: String?): CustomerDictItemVO? {
+        return productPartitionList.find { productPartition == it.key }
     }
 }
