@@ -1,8 +1,8 @@
 package com.rouxinpai.arms.util
 
 import android.content.Context
-import com.arialyy.annotations.Download
 import com.arialyy.aria.core.Aria
+import com.arialyy.aria.core.download.DownloadTaskListener
 import com.arialyy.aria.core.task.DownloadTask
 import java.io.File
 import java.io.FileNotFoundException
@@ -14,7 +14,7 @@ import java.io.FileNotFoundException
  * desc   :
  */
 
-class DownloadUtil {
+class DownloadUtil: DownloadTaskListener {
 
     companion object {
 
@@ -75,42 +75,39 @@ class DownloadUtil {
             .create()
     }
 
+    override fun onWait(task: DownloadTask?) {}
+
     /**
      * 预处理的注解，在任务未开始前回调（一般在此处预处理UI界面）
      */
-    @Download.onPre
-    fun onPre(task: DownloadTask) {
+    override fun onPre(task: DownloadTask?) {
         mOnDownloadListener?.onDownloadStart()
     }
+
+    override fun onTaskPre(task: DownloadTask?) {}
+
+    override fun onTaskResume(task: DownloadTask?) {}
 
     /**
      * 任务开始时的注解，新任务开始时进行回调
      */
-    @Download.onTaskStart
-    fun onTaskStart(task: DownloadTask) {
-    }
+    override fun onTaskStart(task: DownloadTask?) {}
 
-    /**
-     * 任务执行时的注解，任务正在执行时进行回调
-     */
-    @Download.onTaskRunning
-    fun onTaskRunning(task: DownloadTask) {
-        mOnDownloadListener?.onDownloading(task.percent)
-    }
+    override fun onTaskStop(task: DownloadTask?) {}
+
+    override fun onTaskCancel(task: DownloadTask?) {}
 
     /**
      * 任务失败时的注解，任务执行失败时进行回调
      */
-    @Download.onTaskFail
-    fun onTaskFail(task: DownloadTask?, e: Exception?) {
+    override fun onTaskFail(task: DownloadTask?, e: Exception?) {
         mOnDownloadListener?.onDownloadFail(e)
     }
 
     /**
      * 	任务完成时的注解，任务完成时进行回调
      */
-    @Download.onTaskComplete
-    fun onTaskComplete(task: DownloadTask) {
+    override fun onTaskComplete(task: DownloadTask) {
         val file = File(task.filePath)
         if (file.isFile && file.exists()) {
             mOnDownloadListener?.onDownloadComplete(file)
@@ -118,6 +115,15 @@ class DownloadUtil {
             mOnDownloadListener?.onDownloadFail(FileNotFoundException("文件不存在！"))
         }
     }
+
+    /**
+     * 任务执行时的注解，任务正在执行时进行回调
+     */
+    override fun onTaskRunning(task: DownloadTask) {
+        mOnDownloadListener?.onDownloading(task.percent)
+    }
+
+    override fun onNoSupportBreakPoint(task: DownloadTask?) {}
 
     interface OnDownloadListener {
         fun onDownloadStart()
