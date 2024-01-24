@@ -49,8 +49,9 @@ abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P 
 
     @Subscribe(threadMode = ThreadMode.POSTING, sticky = true, priority = 2)
     open fun onBarcodeEvent(event: BarcodeEvent) {
-        event.removeStickyEvent()
-        presenter.getBarcodeInfo(event.barcode)
+        if (event.removeStickyEvent()) {
+            presenter.getBarcodeInfo(event.barcode)
+        }
     }
 
     override fun resetLoadMoreState() {
