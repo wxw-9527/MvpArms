@@ -24,15 +24,5 @@
 -keep interface com.huawei.hms.analytics.type.HAParamType{*;}
 -keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
 
-# Aria：https://github.com/AriaLyy/Aria
--dontwarn com.arialyy.aria.**
--keep class com.arialyy.aria.**{*;}
--keep class **$$DownloadListenerProxy{ *; }
--keep class **$$UploadListenerProxy{ *; }
--keep class **$$DownloadGroupListenerProxy{ *; }
--keep class **$$DGSubListenerProxy{ *; }
--keepclasseswithmembernames class * {
-    @Download.* <methods>;
-    @Upload.* <methods>;
-    @DownloadGroup.* <methods>;
-}
+# okdownload：https://github.com/lingochamp/okdownload
+-keepnames class com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection

@@ -1,6 +1,10 @@
 package com.rouxinpai.demo.feature.demo.filedownload
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.core.os.postDelayed
+import com.blankj.utilcode.util.AppUtils
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.util.DownloadUtil
 import com.rouxinpai.demo.databinding.FileDownloadActivityBinding
@@ -12,9 +16,12 @@ import java.io.File
  * time   : 2023/12/28 15:59
  * desc   :
  */
-class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), DownloadUtil.OnDownloadListener {
+class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(),
+    DownloadUtil.OnDownloadListener {
 
     private val mSb = StringBuilder()
+
+    private var mStartMillis = 0L
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
@@ -29,6 +36,7 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), Downlo
     }
 
     override fun onDownloadStart() {
+        mStartMillis = System.currentTimeMillis()
         mSb.clear()
         mSb.appendLine("======> 开始下载")
         binding.tvResult.text = mSb.toString()
@@ -47,9 +55,12 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), Downlo
     }
 
     override fun onDownloadComplete(file: File) {
-        mSb.appendLine("======> 下载完成！位置：${file.path}")
+        mSb.appendLine("======> 耗时：${(System.currentTimeMillis() - mStartMillis) / 1000L}秒，位置：${file.path}")
         binding.tvResult.text = mSb.toString()
         dismissProgress()
+        Handler(Looper.getMainLooper()).postDelayed(1000L) {
+            AppUtils.installApp(file)
+        }
     }
 
     override fun onDestroy() {
