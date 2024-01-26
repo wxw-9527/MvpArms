@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.PathUtils
 import com.chad.library.adapter4.QuickAdapterHelper
 import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.dialogs.WaitDialog

@@ -1,7 +1,6 @@
 package com.rouxinpai.demo.feature.demo.filedownload
 
 import android.os.Bundle
-import com.blankj.utilcode.util.PathUtils
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.util.DownloadUtil
 import com.rouxinpai.demo.databinding.FileDownloadActivityBinding
