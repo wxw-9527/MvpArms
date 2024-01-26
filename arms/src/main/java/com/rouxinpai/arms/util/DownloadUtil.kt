@@ -60,7 +60,6 @@ class DownloadUtil {
         mDownloadTask = DownloadTask
             .Builder(url, PATH, fileName)
             .setPassIfAlreadyCompleted(false)
-            .setConnectionCount(1) // 设置单线程下载，修复The current offset on block-info isn'tupdate correct,1306995!= 2380221 on 2
             .build()
         mDownloadTask?.enqueue1(
             taskStart = { _, _ ->
