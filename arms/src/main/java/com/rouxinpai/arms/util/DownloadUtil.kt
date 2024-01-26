@@ -1,11 +1,13 @@
 package com.rouxinpai.arms.util
 
 import android.content.Context
-import com.arialyy.aria.core.Aria
-import com.arialyy.aria.core.download.DownloadTaskListener
-import com.arialyy.aria.core.task.DownloadTask
+import com.blankj.utilcode.util.PathUtils
+import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.OkDownload
+import com.liulishuo.okdownload.core.cause.EndCause
+import com.liulishuo.okdownload.core.file.CustomProcessFileStrategy
+import com.liulishuo.okdownload.kotlin.enqueue1
 import java.io.File
-import java.io.FileNotFoundException
 
 /**
  * author : Saxxhw
@@ -14,7 +16,7 @@ import java.io.FileNotFoundException
  * desc   :
  */
 
-class DownloadUtil: DownloadTaskListener {
+class DownloadUtil {
 
     companion object {
 
@@ -29,105 +31,63 @@ class DownloadUtil: DownloadTaskListener {
                 instance ?: DownloadUtil().also { instance = it }
             }
 
-        // 默认任务ID
-        private const val DEFAULT_TASK_ID: Long = -1
+        // 文件存储路径
+        private val PATH = PathUtils.getExternalAppFilesPath() + File.separator + "download"
     }
 
-    // 下载监听
-    private var mOnDownloadListener: OnDownloadListener? = null
-
-    // 任务ID
-    private var mTaskId: Long = DEFAULT_TASK_ID
+    // 下载任务
+    private var mDownloadTask: DownloadTask? = null
 
     /**
      * 初始化
      */
     fun init(context: Context) {
-        // 初始化Aria
-        Aria.init(context)
-    }
-
-    /**
-     * 注册
-     */
-    fun register() {
-        Aria.download(this).register()
-    }
-
-    /**
-     * 反注册
-     */
-    fun unRegister() {
-        Aria.download(this).unRegister()
+        val okDownload = OkDownload
+            .Builder(context)
+            .processFileStrategy(CustomProcessFileStrategy()) // 修复Android10下载失败的问题
+            .build()
+        OkDownload.setSingletonInstance(okDownload)
     }
 
     /**
      * 开始下载
      */
-    fun startDownload(url: String, filePath: String, listener: OnDownloadListener) {
-        // 设置下载监听
-        mOnDownloadListener = listener
-        // 开始下载
-        mTaskId = Aria.download(this)
-            .load(url)
-            .setFilePath(filePath)
-            .ignoreCheckPermissions()
-            .create()
+    fun startDownload(
+        url: String,
+        fileName: String,
+        listener: OnDownloadListener,
+    ) {
+        mDownloadTask = DownloadTask
+            .Builder(url, PATH, fileName)
+            .setConnectionCount(1) // 设置单线程下载，修复The current offset on block-info isn'tupdate correct,1306995!= 2380221 on 2
+            .build()
+        mDownloadTask?.enqueue1(
+            taskStart = { _, _ ->
+                listener.onDownloadStart()
+            },
+            progress = { _, currentOffset, totalLength ->
+                val percent = currentOffset.toFloat() / totalLength.toFloat()
+                listener.onDownloading(percent)
+            },
+            taskEnd = { task, cause, realCause, _ ->
+                val file = task.file
+                if (cause == EndCause.COMPLETED && file != null && file.exists()) {
+                    listener.onDownloadComplete(file)
+                } else {
+                    listener.onDownloadFail(realCause)
+                }
+            }
+        )
     }
 
-    override fun onWait(task: DownloadTask?) {}
-
-    /**
-     * 预处理的注解，在任务未开始前回调（一般在此处预处理UI界面）
-     */
-    override fun onPre(task: DownloadTask?) {
-        mOnDownloadListener?.onDownloadStart()
+    fun onDestroy() {
+        mDownloadTask?.cancel()
+        mDownloadTask = null
     }
-
-    override fun onTaskPre(task: DownloadTask?) {}
-
-    override fun onTaskResume(task: DownloadTask?) {}
-
-    /**
-     * 任务开始时的注解，新任务开始时进行回调
-     */
-    override fun onTaskStart(task: DownloadTask?) {}
-
-    override fun onTaskStop(task: DownloadTask?) {}
-
-    override fun onTaskCancel(task: DownloadTask?) {}
-
-    /**
-     * 任务失败时的注解，任务执行失败时进行回调
-     */
-    override fun onTaskFail(task: DownloadTask?, e: Exception?) {
-        mOnDownloadListener?.onDownloadFail(e)
-    }
-
-    /**
-     * 	任务完成时的注解，任务完成时进行回调
-     */
-    override fun onTaskComplete(task: DownloadTask) {
-        val file = File(task.filePath)
-        if (file.isFile && file.exists()) {
-            mOnDownloadListener?.onDownloadComplete(file)
-        } else {
-            mOnDownloadListener?.onDownloadFail(FileNotFoundException("文件不存在！"))
-        }
-    }
-
-    /**
-     * 任务执行时的注解，任务正在执行时进行回调
-     */
-    override fun onTaskRunning(task: DownloadTask) {
-        mOnDownloadListener?.onDownloading(task.percent)
-    }
-
-    override fun onNoSupportBreakPoint(task: DownloadTask?) {}
 
     interface OnDownloadListener {
         fun onDownloadStart()
-        fun onDownloading(percent: Int)
+        fun onDownloading(percent: Float)
         fun onDownloadFail(e: Exception?)
         fun onDownloadComplete(file: File)
     }

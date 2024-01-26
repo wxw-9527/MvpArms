@@ -102,7 +102,10 @@ dependencies {
     api 'com.github.kongzue.DialogXSample:DatePicker:0.0.12'
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.12'
     // 文件下载
-    api 'me.laoyuyu.aria:core:3.8.16'
+    implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
+    implementation 'com.liulishuo.okdownload:sqlite:1.0.7'
+    implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
+    implementation 'com.liulishuo.okdownload:ktx:1.0.7'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器

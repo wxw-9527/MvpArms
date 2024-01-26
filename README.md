@@ -86,14 +86,9 @@ fun getUpdateInfo(clientType: String = "android", clientName: String, channel: S
 #### 2、在需要检测新版本的页面调用以下方法
 
 ```kotlin
-override fun onInit(savedInstanceState: Bundle?) {
-    super.onInit(savedInstanceState)
-    DownloadUtil.getInstance().register()
-}
-
 override fun onDestroy() {
     super.onDestroy()
-    DownloadUtil.getInstance().unRegister()
+    DownloadUtil.getInstance().onDestroy()
 }
 ```
 

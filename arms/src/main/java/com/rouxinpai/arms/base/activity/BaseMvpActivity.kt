@@ -150,9 +150,8 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             .setCancelButton(R.string.upgrade__cancel)
             .setOkButton(R.string.upgrade__start) { _, _ ->
                 val url = updateInfo.apkFileUrl
-                val apkPath = PathUtils.getExternalAppFilesPath() + File.separator + packageName
                 DownloadUtil.getInstance()
-                    .startDownload(url, apkPath, mOnDownloadListener)
+                    .startDownload(url,"update.apk", mOnDownloadListener)
                 false
             }
     }
@@ -164,13 +163,13 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             WaitDialog.show(R.string.upgrade__downloading)
         }
 
-        override fun onDownloading(percent: Int) {
-            WaitDialog.show(R.string.upgrade__downloading, percent.toFloat() / 100)
+        override fun onDownloading(percent: Float) {
+            WaitDialog.show(R.string.upgrade__downloading, percent)
         }
 
         override fun onDownloadFail(e: Exception?) {
             WaitDialog.dismiss()
-            showWarningTip(R.string.upgrade__download_fail)
+            showWarningTip(getString(R.string.upgrade__download_fail, e?.message))
         }
 
         override fun onDownloadComplete(file: File) {

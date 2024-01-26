@@ -15,23 +15,15 @@ import java.io.File
  */
 class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), DownloadUtil.OnDownloadListener {
 
-    companion object {
-
-        // 文件存储位置
-        private val FILE_PATH: String = PathUtils.getExternalAppFilesPath()
-    }
-
     private val mSb = StringBuilder()
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        // 初始化 Aria
-        DownloadUtil.getInstance().register()
         // 下载文件
         binding.btnDownload.setOnClickListener {
             DownloadUtil.getInstance().startDownload(
                 binding.etUrl.text.toString(),
-                FILE_PATH + File.separator + "test.apk",
+                "test.apk",
                 this
             )
         }
@@ -44,8 +36,8 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), Downlo
         showProgress()
     }
 
-    override fun onDownloading(percent: Int) {
-        mSb.appendLine("======> 下载中，已下载${percent}%")
+    override fun onDownloading(percent: Float) {
+        mSb.appendLine("======> 下载中，已下载${percent * 100}%")
         binding.tvResult.text = mSb.toString()
     }
 
@@ -63,6 +55,6 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(), Downlo
 
     override fun onDestroy() {
         super.onDestroy()
-        DownloadUtil.getInstance().unRegister()
+        DownloadUtil.getInstance().onDestroy()
     }
 }

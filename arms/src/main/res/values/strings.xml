@@ -14,7 +14,7 @@
     <string name="upgrade__downloading">下载中…</string>
     <string name="upgrade__cancel">暂不更新</string>
     <string name="upgrade__start">开始</string>
-    <string name="upgrade__download_fail">下载失败</string>
+    <string name="upgrade__download_fail">下载失败：%1$s</string>
 
     <!-- 便携式打印 -->
     <string name="print">打印</string>

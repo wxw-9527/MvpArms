@@ -21,7 +21,6 @@ class UpgradeActivity :
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        DownloadUtil.getInstance().register()
         binding.btnCheckVersion.setOnClickListener {
             presenter.getUpdateInfo(ClientTypeEnum.ANDROID, ClientNameEnum.DM, "arms")
         }
@@ -29,6 +28,6 @@ class UpgradeActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        DownloadUtil.getInstance().unRegister()
+        DownloadUtil.getInstance().onDestroy()
     }
 }
