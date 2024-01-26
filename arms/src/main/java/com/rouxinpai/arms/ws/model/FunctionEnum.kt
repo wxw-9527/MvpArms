@@ -24,7 +24,7 @@ enum class FunctionEnum(val functionName: String) {
          * 根据名称获取枚举
          */
         fun fromName(functionName: String): FunctionEnum {
-            return values().first { functionName == it.functionName }
+            return entries.first { functionName == it.functionName }
         }
     }
 }

@@ -54,7 +54,7 @@ enum class PrintingStatusEnum(val status: Int, @StringRes val errorMsgResId: Int
     companion object {
 
         fun fromStatus(status: Int?): PrintingStatusEnum {
-            return values().find { status == it.status } ?: UNKNOWN_ERROR
+            return entries.find { status == it.status } ?: UNKNOWN_ERROR
         }
     }
 }

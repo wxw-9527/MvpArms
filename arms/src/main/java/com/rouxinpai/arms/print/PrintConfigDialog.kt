@@ -98,9 +98,9 @@ class PrintConfigDialog(
             .setOkButton(R.string.print_config__ok, mOkClickListener)
         super.onCreate(owner)
         // 全局变量初始化
-        mBrandEnumList = BrandEnum.values().asList()
+        mBrandEnumList = BrandEnum.entries
         mBrandEnum = PrintUtil.getBrandEnum()
-        mDirectionEnumList = DirectionEnum.values().asList()
+        mDirectionEnumList = DirectionEnum.entries
         mDirectionEnum = PrintUtil.getDirectionEnum()
         // 打印模板相关初始化
         with(binding.spinnerTemplate) {

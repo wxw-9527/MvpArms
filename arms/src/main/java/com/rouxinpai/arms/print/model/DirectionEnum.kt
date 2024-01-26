@@ -30,7 +30,7 @@ enum class DirectionEnum(
          * 根据值获取枚举对象
          */
         fun fromValue(value: Int): DirectionEnum {
-            return values().find { it.value == value } ?: HORIZONTAL
+            return entries.find { it.value == value } ?: HORIZONTAL
         }
     }
 }

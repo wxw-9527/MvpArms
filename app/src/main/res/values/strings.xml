@@ -61,4 +61,7 @@
 
     <!-- 文件下载 -->
     <string name="file_download">文件下载</string>
+
+    <!-- 图片选中 -->
+    <string name="picture_selector">图片选择</string>
 </resources>

@@ -10,6 +10,7 @@ import com.rouxinpai.demo.feature.demo.filedownload.FileDownloadActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
 import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
 import com.rouxinpai.demo.feature.demo.openimage.OpenImageActivity
+import com.rouxinpai.demo.feature.demo.pictureselector.PictureSelectorDemoActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity
 import com.rouxinpai.demo.feature.demo.repeatclick.DebounceClickDemoActivity
 import com.rouxinpai.demo.feature.demo.rv.RvLoadMoreActivity
@@ -104,4 +105,9 @@ enum class MenuEnum(val value: String, val clazz: Class<*>) {
      * 文件下载
      */
     FILE_DOWNLOAD(value = "文件下载", clazz = FileDownloadActivity::class.java),
+
+    /**
+     * 图片选择
+     */
+    PICTURE_SELECTOR(value = "图片选择", clazz = PictureSelectorDemoActivity::class.java)
 }

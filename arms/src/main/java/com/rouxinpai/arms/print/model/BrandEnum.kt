@@ -27,7 +27,7 @@ enum class BrandEnum(val brand: String, @StringRes val brandNameResId: Int) {
          *
          */
         fun fromBrand(brand: String?): BrandEnum {
-            return values().firstOrNull { it.brand == brand } ?: HCCTG
+            return entries.firstOrNull { it.brand == brand } ?: HCCTG
         }
     }
 }

@@ -47,7 +47,7 @@ enum class PrinterStatusEnum(val status: Int?, @StringRes val errorMsgResId: Int
          *
          */
         fun fromStatus(status: Int?): PrinterStatusEnum {
-            return values().find { status == it.status } ?: UNKNOWN_ERROR
+            return entries.find { status == it.status } ?: UNKNOWN_ERROR
         }
     }
 }

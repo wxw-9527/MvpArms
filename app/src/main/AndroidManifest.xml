@@ -143,5 +143,10 @@
             android:name=".feature.demo.filedownload.FileDownloadActivity"
             android:label="@string/file_download"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.demo.pictureselector.PictureSelectorDemoActivity"
+            android:label="@string/picture_selector"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
