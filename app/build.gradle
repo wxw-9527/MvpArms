@@ -23,13 +23,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            minifyEnabled true // 开启混淆
-            shrinkResources true // 移除无用资源
-            debuggable true
-            jniDebuggable true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+//        debug {
+//            minifyEnabled true // 开启混淆
+//            shrinkResources true // 移除无用资源
+//            debuggable true
+//            jniDebuggable true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
         release {
             minifyEnabled true // 开启混淆
             shrinkResources true // 移除无用资源
