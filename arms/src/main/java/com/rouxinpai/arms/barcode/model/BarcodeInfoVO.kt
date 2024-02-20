@@ -94,7 +94,7 @@ data class BarcodeInfoVO(
      * 物料条码
      */
     val isMaterialBarcode: Boolean
-        get() = (BarTypeEnum.MATERIAL == barTypeEnum)
+        get() = (BarTypeEnum.materialEnumList.contains(barTypeEnum))
 
     /**
      * 物料信息
@@ -105,7 +105,7 @@ data class BarcodeInfoVO(
      * 库位码
      */
     val isWarehouseLocationBarcode: Boolean
-        get() = (BarTypeEnum.WAREHOUSE == barTypeEnum)
+        get() = (BarTypeEnum.warehouseEnumList.contains(barTypeEnum))
 
     /**
      * 库位信息

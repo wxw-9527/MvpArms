@@ -19,9 +19,7 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
         binding.btnPrint.setOnClickListener {
             PrintActivity.start(
                 this, listOf(
-                    "10624010500000259",
-                    "10624010400000969",
-                    "10624010400000969",
+                    "10124022000000013"
                 ),
                 true
             )
