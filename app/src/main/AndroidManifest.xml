@@ -21,7 +21,7 @@
 
         <!-- WebSocket服务 -->
         <service
-            android:name="com.rouxinpai.arms.ws.WebSocketService"
+            android:name=".feature.demo.message.WebSocketService"
             android:directBootAware="true"
             android:exported="false" />
 

@@ -44,7 +44,7 @@ import javax.inject.Inject
  * desc   :
  */
 @AndroidEntryPoint
-class WebSocketService : IntentService(SERVICE_NAME) {
+abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
 
     companion object {
 
@@ -126,22 +126,17 @@ class WebSocketService : IntentService(SERVICE_NAME) {
 
         // 接收到服务端发来的消息时，执行对应业务逻辑
         override fun onMessage(webSocket: WebSocket, text: String) {
-            Timber.tag(SERVICE_NAME).d("------> 收到服务端消息：$text")
             super.onMessage(webSocket, text)
+            Timber.tag(SERVICE_NAME).d("------> 收到服务端消息：$text")
             try {
                 val jsonObject = JsonParser.parseString(text).asJsonObject
-                // val modelName = jsonObject.get("modelName").asString
+                val modelName = jsonObject.get("modelName").asString
                 val functionName = jsonObject.get("functionName").asString
                 val params = jsonObject.get("params")
                 if (params.isJsonNull) {
                     Timber.tag(SERVICE_NAME).e("------> params is null")
                 } else {
                     when (FunctionEnum.fromName(functionName)) {
-                        // 多人拣货
-                        FunctionEnum.MULTI_PICKER -> {
-                            val json = gson.toJson(params)
-                            WebSocketUtil.sendMessageToClient(json)
-                        }
                         // 消息中心
                         FunctionEnum.NOTIFICATION -> {
                             val title = "通知标题"
@@ -210,7 +205,7 @@ class WebSocketService : IntentService(SERVICE_NAME) {
     }
 
     // 创建消息通知
-    private fun sendNotification(title: String, message: String, intent: Intent) {
+    protected fun sendNotification(title: String, message: String, intent: Intent) {
         val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
         val notification = buildNotification(

@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.7.7.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.7.8.00'
 }
 ```
 
@@ -221,17 +221,21 @@ object UrlModule : IUrlModule {
 
 ### 八、集成消息通知
 
-#### 1、在AndroidManifest.xml文件中<application>标签内添加以下配置
+#### 1、创建YourWebSocketService类，继承框架提供的`com.rouxinpai.arms.ws.BaseWebSocketService`类
+
+#### 2、在项目的`Application`类中调用`WebSocketUtil.init(YourWebSocketService::class.java)`方法初始化
+
+#### 3、在AndroidManifest.xml文件中<application>标签内添加以下配置
 
 ```xml
 <!-- WebSocket服务 -->
 <service 
-    android:name="com.rouxinpai.arms.ws.WebSocketService" 
+    android:name="包名.YourWebSocketService"
     android:directBootAware="true"
     android:exported="false" />
 ```
 
-#### 2、注册通知需要启动的页面
+#### 4、注册通知需要启动的页面
 
 ```xml
 <activity 
@@ -251,7 +255,7 @@ object UrlModule : IUrlModule {
 </activity>
 ```
 
-#### 3、在需要启动服务的地方调用以下方法启动、销毁服务、发送消息
+#### 5、在需要启动服务的地方调用以下方法启动、销毁服务、发送消息
 
 ```kotlin
     // 启动服务
@@ -262,7 +266,7 @@ object UrlModule : IUrlModule {
     WebSocketUtil.sendMessageToService(message)
 ```
 
-#### 4、在需要接收消息的页面标注@EventBusEnabled注解，并添加以下方法
+#### 6、在需要接收消息的页面标注@EventBusEnabled注解，并添加以下方法
 
 ```kotlin
     @Subscribe(threadMode = ThreadMode.MAIN)

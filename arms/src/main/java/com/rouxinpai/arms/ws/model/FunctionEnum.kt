@@ -9,11 +9,6 @@ package com.rouxinpai.arms.ws.model
 enum class FunctionEnum(val functionName: String) {
 
     /**
-     * 多人拣货
-     */
-    MULTI_PICKER(functionName = "/outboundOrderDetailRecordDraft/getMsg"),
-
-    /**
      * 消息通知
      */
     NOTIFICATION(functionName = "/notification");

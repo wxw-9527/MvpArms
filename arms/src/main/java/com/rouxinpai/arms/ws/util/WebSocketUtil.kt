@@ -3,7 +3,6 @@ package com.rouxinpai.arms.ws.util
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.rouxinpai.arms.ws.WebSocketService
 import com.rouxinpai.arms.ws.model.ClientMessageEvent
 import com.rouxinpai.arms.ws.model.ServiceMessageEvent
 
@@ -15,12 +14,22 @@ import com.rouxinpai.arms.ws.model.ServiceMessageEvent
  */
 object WebSocketUtil {
 
+    //
+    private var mClazz: Class<*>? = null
+
+    /**
+     * 初始化框架
+     */
+    fun init(clazz: Class<*>) {
+        mClazz = clazz
+    }
+
     /**
      * 启动服务
      */
     fun startService(context: Context) {
         // 启动服务
-        Intent(context, WebSocketService::class.java).also { intent ->
+        Intent(context, mClazz).also { intent ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
             } else {
@@ -33,7 +42,7 @@ object WebSocketUtil {
      * 销毁服务
      */
     fun stopService(context: Context) {
-        context.stopService(Intent(context, WebSocketService::class.java))
+        context.stopService(Intent(context, mClazz))
     }
 
     /**
