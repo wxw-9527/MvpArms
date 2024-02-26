@@ -3,7 +3,6 @@ package com.rouxinpai.demo.feature.demo.notice
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.empty.EmptyContract
 import com.rouxinpai.arms.empty.EmptyPresenter
