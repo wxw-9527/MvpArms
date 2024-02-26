@@ -9,7 +9,7 @@
 -keep class com.rouxinpai.arms.update.model.** { <fields>; }
 -keep class com.rouxinpai.arms.barcode.model.** { <fields>; }
 -keep class com.rouxinpai.arms.domain.model.** { <fields>; }
--keep class com.rouxinpai.arms.ws.model.** { <fields>; }
+-keep class com.rouxinpai.arms.message.model.** { <fields>; }
 -keep class com.rouxinpai.arms.print.model.** { <fields>; }
 -keep class com.rouxinpai.arms.dict.model.** { <fields>; }
 

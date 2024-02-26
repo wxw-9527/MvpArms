@@ -90,4 +90,17 @@
     <string name="qr_code_to_nfc__write_successful">标签写入成功</string>
     <string name="qr_code_to_nfc__write_fail">标签写入失败，请重试</string>
     <string name="qr_code_to_nfc__incorrect_barcode_type">条码类型错误，请扫描产品SN</string>
+
+    <!-- 站内信 -->
+    <string name="message_list">站内信</string>
+    <string name="message_list__cancel">取消</string>
+    <string name="message_list__ok">确定</string>
+    <string name="message_list__mark_unread">标为未读</string>
+    <string name="message_list__mark_unread_message">是否将消息标为未读？</string>
+    <string name="message_list__mark_read">标为已读</string>
+    <string name="message_list__mark_read_message">是否将消息标为已读？</string>
+    <!-- 站内信详情 -->
+    <string name="message_detail" />
+    <string name="message_detail__create_time">发送时间：</string>
+    <string name="message_detail__create_by">发送人：</string>
 </resources>

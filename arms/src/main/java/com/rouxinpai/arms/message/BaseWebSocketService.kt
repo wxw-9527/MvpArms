@@ -1,14 +1,14 @@
 @file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
 
-package com.rouxinpai.arms.ws
+package com.rouxinpai.arms.message
 
 import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -16,9 +16,11 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.domain.util.DomainUtils
-import com.rouxinpai.arms.ws.model.ClientMessageEvent
-import com.rouxinpai.arms.ws.model.FunctionEnum
-import com.rouxinpai.arms.ws.util.WebSocketUtil
+import com.rouxinpai.arms.extension.asJsonObjectOrNull
+import com.rouxinpai.arms.extension.asStringOrNull
+import com.rouxinpai.arms.message.model.ClientMessageEvent
+import com.rouxinpai.arms.message.model.FunctionEnum
+import com.rouxinpai.arms.message.model.UnreadCountRefreshEvent
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -120,58 +122,26 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
 
         // 当连接建立成功后，即可在此执行发送消息等操作
         override fun onOpen(webSocket: WebSocket, response: Response) {
-            Timber.tag(SERVICE_NAME).d("------> 成功建立长链接")
             super.onOpen(webSocket, response)
+            onOpen(this@BaseWebSocketService, webSocket, response)
         }
 
         // 接收到服务端发来的消息时，执行对应业务逻辑
         override fun onMessage(webSocket: WebSocket, text: String) {
             super.onMessage(webSocket, text)
-            Timber.tag(SERVICE_NAME).d("------> 收到服务端消息：$text")
-            try {
-                val jsonObject = JsonParser.parseString(text).asJsonObject
-                val modelName = jsonObject.get("modelName").asString
-                val functionName = jsonObject.get("functionName").asString
-                val params = jsonObject.get("params")
-                if (params.isJsonNull) {
-                    Timber.tag(SERVICE_NAME).e("------> params is null")
-                } else {
-                    when (FunctionEnum.fromName(functionName)) {
-                        // 消息中心
-                        FunctionEnum.NOTIFICATION -> {
-                            val title = "通知标题"
-                            val message = "通知内容"
-                            val intent = Intent().apply {
-                                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                action = Intent.ACTION_VIEW
-                                data = Uri.parse("wsscheme://${packageName}/notification")
-                            }
-                            sendNotification(title, message, intent)
-                        }
-                    }
-                }
-            } catch (e: UnsupportedOperationException) {
-                Timber.tag(SERVICE_NAME).e(e)
-            }
+            onMessage(this@BaseWebSocketService, webSocket, text)
         }
 
         // 连接关闭
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-            Timber.tag(SERVICE_NAME).d("------> 连接关闭：code = $code，reason = $reason")
             super.onClosed(webSocket, code, reason)
-            canceled()
+            onClosed(this@BaseWebSocketService, webSocket, code, reason)
         }
 
         // 连接过程中遇到异常时，在此进行相应处理
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-            Timber.e(t, "------> 发生异常，5秒后重连")
             super.onFailure(webSocket, t, response)
-            mDisposable = Single.timer(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _ ->
-                    newWebSocket()
-                }
+            onFailure(this@BaseWebSocketService, webSocket, t, response)
         }
     }
 
@@ -202,22 +172,6 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
             FOREGROUND_CONTENT_TITLE
         )
         startForeground(FOREGROUND_NOTIFICATION_ID, notification)
-    }
-
-    // 创建消息通知
-    protected fun sendNotification(title: String, message: String, intent: Intent) {
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
-        val notification = buildNotification(
-            false,
-            NOTIFICATION_CHANNEL_ID,
-            NOTIFICATION_CHANNEL_NAME,
-            title,
-            message,
-            pendingIntent
-        )
-        val id = UUID.randomUUID().hashCode()
-        NotificationManagerCompat.from(this).notify(id, notification)
     }
 
     /**
@@ -292,5 +246,83 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    /**
+     *
+     */
+    open fun onOpen(context: Context, webSocket: WebSocket, response: Response) {
+        Timber.tag(SERVICE_NAME).d("------> 成功建立长链接")
+    }
+
+    /**
+     *
+     */
+    open fun onMessage(context: Context, webSocket: WebSocket, text: String) {
+        Timber.tag(SERVICE_NAME).d("------> 收到服务端消息：$text")
+        try {
+            val jsonObject = JsonParser.parseString(text).asJsonObject
+            val modelName = jsonObject.get("modelName").asString
+            val functionName = jsonObject.get("functionName").asString
+            val params = jsonObject.get("params").asJsonObjectOrNull
+            if (params == null) {
+                Timber.tag(SERVICE_NAME).e("------> params is null")
+            } else {
+                when (FunctionEnum.fromName(functionName)) {
+                    // 消息中心
+                    FunctionEnum.MESSAGE -> {
+                        // 发送通知
+                        val title = params.get("title").asStringOrNull.orEmpty()
+                        val message = params.get("content").asStringOrNull.orEmpty()
+                        sendNotification(title, message)
+                        // 刷新未读消息数
+                        UnreadCountRefreshEvent.post()
+                    }
+                    else -> Timber.tag(SERVICE_NAME).e("functionName = $functionName，该类型未注册，请联系管理员。")
+                }
+            }
+        } catch (e: UnsupportedOperationException) {
+            Timber.tag(SERVICE_NAME).e(e)
+        }
+    }
+
+    // 创建消息通知
+    open fun sendNotification(title: String, message: String) {
+        val intents = createIntents(this)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
+        val pendingIntent = PendingIntent.getActivities(this, 0, intents, flags)
+        val notification = buildNotification(
+            false,
+            NOTIFICATION_CHANNEL_ID,
+            NOTIFICATION_CHANNEL_NAME,
+            title,
+            message,
+            pendingIntent
+        )
+        val id = UUID.randomUUID().hashCode()
+        NotificationManagerCompat.from(this).notify(id, notification)
+    }
+
+    abstract fun createIntents(context: Context): Array<Intent>
+
+    /**
+     *
+     */
+    open fun onClosed(context: Context, webSocket: WebSocket, code: Int, reason: String) {
+        Timber.tag(SERVICE_NAME).d("------> 连接关闭：code = $code，reason = $reason")
+        canceled()
+    }
+
+    /**
+     *
+     */
+    open fun onFailure(context: Context, webSocket: WebSocket, t: Throwable, response: Response?) {
+        Timber.e(t, "------> 发生异常，5秒后重连")
+        mDisposable = Single.timer(5, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { _ ->
+                newWebSocket()
+            }
     }
 }

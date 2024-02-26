@@ -7,4 +7,6 @@
     <!-- 对话框遮罩层颜色 -->
     <color name="cl_dropdown_button_dialog_mask">@color/black30</color>
     <color name="cl_dropdown_button_selected_item">@color/black10</color>
+    <!-- 消息列表分割线颜色 -->
+    <color name="message_list__divider">#0D000000</color>
 </resources>

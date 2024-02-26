@@ -24,10 +24,10 @@ import java.util.Stack
 abstract class BaseApplication : Application(), IApplication {
 
     // 存放Activity实例的栈
-    private val mActivities = Stack<Activity>()
+    open val activities = Stack<Activity>()
 
     override val topActivity: Activity?
-        get() = mActivities.lastOrNull()
+        get() = activities.lastOrNull()
 
     override fun onCreate() {
         super.onCreate()
@@ -52,7 +52,7 @@ abstract class BaseApplication : Application(), IApplication {
         if (cls.isEmpty()) {
             return
         }
-        mActivities.forEach { activity ->
+        activities.forEach { activity ->
             cls.forEach { javaClass ->
                 if (javaClass == activity.javaClass) {
                     finishActivity(activity)
@@ -62,8 +62,8 @@ abstract class BaseApplication : Application(), IApplication {
     }
 
     override fun finishToActivity(cls: Class<*>) {
-        for (index in mActivities.lastIndex downTo 0) {
-            val activity = mActivities[index]
+        for (index in activities.lastIndex downTo 0) {
+            val activity = activities[index]
             if (cls == activity.javaClass) {
                 return
             }
@@ -72,12 +72,12 @@ abstract class BaseApplication : Application(), IApplication {
     }
 
     override fun finishAllActivities() {
-        mActivities.forEach { activity -> activity.finish() }
+        activities.forEach { activity -> activity.finish() }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         // 第一个Activity的onCreate中初始化Analytics SDK
-        if (mActivities.isEmpty()) {
+        if (activities.isEmpty()) {
             HuaweiUtil.initAnalytics(debug, activity)
         }
         addActivity(activity)
@@ -132,12 +132,12 @@ abstract class BaseApplication : Application(), IApplication {
 
     // Activity入栈
     private fun addActivity(activity: Activity) {
-        mActivities.add(activity)
+        activities.add(activity)
     }
 
     // activity出栈
     private fun removeActivity(activity: Activity) {
-        mActivities.remove(activity)
+        activities.remove(activity)
     }
 
     // 结束指定activity

@@ -8,7 +8,7 @@ import com.rouxinpai.demo.feature.demo.dict.DictActivity
 import com.rouxinpai.demo.feature.demo.dropdown.DropdownActivity
 import com.rouxinpai.demo.feature.demo.filedownload.FileDownloadActivity
 import com.rouxinpai.demo.feature.demo.fragment.FragmentDemoActivity
-import com.rouxinpai.demo.feature.demo.message.MessageDemoActivity
+import com.rouxinpai.demo.feature.demo.notice.MessageDemoActivity
 import com.rouxinpai.demo.feature.demo.openimage.OpenImageActivity
 import com.rouxinpai.demo.feature.demo.pictureselector.PictureSelectorDemoActivity
 import com.rouxinpai.demo.feature.demo.print.PrintDemoActivity

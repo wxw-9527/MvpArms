@@ -223,7 +223,7 @@ object UrlModule : IUrlModule {
 
 #### 1、创建YourWebSocketService类，继承框架提供的`com.rouxinpai.arms.ws.BaseWebSocketService`类
 
-#### 2、在项目的`Application`类中调用`WebSocketUtil.init(YourWebSocketService::class.java)`方法初始化
+#### 2、在项目的`Application`类中调用`MessageUtil.init(YourWebSocketService::class.java)`方法初始化
 
 #### 3、在AndroidManifest.xml文件中<application>标签内添加以下配置
 
@@ -237,40 +237,29 @@ object UrlModule : IUrlModule {
 
 #### 4、注册通知需要启动的页面
 
-```xml
-<activity 
-    android:name="包名.TargetActivity" 
-    android:exported="true"
-    android:launchMode="singleTop" 
-    android:screenOrientation="portrait">
-    
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:host="包名" 
-            android:path="/notification"
-            android:scheme="wsscheme" />
-    </intent-filter>
-</activity>
+```kotlin
+class YourSocketService: BaseWebSocketService() {
+
+    /**
+     * 实现该方法注册通知需要启动的页面，多个Activity按顺序启动，被启动的页面启动模式需要设置为singleTask
+     */
+    override fun createIntents(context: Context): Array<Intent> {
+        return arrayOf(
+            Intent(context, AActivity::class.java),
+            Intent(context, BActivity::class.java),
+            Intent(context, CActivity::class.java),
+        )
+    }
+}
 ```
 
 #### 5、在需要启动服务的地方调用以下方法启动、销毁服务、发送消息
 
 ```kotlin
     // 启动服务
-    WebSocketUtil.startService(context)
+    MessageUtil.startService(context)
     // 销毁服务
-    WebSocketUtil.stopService(context)
+    MessageUtil.stopService(context)
     // 发送消息
-    WebSocketUtil.sendMessageToService(message)
-```
-
-#### 6、在需要接收消息的页面标注@EventBusEnabled注解，并添加以下方法
-
-```kotlin
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: ServiceMessageEvent) {
-        Timber.tag("WebSocket").d("------> 收到消息：${event.json}")
-    }
+    MessageUtil.sendMessageToService(message)
 ```

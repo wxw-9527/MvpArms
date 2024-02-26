@@ -1,11 +1,15 @@
-package com.rouxinpai.demo.feature.demo.message
+package com.rouxinpai.demo.feature.demo.notice
 
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import com.rouxinpai.arms.base.activity.BaseActivity
-import com.rouxinpai.arms.ws.util.WebSocketUtil
+import com.rouxinpai.arms.base.activity.BaseMvpActivity
+import com.rouxinpai.arms.empty.EmptyContract
+import com.rouxinpai.arms.empty.EmptyPresenter
+import com.rouxinpai.arms.message.util.MessageUtil
 import com.rouxinpai.demo.databinding.MessageDemoActivityBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * author : Saxxhw
@@ -13,12 +17,16 @@ import com.rouxinpai.demo.databinding.MessageDemoActivityBinding
  * time   : 2023/9/22 17:22
  * desc   :
  */
-class MessageDemoActivity : BaseActivity<MessageDemoActivityBinding>(), OnClickListener {
+@AndroidEntryPoint
+class MessageDemoActivity :
+    BaseMvpActivity<MessageDemoActivityBinding, EmptyContract.View, EmptyPresenter>(),
+    EmptyContract.View, OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.btnConnect.setOnClickListener(this)
         binding.btnDisconnect.setOnClickListener(this)
+        binding.btnSendMsg.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -31,16 +39,16 @@ class MessageDemoActivity : BaseActivity<MessageDemoActivityBinding>(), OnClickL
 
     private fun onConnectClick() {
         // 启动服务
-        WebSocketUtil.startService(this)
+        MessageUtil.startService(this)
     }
 
     private fun onDisconnectClick() {
         // 销毁服务
-        WebSocketUtil.stopService(this)
+        MessageUtil.stopService(this)
     }
 
     private fun onSendMsgClick() {
         // 发送消息
-        WebSocketUtil.sendMessageToService("message")
+        MessageUtil.sendMessageToService("message")
     }
 }

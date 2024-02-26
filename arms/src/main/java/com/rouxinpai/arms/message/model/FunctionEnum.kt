@@ -1,4 +1,4 @@
-package com.rouxinpai.arms.ws.model
+package com.rouxinpai.arms.message.model
 
 /**
  * author : Saxxhw
@@ -11,15 +11,15 @@ enum class FunctionEnum(val functionName: String) {
     /**
      * 消息通知
      */
-    NOTIFICATION(functionName = "/notification");
+    MESSAGE(functionName = "message");
 
     companion object {
 
         /**
          * 根据名称获取枚举
          */
-        fun fromName(functionName: String): FunctionEnum {
-            return entries.first { functionName == it.functionName }
+        fun fromName(functionName: String): FunctionEnum? {
+            return entries.find { functionName == it.functionName }
         }
     }
 }

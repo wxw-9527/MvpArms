@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".message.feature.MessageDetailActivity">
+
+    <include layout="@layout/include_toolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp"
+        android:textColor="#A6000000"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="丝绸馆的五号控制器" />
+
+    <!-- 发送时间 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/field_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_detail__create_time"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_create_time"
+        app:layout_constraintEnd_toStartOf="@+id/tv_create_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_create_time" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_message"
+        app:layout_constraintTop_toBottomOf="@+id/tv_message"
+        tools:text="2018-03-22 16:12:23" />
+
+    <!-- 发送人 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/field_create_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_detail__create_by"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_create_by"
+        app:layout_constraintEnd_toStartOf="@+id/tv_create_by"
+        app:layout_constraintTop_toTopOf="@+id/tv_create_by" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_create_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_message"
+        app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
+        tools:text="老王" />
+</androidx.constraintlayout.widget.ConstraintLayout>

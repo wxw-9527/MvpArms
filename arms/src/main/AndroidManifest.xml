@@ -81,5 +81,15 @@
             android:label="@string/qr_code_to_nfc"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <!-- 站内信 -->
+        <activity
+            android:name=".message.feature.MessageListActivity"
+            android:label="@string/message_list" />
+
+        <!-- 站内信详情 -->
+        <activity
+            android:name=".message.feature.MessageDetailActivity"
+            android:label="@string/message_detail" />
     </application>
 </manifest>

@@ -2,8 +2,8 @@ package com.rouxinpai.demo.global
 
 import com.rouxinpai.arms.base.application.BaseApplication
 import com.rouxinpai.arms.domain.util.DomainUtils
-import com.rouxinpai.arms.ws.util.WebSocketUtil
-import com.rouxinpai.demo.feature.demo.message.WebSocketService
+import com.rouxinpai.arms.message.util.MessageUtil
+import com.rouxinpai.demo.feature.demo.notice.WebSocketService
 import com.rouxinpai.demo.feature.splash.SplashActivity
 import dagger.hilt.android.HiltAndroidApp
 
@@ -32,7 +32,7 @@ class Application : BaseApplication() {
         super.onCreate()
         instance = this
         // 初始化
-        WebSocketUtil.init(WebSocketService::class.java)
+        MessageUtil.init(WebSocketService::class.java)
     }
 
     override fun onTokenTimeout() {

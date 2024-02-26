@@ -1,10 +1,9 @@
-package com.rouxinpai.arms.ws.util
+package com.rouxinpai.arms.message.util
 
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.rouxinpai.arms.ws.model.ClientMessageEvent
-import com.rouxinpai.arms.ws.model.ServiceMessageEvent
+import com.rouxinpai.arms.message.model.ClientMessageEvent
 
 /**
  * author : Saxxhw
@@ -12,7 +11,7 @@ import com.rouxinpai.arms.ws.model.ServiceMessageEvent
  * time   : 2023/6/29 22:37
  * desc   :
  */
-object WebSocketUtil {
+object MessageUtil {
 
     //
     private var mClazz: Class<*>? = null
@@ -50,12 +49,5 @@ object WebSocketUtil {
      */
     fun sendMessageToService(message: String) {
         ClientMessageEvent.postMessage(message)
-    }
-
-    /**
-     * 发送消息给客户端
-     */
-    internal fun sendMessageToClient(json: String) {
-        ServiceMessageEvent.postMessage(json)
     }
 }
