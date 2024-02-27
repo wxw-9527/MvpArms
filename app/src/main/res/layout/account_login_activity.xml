@@ -48,7 +48,7 @@
             android:background="@drawable/login_round_shape"
             android:hint="@string/login__account"
             android:imeOptions="actionNext"
-            android:text="zhangxing"
+            android:text="xingwang"
             android:theme="@style/Login.EditText"
             app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
 

@@ -19,13 +19,18 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
         binding.btnPrint.setOnClickListener {
             PrintActivity.start(
                 this, listOf(
+                    // 开发环境测试数据
                     "10124011600000001",
                     "10123122100000004",
                     "10123122100000007",
                     "10123122100000005",
                     "10123080900000008",
+                    // 东风预生产环境测试数据
+//                    "10224013000000721",
+//                    "10224013000000583",
+//                    "10224013000000544",
                 ),
-                true
+                false
             )
         }
     }
