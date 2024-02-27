@@ -2,7 +2,6 @@ package com.rouxinpai.arms.print
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -159,55 +158,50 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
 
     override fun sendPrintCommand(
         template: TemplateVO,
-        bitmap: Bitmap,
+        base64List: List<String>,
         copies: Int,
-        direction: DirectionEnum,
-        index: Int,
+        direction: DirectionEnum
     ) {
         thread {
-            for (i in 1..copies) {
-                // 打印机状态异常
-                if (!mPrinter.isStatusNormal()) {
-                    showWarningTipAndDismissProgress(R.string.print__printer_exception)
-                    break
-                }
-                // 获取打印结果
-                val isPrintSuccessful = mPrinter.print(template, direction, bitmap)
-                // 打印成功
-                if (isPrintSuccessful) {
-                    // 最后一份打印完
-                    if (i == copies) {
-                        // 记录打印成功结果
-                        runOnUiThread {
-                            mPrintDataAdapter.getItem(index)?.printSuccess = true
-                            mPrintDataAdapter.notifyItemChanged(index)
-                        }
-                        // 变更下标
-                        mIndex = (index + 1)
-                        // 打印下一条码
-                        if (mIndex < mPrintDataAdapter.itemCount) {
-                            val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
-                            if (barcodeInfo != null) {
-                                presenter.genImage(template, barcodeInfo, copies, direction, mIndex)
+            outer@for (i in base64List.indices) {
+                val bitmap = presenter.base64ToBitmap(base64List[i], template.printWith.toDouble(), direction)
+                for (j in 1..copies) {
+                    // 打印机状态异常
+                    if (!mPrinter.isStatusNormal()) {
+                        showWarningTipAndDismissProgress(R.string.print__printer_exception)
+                        break@outer
+                    }
+                    // 获取打印结果
+                    val isPrintSuccessful = mPrinter.print(template, direction, bitmap)
+                    // 打印成功
+                    if (isPrintSuccessful) {
+                        // 最后一份打印完
+                        if (j == copies) {
+                            // 记录打印成功结果
+                            runOnUiThread {
+                                mPrintDataAdapter.getItem(i)?.printSuccess = true
+                                mPrintDataAdapter.notifyItemChanged(i)
                             }
-                        }
-                        // 全部打印完成
-                        else {
-                            // 展示提示信息
-                            showSuccessTipAndDismissProgress(R.string.print__print_successful)
-                            // 设置返回状态
-                            setResult(RESULT_OK)
-                            if (mIsFinish) {
-                                Handler(Looper.getMainLooper()).postDelayed(500) {
-                                    finish()
+                            // 变更下标
+                            mIndex = (i + 1)
+                            // 全部打印完成
+                            if (mIndex >= mPrintDataAdapter.itemCount) {
+                                // 展示提示信息
+                                showSuccessTipAndDismissProgress(R.string.print__print_successful)
+                                // 设置返回状态
+                                setResult(RESULT_OK)
+                                if (mIsFinish) {
+                                    Handler(Looper.getMainLooper()).postDelayed(500) {
+                                        finish()
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                // 打印失败
-                else {
-                    showWarningTipAndDismissProgress(R.string.print__print_fail)
+                    // 打印失败
+                    else {
+                        showWarningTipAndDismissProgress(R.string.print__print_fail)
+                    }
                 }
             }
         }
@@ -254,7 +248,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 // 生成图片
                 val barcodeInfo = mPrintDataAdapter.getItem(mIndex)?.barcodeInfo
                 if (barcodeInfo != null) {
-                    presenter.genImage(template, barcodeInfo, copies, direction, mIndex)
+                    presenter.genImages(template, mPrintDataAdapter.items.map { it.barcodeInfo }, copies, direction)
                 }
             })
     }

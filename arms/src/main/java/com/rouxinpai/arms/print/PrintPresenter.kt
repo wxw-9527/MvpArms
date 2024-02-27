@@ -22,6 +22,8 @@ import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
 import com.rouxinpai.arms.print.util.PrintUtil
+import io.reactivex.rxjava3.core.Observable
+import okhttp3.RequestBody
 import retrofit2.create
 import javax.inject.Inject
 
@@ -70,53 +72,69 @@ class PrintPresenter @Inject constructor() :
         addDisposable(disposable)
     }
 
-    override fun genImage(
+    override fun genImages(
         template: TemplateVO,
-        barcodeInfo: BarcodeInfoVO,
+        barcodeInfoList: List<BarcodeInfoVO>,
         copies: Int,
-        direction: DirectionEnum,
-        index: Int,
+        direction: DirectionEnum
     ) {
-        val material = barcodeInfo.material
-        val body = JsonObject().apply {
-            addProperty("printTemplateId", template.id)
-            val unit = (DictUtil.getInstance().convertMaterialUnit(material.unit)?.value ?: material.unit)
-            val printDataObject = JsonObject().apply {
-                addProperty("materialName", material.name)
-                addProperty("materialCode", material.code)
-                addProperty("materialColor", material.color)
-                addProperty("materialUnit", unit)
-                addProperty("barCode", barcodeInfo.barcode)
-                addProperty("receivedQuantityUnit", material.quantity.format() + unit)
-                addProperty("batchCode", material.batchCode)
-                addProperty("sn", barcodeInfo.barcode)
-                addProperty("spec", material.spec)
-                addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
-                addProperty("printTime", TimeUtils.getNowString())
-            }
-            add("printDataObject", printDataObject)
-        }.toRequestBody()
-        val disposable = retrofit.create<PrintApi>()
-            .genImage(body = body)
-            .compose(schedulersTransformer())
-            .compose(responseTransformer())
-            .map { data ->
-                val byteArray = Base64.decode(data, Base64.DEFAULT)
-                val originalBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-                val zoomedBitmap = Utils.zoomImage(originalBitmap, template.printWith.toDouble(), 0)
-                val rotatedBitmap = rotateBitmap(zoomedBitmap, direction) // 旋转
-                val binationalBitmap = PrintUtil.getBinationalBitmap(rotatedBitmap) // 二值化
-                binationalBitmap
-            }
-            .subscribeWith(object : DefaultObserver<Bitmap>(view, false) {
+        // 创建请求体的函数
+        fun createRequestBody(barcodeInfo: BarcodeInfoVO): RequestBody {
+            val material = barcodeInfo.material
+            return JsonObject().apply {
+                addProperty("printTemplateId", template.id)
+                val unit = (DictUtil.getInstance().convertMaterialUnit(material.unit)?.value ?: material.unit)
+                val printDataObject = JsonObject().apply {
+                    addProperty("materialName", material.name)
+                    addProperty("materialCode", material.code)
+                    addProperty("materialColor", material.color)
+                    addProperty("materialUnit", unit)
+                    addProperty("barCode", barcodeInfo.barcode)
+                    addProperty("receivedQuantityUnit", material.quantity.format() + unit)
+                    addProperty("batchCode", material.batchCode)
+                    addProperty("sn", barcodeInfo.barcode)
+                    addProperty("spec", material.spec)
+                    addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
+                    addProperty("printTime", TimeUtils.getNowString())
+                }
+                add("printDataObject", printDataObject)
+            }.toRequestBody()
+        }
+        // 发起网络请求并生成图片
+        val base64List = arrayListOf<String>()
+        val observableList = barcodeInfoList.map { barcodeInfo ->
+            val body = createRequestBody(barcodeInfo)
+            retrofit.create<PrintApi>()
+                .genImage(body = body)
+                .compose(schedulersTransformer())
+                .compose(responseTransformer())
+        }
+        val disposable = Observable.concat(observableList)
+            .subscribeWith(object : DefaultObserver<String>(view, false) {
 
-                override fun onData(t: Bitmap) {
+                override fun onData(t: String) {
                     super.onData(t)
-                    // 下发打印指令
-                    view?.sendPrintCommand(template, t, copies, direction, index)
+                    base64List.add(t)
+                }
+
+                override fun onComplete() {
+                    super.onComplete()
+                    view?.sendPrintCommand(template, base64List, copies, direction)
                 }
             })
         addDisposable(disposable)
+    }
+
+    override fun base64ToBitmap(
+        base64: String,
+        newWidth: Double,
+        direction: DirectionEnum
+    ): Bitmap {
+        val byteArray = Base64.decode(base64, Base64.DEFAULT)
+        val originalBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        val zoomedBitmap = Utils.zoomImage(originalBitmap, newWidth, 0)
+        val rotatedBitmap = rotateBitmap(zoomedBitmap, direction) // 旋转
+        return PrintUtil.getBinationalBitmap(rotatedBitmap) // 二值化
     }
 
     /**
