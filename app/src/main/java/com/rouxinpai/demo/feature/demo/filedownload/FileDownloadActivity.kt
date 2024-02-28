@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.os.postDelayed
-import com.blankj.utilcode.util.AppUtils
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.util.DownloadUtil
 import com.rouxinpai.demo.databinding.FileDownloadActivityBinding
@@ -52,15 +51,19 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(),
         mSb.appendLine("======> ${e?.message}")
         binding.tvResult.text = mSb.toString()
         dismissProgress()
+        showWarningTip("下载失败，1秒后重试...")
+        Handler(Looper.getMainLooper()).postDelayed(1000) {
+            binding.btnDownload.performClick()
+        }
     }
 
     override fun onDownloadComplete(file: File) {
         mSb.appendLine("======> 耗时：${(System.currentTimeMillis() - mStartMillis) / 1000L}秒，位置：${file.path}")
         binding.tvResult.text = mSb.toString()
         dismissProgress()
-        Handler(Looper.getMainLooper()).postDelayed(1000L) {
-            AppUtils.installApp(file)
-        }
+//        Handler(Looper.getMainLooper()).postDelayed(1000L) {
+//            AppUtils.installApp(file)
+//        }
     }
 
     override fun onDestroy() {

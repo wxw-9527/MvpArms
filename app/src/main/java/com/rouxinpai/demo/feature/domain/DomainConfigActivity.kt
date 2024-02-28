@@ -31,6 +31,8 @@ class DomainConfigActivity : BaseDomainConfigActivity() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
+        // 填充测试邀请码
+        binding.etInvitationCode.setText("RK8DUI")
         // 测试format()方法
         val list = listOf(0.0f, 0f, 1.0f, 1f, 1.00f, 1.10f, 1.01f, 1.11f, 1.0110f, 1.011f)
         list.forEach {

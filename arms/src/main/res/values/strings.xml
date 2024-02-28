@@ -11,7 +11,8 @@
     <string name="base_domain_config__invitation_code_invalid">邀请码无效</string>
 
     <!-- 版本更新 -->
-    <string name="upgrade__downloading">下载中…</string>
+    <string name="upgrade__preparing">准备下载</string>
+    <string name="upgrade__downloading">下载中 %1$s</string>
     <string name="upgrade__cancel">暂不更新</string>
     <string name="upgrade__start">开始</string>
     <string name="upgrade__download_fail">下载失败：%1$s</string>

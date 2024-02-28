@@ -67,7 +67,9 @@ class DownloadUtil {
             },
             progress = { _, currentOffset, totalLength ->
                 val percent = currentOffset.toFloat() / totalLength.toFloat()
-                listener.onDownloading(percent)
+                if (percent > 0.05f) {
+                    listener.onDownloading(percent)
+                }
             },
             taskEnd = { task, cause, realCause, _ ->
                 val file = task.file
