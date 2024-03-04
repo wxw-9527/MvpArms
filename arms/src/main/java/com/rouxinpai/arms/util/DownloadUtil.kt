@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.util
 
 import android.content.Context
+import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.PathUtils
 import com.rouxinpai.arms.model.schedulersTransformer
 import dagger.hilt.EntryPoint
@@ -43,7 +44,7 @@ class DownloadUtil {
             }
 
         // 文件存储路径
-        private val PATH = PathUtils.getExternalAppFilesPath() + File.separator + "download"
+        private val PATH = PathUtils.getExternalAppFilesPath() + File.separator + "download" + File.separator
     }
 
     private var mRetrofit: Retrofit? = null
@@ -54,6 +55,12 @@ class DownloadUtil {
      * 初始化
      */
     fun init(context: Context) {
+        // 判断目录是否存在，不存在则判断是否创建成功
+        val createDir = FileUtils.createOrExistsDir(PATH)
+        if (createDir) {
+            Timber.tag("DownloadUtil").d("目录创建成功")
+        }
+        //
         mRetrofit = EntryPointAccessors.fromApplication<NetworkProviderEntryPoint>(context)
             .retrofit()
     }
@@ -73,7 +80,7 @@ class DownloadUtil {
             ?.subscribe(
                 { responseBody ->
                     // 创建一个文件
-                    val file = File(PATH + File.separator + fileName)
+                    val file = File(PATH + fileName)
                     val writtenToDisk = writeResponseBodyToDisk(responseBody, file)
                     Timber.tag("DownloadUtil").d("File download was a success? $writtenToDisk")
                     if (writtenToDisk && file.isFile && file.exists()) {
