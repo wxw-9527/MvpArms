@@ -2,11 +2,22 @@ package com.rouxinpai.arms.util
 
 import android.content.Context
 import com.blankj.utilcode.util.PathUtils
-import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.OkDownload
-import com.liulishuo.okdownload.core.cause.EndCause
-import com.liulishuo.okdownload.core.file.CustomProcessFileStrategy
-import com.liulishuo.okdownload.kotlin.enqueue1
+import com.rouxinpai.arms.model.schedulersTransformer
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import okhttp3.ResponseBody
+import okio.buffer
+import okio.sink
+import retrofit2.Retrofit
+import retrofit2.create
+import retrofit2.http.GET
+import retrofit2.http.Streaming
+import retrofit2.http.Url
+import timber.log.Timber
 import java.io.File
 
 /**
@@ -35,18 +46,16 @@ class DownloadUtil {
         private val PATH = PathUtils.getExternalAppFilesPath() + File.separator + "download"
     }
 
-    // 下载任务
-    private var mDownloadTask: DownloadTask? = null
+    private var mRetrofit: Retrofit? = null
+
+    private var mDisposable: Disposable? = null
 
     /**
      * 初始化
      */
     fun init(context: Context) {
-        val okDownload = OkDownload
-            .Builder(context)
-            .processFileStrategy(CustomProcessFileStrategy()) // 修复Android10下载失败的问题
-            .build()
-        OkDownload.setSingletonInstance(okDownload)
+        mRetrofit = EntryPointAccessors.fromApplication<NetworkProviderEntryPoint>(context)
+            .retrofit()
     }
 
     /**
@@ -57,40 +66,64 @@ class DownloadUtil {
         fileName: String,
         listener: OnDownloadListener,
     ) {
-        mDownloadTask = DownloadTask
-            .Builder(url, PATH, fileName)
-            .setPassIfAlreadyCompleted(false)
-            .build()
-        mDownloadTask?.enqueue1(
-            taskStart = { _, _ ->
-                listener.onDownloadStart()
-            },
-            progress = { _, currentOffset, totalLength ->
-                val percent = currentOffset.toFloat() / totalLength.toFloat()
-                if (percent > 0.05f) {
-                    listener.onDownloading(percent)
+        listener.onDownloadStart()
+        mDisposable = mRetrofit?.create<DownloadService>()
+            ?.downloadFile(url)
+            ?.compose(schedulersTransformer())
+            ?.subscribe(
+                { responseBody ->
+                    // 创建一个文件
+                    val file = File(PATH + File.separator + fileName)
+                    val writtenToDisk = writeResponseBodyToDisk(responseBody, file)
+                    Timber.tag("DownloadUtil").d("File download was a success? $writtenToDisk")
+                    if (writtenToDisk && file.isFile && file.exists()) {
+                        listener.onDownloadComplete(file)
+                    } else {
+                        listener.onDownloadFail(Exception("文件下载失败"))
+                    }
+                },
+                { e ->
+                    Timber.tag("DownloadUtil").e(e)
+                    listener.onDownloadFail(Exception(e))
                 }
-            },
-            taskEnd = { task, cause, realCause, _ ->
-                val file = task.file
-                if (cause == EndCause.COMPLETED && file != null && file.exists()) {
-                    listener.onDownloadComplete(file)
-                } else {
-                    listener.onDownloadFail(realCause)
-                }
+            )
+    }
+
+    private fun writeResponseBodyToDisk(body: ResponseBody, file: File): Boolean {
+        return try {
+            // 使用OKio的sink和buffer方法来写文件
+            file.sink().buffer().use { sink ->
+                sink.writeAll(body.source())
             }
-        )
+            true
+        } catch (e: Exception) {
+            Timber.tag("DownloadUtil").e(e)
+            false
+        }
     }
 
     fun onDestroy() {
-        mDownloadTask?.cancel()
-        mDownloadTask = null
+        //
+        mDisposable?.dispose()
+        mDisposable = null
     }
 
     interface OnDownloadListener {
         fun onDownloadStart()
-        fun onDownloading(percent: Float)
         fun onDownloadFail(e: Exception?)
         fun onDownloadComplete(file: File)
+    }
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface NetworkProviderEntryPoint {
+        fun retrofit(): Retrofit
+    }
+
+    interface DownloadService {
+
+        @Streaming
+        @GET
+        fun downloadFile(@Url fileUrl: String): Observable<ResponseBody>
     }
 }

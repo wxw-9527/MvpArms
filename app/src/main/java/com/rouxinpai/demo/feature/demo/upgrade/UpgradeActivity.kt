@@ -22,7 +22,7 @@ class UpgradeActivity :
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         binding.btnCheckVersion.setOnClickListener {
-            presenter.getUpdateInfo(ClientTypeEnum.ANDROID, ClientNameEnum.DM, "dongFeng")
+            presenter.getUpdateInfo(ClientTypeEnum.ANDROID, ClientNameEnum.WMS, "zkyc")
         }
     }
 

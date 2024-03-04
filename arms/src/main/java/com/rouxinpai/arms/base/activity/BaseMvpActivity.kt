@@ -8,9 +8,6 @@ import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.core.os.postDelayed
 import androidx.viewbinding.ViewBinding
 import com.blankj.utilcode.util.AppUtils
 import com.chad.library.adapter4.QuickAdapterHelper
@@ -24,7 +21,6 @@ import com.rouxinpai.arms.base.presenter.IPresenter
 import com.rouxinpai.arms.base.view.ILoadMore
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.LoadMoreDelegate
-import com.rouxinpai.arms.extension.percentage
 import com.rouxinpai.arms.update.model.UpdateInfo
 import com.rouxinpai.arms.nfc.util.NfcUtil
 import com.rouxinpai.arms.util.DownloadUtil
@@ -42,17 +38,8 @@ import javax.inject.Inject
 abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     BaseActivity<VB>(), ILoadMore {
 
-    companion object {
-
-        // 最大重试次数
-        private const val MAX_RETRY_COUNT = 3
-    }
-
     @Inject
     lateinit var presenter: P
-
-    // 文件下载失败重试次数
-    private var mRetryCount = 1
 
     // 是否使用条码解析
     private var mBarcodeScanningReceiverEnabled: Boolean = false
@@ -172,26 +159,15 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
             .startDownload(url, "update.apk", object : DownloadUtil.OnDownloadListener {
 
                 override fun onDownloadStart() {
-                    WaitDialog.show(R.string.upgrade__preparing)
-                }
-
-                override fun onDownloading(percent: Float) {
-                    WaitDialog.show(percent.percentage(0), percent)
+                    WaitDialog.show(R.string.upgrade__downloading)
                 }
 
                 override fun onDownloadFail(e: Exception?) {
-                    if (mRetryCount <= MAX_RETRY_COUNT) {
-                        mRetryCount++
-                        Handler(Looper.getMainLooper()).postDelayed(1000) { startDownload(url) } // 1秒后重试
-                    } else {
-                        mRetryCount = 1
-                        WaitDialog.dismiss()
-                        showWarningTip(getString(R.string.upgrade__download_fail, e?.message))
-                    }
+                    WaitDialog.dismiss()
+                    showWarningTip(getString(R.string.upgrade__download_fail, e?.message))
                 }
 
                 override fun onDownloadComplete(file: File) {
-                    mRetryCount = 1
                     WaitDialog.dismiss()
                     AppUtils.installApp(file)
                 }

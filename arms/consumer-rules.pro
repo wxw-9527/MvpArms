@@ -23,6 +23,3 @@
 -keep interface com.huawei.hms.analytics.type.HAEventType{*;}
 -keep interface com.huawei.hms.analytics.type.HAParamType{*;}
 -keepattributes Exceptions, Signature, InnerClasses, SourceFile, LineNumberTable
-
-# okdownload：https://github.com/lingochamp/okdownload
--keepnames class com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection

@@ -42,11 +42,6 @@ class FileDownloadActivity : BaseActivity<FileDownloadActivityBinding>(),
         showProgress()
     }
 
-    override fun onDownloading(percent: Float) {
-        mSb.appendLine("======> 下载中，已下载${percent * 100}%")
-        binding.tvResult.text = mSb.toString()
-    }
-
     override fun onDownloadFail(e: Exception?) {
         mSb.appendLine("======> ${e?.message}")
         binding.tvResult.text = mSb.toString()

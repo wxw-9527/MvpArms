@@ -101,11 +101,6 @@ dependencies {
     api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta8'
     api 'com.github.kongzue.DialogXSample:DatePicker:0.0.12'
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.12'
-    // 文件下载
-    implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
-    implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
-    implementation 'com.liulishuo.okdownload:filedownloader:1.0.7'
-    implementation 'com.liulishuo.okdownload:ktx:1.0.7'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器
@@ -136,7 +131,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.7.9.01'
+                version = '2.7.9.02'
             }
         }
     }
