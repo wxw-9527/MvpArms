@@ -16,6 +16,16 @@ enum class BarTypeEnum(val barType: Int) {
     UNKNOWN(-1),
 
     /**
+     * 旧-物料编码
+     */
+    OLD_MATERIAL_SN(1), // TODO: 为了兼容新旧版本，下一版本删除
+
+    /**
+     * 旧-库位编码
+     */
+    OLD_WAREHOUSE_SN(14), // TODO: 为了兼容新旧版本，下一版本删除
+
+    /**
      * 成品序列号
      */
     FINISHED_PRODUCT_SN(10),
@@ -61,6 +71,7 @@ enum class BarTypeEnum(val barType: Int) {
          * 包含所有成品和原材料相关的条码类型的列表。
          */
         val materialEnumList = listOf(
+            OLD_MATERIAL_SN,
             FINISHED_PRODUCT_SN,
             FINISHED_PRODUCT_BATCH,
             FINISHED_PRODUCT_CHILD_BATCH,
@@ -71,6 +82,6 @@ enum class BarTypeEnum(val barType: Int) {
         /**
          * 包含所有仓库序列号相关的条码类型的列表。
          */
-        val warehouseEnumList = listOf(WAREHOUSE_SN)
+        val warehouseEnumList = listOf(OLD_WAREHOUSE_SN, WAREHOUSE_SN)
     }
 }
