@@ -51,6 +51,7 @@
     <string name="print_config__ok">打印</string>
     <string name="print_config__hcctg">华辰联创</string>
     <string name="print_config__hrpt">汉印</string>
+    <string name="print_config__ibowlder">鹏研科技</string>
 
     <!-- 连接便携式打印机 -->
     <string name="connect_portable_printer">连接打印机</string>

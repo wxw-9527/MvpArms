@@ -16,6 +16,7 @@ object PrinterFactory {
         return when (brandEnum) {
             HCCTG -> HcctgPrinter.getInstance()
             HPRT -> HrptPrinter.getInstance()
+            IBOWLDER -> IBowlderPrinter.getInstance()
         }
     }
 }

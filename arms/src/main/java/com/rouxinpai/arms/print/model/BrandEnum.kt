@@ -19,7 +19,12 @@ enum class BrandEnum(val brand: String, @StringRes val brandNameResId: Int) {
     /**
      * 汉印
      */
-    HPRT("hrpt", R.string.print_config__hrpt);
+    HPRT("hrpt", R.string.print_config__hrpt),
+
+    /**
+     * 鹏研科技
+     */
+    IBOWLDER("ibowlder", R.string.print_config__ibowlder);
 
     companion object {
 

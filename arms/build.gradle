@@ -108,9 +108,11 @@ dependencies {
     // 图片查看库
     implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.2.0'
     // 蓝牙打印机
-    implementation files('libs/HCCTG_printersdkv5.7.0.jar')
-    implementation files('libs/HPRT_CPCL_SDK_V1.22.01.jar')
-    implementation files('libs/HPRT_lzo_V1.0.jar')
+    implementation files('libs/HCCTG_printersdkv5.7.0.jar') // 华晨联创
+    implementation files('libs/HPRT_CPCL_SDK_V1.22.01.jar') // 汉印
+    implementation files('libs/HPRT_lzo_V1.0.jar') // 汉印
+    implementation files('libs/IBOWLDER_fat-generic-cpcl-bluetooth-classic-0.1.16-GA.jar') // 鹏研科技
+    implementation files('libs/IBOWLDER_fat-psdk-patch-0.1.16-GA.jar') // 鹏研科技
     // 华为
     implementation 'com.huawei.agconnect:agconnect-core:1.9.1.301'
     implementation 'com.huawei.agconnect:agconnect-crash:1.9.1.301'
