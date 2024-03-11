@@ -98,7 +98,7 @@ class UnreadMessagesCountImageView @JvmOverloads constructor(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: UnreadCountRefreshEvent) {
+    fun onMessageEvent(@Suppress("UNUSED_PARAMETER") event: UnreadCountRefreshEvent) {
         refreshUnreadMessagesCount()
     }
 

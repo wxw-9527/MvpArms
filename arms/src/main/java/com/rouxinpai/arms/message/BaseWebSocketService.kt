@@ -262,7 +262,7 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
         Timber.tag(SERVICE_NAME).d("------> 收到服务端消息：$text")
         try {
             val jsonObject = JsonParser.parseString(text).asJsonObject
-            val modelName = jsonObject.get("modelName").asString
+            // val modelName = jsonObject.get("modelName").asString
             val functionName = jsonObject.get("functionName").asString
             val params = jsonObject.get("params").asJsonObjectOrNull
             if (params == null) {

@@ -140,7 +140,7 @@ class PrintConfigDialog(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onConnectedEvent(event: ConnectedEvent) {
+    fun onConnectedEvent(@Suppress("UNUSED_PARAMETER") event: ConnectedEvent) {
         showConnectedBluetoothDevice()
     }
 

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.rouxinpai.arms.print
 
 import android.Manifest
