@@ -271,3 +271,6 @@ class YourSocketService: BaseWebSocketService() {
 | 华辰联创 |                                                                                                    HCCTG_printersdkv5.7.0.jar                                                                                                     |  |
 | 汉印 |                                                                                           HPRT_CPCL_SDK_V1.22.01.jar、HPRT_lzo_V1.0.jar                                                                                            | libLZO.so |
 | 鹏研科技 | IBOWLDER_fat-generic-cpcl-bluetooth-classic-0.1.16-GA.jar、IBOWLDER_fat-psdk-patch-0.1.16-GA.jar | libpsdkextj.so |
+
+### 十、双击退出程序
+在需要双击退出程序的页面增加`@DoubleBackToExitEnabled`注解

@@ -2,11 +2,16 @@ package com.rouxinpai.arms.base.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.postDelayed
 import androidx.viewbinding.ViewBinding
 import com.rouxinpai.arms.R
+import com.rouxinpai.arms.annotation.DoubleBackToExitEnabled
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
@@ -31,6 +36,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
     // 代理类实例，用于协助处理 IView 接口中定义的各种方法。
     private lateinit var mViewDelegate: ViewDelegate
 
+    // 双击退出程序标志
+    private var mDoubleBackToExitPressedOnce = false
+
     /**
      * 缺省页内容视图
      */
@@ -48,6 +56,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         initToolbar()
         mViewDelegate = ViewDelegate(this, stateLayout, this)
         onInit(savedInstanceState)
+        // 检查是否启用双击退出程序功能
+        val doubleBackToExitEnabled = javaClass.isAnnotationPresent(DoubleBackToExitEnabled::class.java)
+        if (doubleBackToExitEnabled) {
+            onBackPressedDispatcher.addCallback(this, mDoubleBackToExitCallback)
+        }
     }
 
     override fun onStart() {
@@ -74,6 +87,22 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         super.onNewIntent(intent)
         if (intent != null) {
             onParseData(intent)
+        }
+    }
+
+    // 处理双击退出程序的回调
+    private val mDoubleBackToExitCallback = object : OnBackPressedCallback(true) {
+
+        override fun handleOnBackPressed() {
+            if (mDoubleBackToExitPressedOnce) {
+                finish()
+            } else {
+                mDoubleBackToExitPressedOnce = true
+                showSuccessTip(R.string.press_back_again_to_exit)
+                Handler(Looper.getMainLooper()).postDelayed(2000) {
+                    mDoubleBackToExitPressedOnce = false
+                }
+            }
         }
     }
 

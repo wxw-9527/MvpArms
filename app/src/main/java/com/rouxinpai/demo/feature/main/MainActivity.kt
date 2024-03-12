@@ -8,6 +8,7 @@ import android.view.View
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
+import com.rouxinpai.arms.annotation.DoubleBackToExitEnabled
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
 import com.rouxinpai.demo.databinding.MainActivityBinding
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 @BarcodeScanningReceiverEnabled
+@DoubleBackToExitEnabled
 class MainActivity : BaseActivity<MainActivityBinding>(), BaseQuickAdapter.OnItemClickListener<MenuEnum> {
 
     companion object {
