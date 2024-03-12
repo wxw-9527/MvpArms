@@ -3,24 +3,17 @@
 package com.rouxinpai.arms.message
 
 import android.app.IntentService
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.rouxinpai.arms.R
 import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.extension.asJsonObjectOrNull
 import com.rouxinpai.arms.extension.asStringOrNull
 import com.rouxinpai.arms.message.model.ClientMessageEvent
 import com.rouxinpai.arms.message.model.FunctionEnum
 import com.rouxinpai.arms.message.model.UnreadCountRefreshEvent
+import com.rouxinpai.arms.message.util.NotificationUtil
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -35,7 +28,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -61,7 +53,6 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
 
         // WebSocket相关
         private const val WS_URL = "websocket"
-        private const val WS_HEADER_NAME = "Sec-WebSocket-Protocol"
         private const val WS_CLOSE = 1000 // 断开连接
 
         // 消息通知相关
@@ -84,6 +75,26 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
     private var mDisposable: Disposable? = null
 
     /**
+     * 前台通知渠道ID
+     */
+    open val foregroundChannelId = FOREGROUND_CHANNEL_ID
+
+    /**
+     * 前台通知渠道名称
+     */
+    open val foregroundChannelName = FOREGROUND_CHANNEL_NAME
+
+    /**
+     * 前台通知标题
+     */
+    open val foregroundContentTitle = FOREGROUND_CONTENT_TITLE
+
+    /**
+     * 前台通知ID
+     */
+    open val foregroundNotificationId = FOREGROUND_NOTIFICATION_ID
+
+    /**
      * 首次创建服务时，系统会（在调用 onStartCommand() 或 onBind() 之前）调用此方法来执行一次性设置程序。
      * 如果服务已在运行，则不会调用此方法。
      */
@@ -96,6 +107,7 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
         newWebSocket()
     }
 
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: ClientMessageEvent) {
         mWebSocket?.send(event.message)
@@ -103,10 +115,13 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
 
     // 建立长链接
     private fun newWebSocket() {
-        val mWebSocketRequest: Request = Request.Builder()
-            .url("${DomainUtils.getDomain()}$WS_URL?token=${DomainUtils.getAccessToken().orEmpty()}")
+        val domain = DomainUtils.getDomain()
+        val accessToken = DomainUtils.getAccessToken().orEmpty()
+        val url = String.format("%s%s?token=%s", domain, WS_URL, accessToken)
+        val webSocketRequest = Request.Builder()
+            .url(url)
             .build()
-        mWebSocket = okHttpClient.newWebSocket(mWebSocketRequest, mWebSocketListener)
+        mWebSocket = okHttpClient.newWebSocket(webSocketRequest, mWebSocketListener)
     }
 
     // 关闭长链接
@@ -165,13 +180,8 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
 
     // 创建前台服务常驻通知
     private fun createForegroundNotification() {
-        val notification = buildNotification(
-            true,
-            FOREGROUND_CHANNEL_ID,
-            FOREGROUND_CHANNEL_NAME,
-            FOREGROUND_CONTENT_TITLE
-        )
-        startForeground(FOREGROUND_NOTIFICATION_ID, notification)
+        val notification = NotificationUtil.buildNotification(this, true, foregroundChannelId, foregroundChannelName, foregroundContentTitle)
+        startForeground(foregroundNotificationId, notification)
     }
 
     /**
@@ -196,56 +206,6 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
         // 释放资源
         mDisposable?.dispose()
         mDisposable = null
-    }
-
-    /**
-     * 创建通知
-     */
-    private fun buildNotification(
-        isForeground: Boolean,
-        channelId: String,
-        channelName: String,
-        contentTitle: String,
-        contentText: String? = null,
-        intent: PendingIntent? = null
-    ): Notification {
-        // 创建通知渠道
-        createNotificationChannel(isForeground, channelId, channelName)
-        // 创建通知
-        val notification = NotificationCompat.Builder(this, channelId)
-            .apply {
-                setSmallIcon(R.drawable.ic_notifications)
-                setContentTitle(contentTitle)
-                if (contentText != null) {
-                    setContentText(contentText)
-                }
-                if (intent != null) {
-                    setContentIntent(intent)
-                }
-                setSilent(isForeground)
-                if (!isForeground) {
-                    priority = NotificationCompat.PRIORITY_DEFAULT
-                    setAutoCancel(true)
-                }
-            }.build()
-        return notification
-    }
-
-    /**
-     * 创建通知渠道
-     */
-    private fun createNotificationChannel(
-        isForeground: Boolean,
-        channelId: String,
-        channelName: String
-    ) {
-        // 8.0 以上需要特殊处理
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = if (isForeground) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(channelId, channelName, importance)
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
     }
 
     /**
@@ -289,18 +249,9 @@ abstract class BaseWebSocketService : IntentService(SERVICE_NAME) {
     // 创建消息通知
     open fun sendNotification(title: String, message: String) {
         val intents = createIntents(this)
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_ONE_SHOT
-        val pendingIntent = PendingIntent.getActivities(this, 0, intents, flags)
-        val notification = buildNotification(
-            false,
-            NOTIFICATION_CHANNEL_ID,
-            NOTIFICATION_CHANNEL_NAME,
-            title,
-            message,
-            pendingIntent
-        )
-        val id = UUID.randomUUID().hashCode()
-        NotificationManagerCompat.from(this).notify(id, notification)
+        val pendingIntent = NotificationUtil.buildPendingIntent(this, intents)
+        val notification = NotificationUtil.buildNotification(this, false, NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, title, message, pendingIntent)
+        NotificationUtil.sendNotification(this, notification)
     }
 
     abstract fun createIntents(context: Context): Array<Intent>

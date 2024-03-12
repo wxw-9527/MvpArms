@@ -7,6 +7,7 @@ package com.rouxinpai.arms.barcode.model
  * desc   :
  */
 data class MaterialStockDetailDTO(
+    val id: String,
     val barCode: String,
     val materialId: String,
     val materialCode: String,

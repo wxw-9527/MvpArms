@@ -84,7 +84,7 @@ dependencies {
     // 日志打印
     api 'com.jakewharton.timber:timber:5.0.1'
     // 权限
-    api 'com.github.permissions-dispatcher:ktx:1.1.4'
+    api 'com.github.getActivity:XXPermissions:18.6'
     // RecyclerView相关
     api 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4'
     api 'com.github.fondesa:recycler-view-divider:3.6.0'
@@ -133,7 +133,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.8.0.00'
+                version = '2.8.1.00'
             }
         }
     }

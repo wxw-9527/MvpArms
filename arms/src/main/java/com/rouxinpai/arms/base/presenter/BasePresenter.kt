@@ -7,6 +7,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
+import com.rouxinpai.arms.barcode.model.BillTypeEnum
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.di.qualifier.GetUpgradeUrl
 import com.rouxinpai.arms.dict.api.DictApi
@@ -194,12 +195,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         val jsonObject = JsonObject().apply {
             addProperty("barCode", barcode)
             add("billTypes", JsonArray().apply {
-                add("quantity") // 库存数量
-                add("quality") // 质检信息
-                add("inboundNo") // 入库单信息
-                add("supplierCode") // 供应商信息
-                add("color") // 物料颜色
-                add("sn") // sn
+                BillTypeEnum.entries.forEach { add(it.billTypeCode) }
             })
         }
         return jsonObject.toRequestBody()

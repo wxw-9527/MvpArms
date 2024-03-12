@@ -10,9 +10,8 @@ import com.google.gson.JsonObject
 import com.printer.sdk.utils.Utils
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
+import com.rouxinpai.arms.barcode.model.BillTypeEnum
 import com.rouxinpai.arms.base.presenter.BasePresenter
-import com.rouxinpai.arms.dict.util.DictUtil
-import com.rouxinpai.arms.extension.format
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
@@ -47,12 +46,7 @@ class PrintPresenter @Inject constructor() :
             val barCodes = JsonArray().apply { barcodeList.forEach { barcode -> add(barcode) } }
             add("barCodes", barCodes)
             add("billTypes", JsonArray().apply {
-                add("quantity") // 库存数量
-                add("quality") // 质检信息
-                add("inboundNo") // 入库单信息
-                add("supplierCode") // 供应商信息
-                add("color") // 物料颜色
-                add("sn") // sn
+                BillTypeEnum.entries.forEach { add(it.billTypeCode) }
             })
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
@@ -83,21 +77,23 @@ class PrintPresenter @Inject constructor() :
             val material = barcodeInfo.material
             return JsonObject().apply {
                 addProperty("printTemplateId", template.id)
-                val unit = (DictUtil.getInstance().convertMaterialUnit(material.unit)?.value ?: material.unit)
                 val printDataObject = JsonObject().apply {
-                    addProperty("materialName", material.name)
-                    addProperty("materialCode", material.code)
-                    addProperty("materialColor", material.color)
-                    addProperty("materialUnit", unit)
-                    addProperty("barCode", barcodeInfo.barcode)
-                    addProperty("receivedQuantityUnit", material.quantity.format() + unit)
-                    addProperty("batchCode", material.batchCode)
+                    template.sourceKeyList.forEach { // batch_code、material_code、warehouse_code、purchase_code、conformity_count
+                        addProperty(it, barcodeInfo.barContextDataMap[it])
+                    }
                     addProperty("sn", barcodeInfo.barcode)
+                    addProperty("barCode", barcodeInfo.barcode)
+                    addProperty("materialCode", material.code)
+                    addProperty("materialName", material.name)
+                    addProperty("materialUnit", material.unit)
                     addProperty("spec", material.spec)
+                    addProperty("materialColor", barcodeInfo.bomVO?.color)
+                    barcodeInfo.material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.toString() + material.unit) }
                     addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
                     addProperty("printTime", TimeUtils.getNowString())
+                    addProperty("warehouseName", barcodeInfo.material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，"))
                 }
-                add("printDataObject", printDataObject)
+                add("printDataObject", printDataObject) // 排产数量(template_arrange_number)、排产批次号(template_arrange_batch_num)字段暂无
             }.toRequestBody()
         }
         // 发起网络请求并生成图片

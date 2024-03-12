@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.8.0.00'
+    implementation 'com.github.wxw-9527:MvpArms:2.8.1.00'
 }
 ```
 
@@ -83,6 +83,7 @@ dependencies {
  */
 fun getUpdateInfo(clientType: String = "android", clientName: String, channel: String)
 ```
+
 #### 2、在需要检测新版本的页面调用以下方法
 
 ```kotlin
@@ -101,6 +102,7 @@ override fun onDestroy() {
 #### 2、实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
 
 #### 3、高阶使用
+
 1) 覆写Activity或Fragment中`的onBarcodeEvent(event: BarcodeEvent)`方法可自行处理条码内容
 2) 覆写Presenter中的`getBarcodeInfo(barcode: String)`方法可自行处理条码解析方法
 3) 覆写Presenter中的`handleBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法可自行处理条码上下文数据
@@ -171,7 +173,6 @@ HuaweiUtil.setUserId(userId)
 #### 1、继承BaseSplashActivity创建SplashActivity页
 
 ```xml
-
 <activity 
     android:name="包名.SplashActivity"
     android:configChanges="keyboardHidden|screenSize|orientation"
@@ -187,7 +188,6 @@ HuaweiUtil.setUserId(userId)
 #### 2、继承BaseDomainActivity创建DomainConfigActivity页
 
 ```xml
-
 <activity 
     android:name=".main.DomainConfigActivity"
     android:configChanges="keyboardHidden|screenSize|orientation"
@@ -266,11 +266,21 @@ class YourSocketService: BaseWebSocketService() {
 
 ### 九、打印机品牌、SDK、so包关联关系
 
-|  品牌  |                                                                                                                SDK                                                                                                                |                so |
-|:--------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------:|
-| 华辰联创 |                                                                                                    HCCTG_printersdkv5.7.0.jar                                                                                                     |  |
-| 汉印 |                                                                                           HPRT_CPCL_SDK_V1.22.01.jar、HPRT_lzo_V1.0.jar                                                                                            | libLZO.so |
+| 品牌   | SDK                                                                                             | so             |
+|:----:|:-----------------------------------------------------------------------------------------------:|:--------------:|
+| 华辰联创 | HCCTG_printersdkv5.7.0.jar                                                                      |                |
+| 汉印   | HPRT_CPCL_SDK_V1.22.01.jar、HPRT_lzo_V1.0.jar                                                    | libLZO.so      |
 | 鹏研科技 | IBOWLDER_fat-generic-cpcl-bluetooth-classic-0.1.16-GA.jar、IBOWLDER_fat-psdk-patch-0.1.16-GA.jar | libpsdkextj.so |
 
 ### 十、双击退出程序
+
 在需要双击退出程序的页面增加`@DoubleBackToExitEnabled`注解
+
+### 十一、权限管理框架
+
+- 如果项目是基于 **AndroidX** 包，请在项目 `gradle.properties` 文件中加入
+  
+  ```groovy
+  # 表示将第三方库迁移到 AndroidX
+  android.enableJetifier = true
+  ```

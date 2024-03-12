@@ -11,4 +11,5 @@ data class TemplateDTO(
     val name: String,
     val mediaSizeWidth: Float,
     val mediaSizeHeight: Float,
+    val data: String
 )

@@ -1,5 +1,7 @@
 package com.rouxinpai.arms.barcode.model
 
+import com.rouxinpai.arms.dict.util.DictUtil
+
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
@@ -7,11 +9,14 @@ package com.rouxinpai.arms.barcode.model
  * desc   :
  */
 data class BarcodeInfoVO(
+    val contextId: String,
+    val batchCode: String,
     val barcode: String,
+    val uniqueIdent: String,
     val barTypeEnum: BarTypeEnum,
-    val purchaseOrderNo: String,
-    val inboundNo: String,
-    val qcTaskNo: String,
+    val snList: List<String>,
+    val barContextDataMap: Map<String, String>,
+    val bomVO: BomVO?,
 ) {
 
     companion object {
@@ -20,62 +25,39 @@ data class BarcodeInfoVO(
          *
          */
         fun convertFromDTO(dto: BarcodeInfoDTO): BarcodeInfoVO {
-            var purchaseOrderNo = ""
-            var inboundNo = ""
-            var quality = ""
-            var inboundOrderDetailId = ""
-            var batchCode: String? = null
-            var bomCode: String? = null
-            var quantity = 0f
-            var color = ""
-            val snList = arrayListOf<String>()
-            dto.barContextDataList?.forEach {
-                when (it.billTypeCode) {
-                    "purchaseOrderNo" -> purchaseOrderNo = it.billCode
-                    "inboundNo" -> inboundNo = it.billCode
-                    "quality" -> quality = it.billCode
-                    "inboundOrderDetailId" -> inboundOrderDetailId = it.billCode
-                    "batchCode" -> batchCode = it.billCode
-                    "bomCode" -> bomCode = it.billCode
-                    "quantity" -> quantity = it.billCode.toFloat()
-                    "color" -> color = it.billCode
-                    "sn" -> snList.add(it.billCode)
-                }
-            }
+            val snList = dto.barContextDataList
+                ?.filter { it.billTypeCode == BillTypeEnum.SN.billTypeCode }
+                ?.map { it.billCode }
+                ?.toMutableList() ?: mutableListOf()
+            val map = dto.barContextDataList
+                ?.filter { it.billTypeCode != BillTypeEnum.SN.billTypeCode }
+                ?.associateBy({ it.billTypeCode }, { it.billCode })
+                ?.toMutableMap() ?: mutableMapOf()
             return BarcodeInfoVO(
+                contextId = dto.contextId,
+                batchCode = dto.batchCode,
                 barcode = dto.barCode,
+                uniqueIdent = dto.uniqueIdent,
                 barTypeEnum = BarTypeEnum.getBarTypeEnum(dto.barType),
-                purchaseOrderNo = purchaseOrderNo,
-                inboundNo = inboundNo,
-                qcTaskNo = quality,
+                snList = snList,
+                barContextDataMap = map,
+                bomVO = dto.bomList?.firstOrNull()?.let { BomVO.fromDto(it) },
             ).apply {
                 when {
+                    // 物料条码
                     isMaterialBarcode -> {
+                        val unit = dto.materialInfo.materialUnit
                         material = MaterialInfoVO(
-                            inboundOrderDetailId = inboundOrderDetailId,
                             id = dto.materialInfo.materialId,
                             code = dto.materialInfo.materialCode,
                             name = dto.materialInfo.materialName.orEmpty(),
                             spec = dto.materialInfo.materialSpec.orEmpty(),
-                            unit = dto.materialInfo.materialUnit.orEmpty(),
-                            color = color,
-                            batchCode = batchCode,
-                            bomCode = bomCode,
-                            quantity = quantity,
-                            stockQuantity = if (dto.itemVOList.isNullOrEmpty()) null else dto.itemVOList.map { it.storageQuantity }.sum(),
+                            unit = DictUtil.getInstance().convertMaterialUnit(unit)?.value,
                             supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) },
-                            snList = snList,
-                            locationList = dto.itemVOList?.map { item ->
-                                WarehouseInfoVO(
-                                    id = item.warehouseId,
-                                    code = item.warehouseCode,
-                                    name = item.warehouseName.orEmpty(),
-                                    purpose = 0,
-                                    type = item.type
-                                )
-                            }.orEmpty()
+                            materialStockDetailVoList = dto.materialStockDetailVoList?.map { MaterialStockDetailVO.fromDto(it) }
                         )
                     }
+                    // 库位条码
                     isWarehouseLocationBarcode -> {
                         warehouse = WarehouseInfoVO(
                             id = dto.warehouseInfo.id,
@@ -111,4 +93,11 @@ data class BarcodeInfoVO(
      * 库位信息
      */
     lateinit var warehouse: WarehouseInfoVO
+
+    /**
+     * 获取枚举对应的上下文数据
+     */
+    fun getBarContextData(enum: BillTypeEnum): String? {
+        return barContextDataMap[enum.billTypeCode]
+    }
 }

@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.chad.library.adapter4.BaseQuickAdapter
+import com.hjq.permissions.XXPermissions
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.activity.BaseActivity
 import com.rouxinpai.arms.base.adapter.BaseVbAdapter
@@ -26,7 +27,6 @@ import com.rouxinpai.arms.print.factory.PrinterFactory
 import com.rouxinpai.arms.print.factory.OnConnectListener
 import com.rouxinpai.arms.print.model.ConnectedEvent
 import com.rouxinpai.arms.print.util.PrintUtil
-import permissions.dispatcher.ktx.constructPermissionsRequest
 import timber.log.Timber
 
 /**
@@ -58,21 +58,14 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
                 }
             }.toTypedArray()
             // 请求权限
-            activity.constructPermissionsRequest(
-                // 需要申请的权限
-                *permissions,
-                // 解释为什么需要这些权限
-                onShowRationale = { request -> request.proceed() },
-                // 用户不授予权限，则调用该方法
-                onPermissionDenied = {}, // TODO: 需增加提示
-                // 用户选择“不再询问”时调用该方法
-                onNeverAskAgain = {}, // TODO: 需增加提示
-                // 获取权限后执行该方法
-                requiresPermission = {
-                    val starter = Intent(activity, ConnectPortablePrinterActivity::class.java)
-                    activity.startActivity(starter)
+            XXPermissions.with(activity)
+                .permission(permissions)
+                .request { _, allGranted ->
+                    if (allGranted) {
+                        val starter = Intent(activity, ConnectPortablePrinterActivity::class.java)
+                        activity.startActivity(starter)
+                    }
                 }
-            ).launch()
         }
     }
 

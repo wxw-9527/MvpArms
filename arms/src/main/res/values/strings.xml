@@ -107,4 +107,9 @@
     <string name="message_detail" />
     <string name="message_detail__create_time">发送时间：</string>
     <string name="message_detail__create_by">发送人：</string>
+    <!-- 站内信工具类 -->
+    <string name="message_util__title">授权提醒</string>
+    <string name="message_util__message">程序需要您授予通知权限才能正常使用</string>
+    <string name="message_util__cancel">取消</string>
+    <string name="message_util__ok">确认</string>
 </resources>

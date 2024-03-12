@@ -23,8 +23,8 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetDomainConfigurationUrl
     override fun provideDomainConfigurationUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
-        // return "http://test.zk-work.com/stage-api/system/customer/validCode/"
+        // return "http://dev.zk-work.com/stage-api/system/customer/validCode/"
+        return "http://test.zk-work.com/stage-api/system/customer/validCode/"
         // return "https://admin.yzkcloud.com/stage-api/system/customer/validCode/"
         // return "http://admin.manufacture.beststory.com.cn/stage-api/system/customer/validCode/"
     }
@@ -33,8 +33,8 @@ object UrlModule : IUrlModule {
     @Singleton
     @GetUpgradeUrl
     override fun provideUpgradeUrl(): String {
-        return "http://dev.zk-work.com/stage-api/system/client/info"
-        // return "http://test.zk-work.com/stage-api/system/client/info"
+        // return "http://dev.zk-work.com/stage-api/system/client/info"
+        return "http://test.zk-work.com/stage-api/system/client/info"
         // return "https://admin.yzkcloud.com/stage-api/system/client/info"
         // return "http://admin.manufacture.beststory.com.cn/stage-api/system/client/info"
     }

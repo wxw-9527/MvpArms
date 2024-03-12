@@ -1,6 +1,7 @@
 package com.rouxinpai.arms.print.model
 
 import android.os.Parcelable
+import com.blankj.utilcode.util.GsonUtils
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -19,6 +20,7 @@ data class TemplateVO(
     val printHeight: Float,
     val offsetX: Int,
     val offsetY: Int,
+    val sourceKeyList: List<String>
 ) : Parcelable {
 
     companion object {
@@ -27,6 +29,8 @@ data class TemplateVO(
          *
          */
         fun fromDto(dto: TemplateDTO): TemplateVO {
+            val templateData = GsonUtils.fromJson(dto.data, TemplateDataDTO::class.java)
+            val sourceKeyList = templateData.contents.map { it.sourceKey }
             return TemplateVO(
                 id = dto.id,
                 name = dto.name,
@@ -35,7 +39,8 @@ data class TemplateVO(
                 printWith = (dto.mediaSizeWidth * 10) * 0.724f,
                 printHeight = (dto.mediaSizeHeight * 10) * 0.724f,
                 offsetX = ((864 - 8 * dto.mediaSizeWidth) / 2).toInt(),
-                offsetY = ((864 - 8 * dto.mediaSizeHeight) / 2).toInt()
+                offsetY = ((864 - 8 * dto.mediaSizeHeight) / 2).toInt(),
+                sourceKeyList = sourceKeyList
             )
         }
     }
