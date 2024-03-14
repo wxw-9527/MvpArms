@@ -20,7 +20,7 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
             PrintActivity.start(
                 this, listOf(
                     // 开发环境测试数据
-                    "10124011600000001",
+//                    "10124011600000001",
 //                    "10123122100000004",
 //                    "10123122100000007",
 //                    "10123122100000005",
@@ -29,6 +29,7 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
 //                    "10224013000000721",
 //                    "10224013000000583",
 //                    "10224013000000544",
+                    "WBN202403000015",
                     // 中科-预生产环境
 //                    "10624010500000259",
 //                    "10624010500000354"

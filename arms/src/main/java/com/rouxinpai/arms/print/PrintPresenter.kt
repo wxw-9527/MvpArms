@@ -53,6 +53,8 @@ class PrintPresenter @Inject constructor() :
                 add("supplierCode") // 供应商信息
                 add("color") // 物料颜色
                 add("sn") // sn
+                add("conformityCount") // 合格数
+                add("imperfectionsCount") // 不合格数
             })
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
@@ -88,6 +90,7 @@ class PrintPresenter @Inject constructor() :
                     addProperty("materialName", material.name)
                     addProperty("materialCode", material.code)
                     addProperty("materialColor", material.color)
+                    addProperty("conformityCount", material.conformityCount)
                     addProperty("materialUnit", unit)
                     addProperty("barCode", barcodeInfo.barcode)
                     addProperty("receivedQuantityUnit", material.quantity.format() + unit)

@@ -200,6 +200,8 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                 add("supplierCode") // 供应商信息
                 add("color") // 物料颜色
                 add("sn") // sn
+                add("conformityCount") // 合格数
+                add("imperfectionsCount") // 不合格数
             })
         }
         return jsonObject.toRequestBody()

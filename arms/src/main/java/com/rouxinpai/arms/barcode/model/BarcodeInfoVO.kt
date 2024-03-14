@@ -28,6 +28,8 @@ data class BarcodeInfoVO(
             var bomCode: String? = null
             var quantity = 0f
             var color = ""
+            var conformityCount = ""
+            var imperfectionsCount = ""
             val snList = arrayListOf<String>()
             dto.barContextDataList?.forEach {
                 when (it.billTypeCode) {
@@ -39,6 +41,8 @@ data class BarcodeInfoVO(
                     "bomCode" -> bomCode = it.billCode
                     "quantity" -> quantity = it.billCode.toFloat()
                     "color" -> color = it.billCode
+                    "conformityCount" -> conformityCount = it.billCode
+                    "imperfectionsCount" -> imperfectionsCount = it.billCode
                     "sn" -> snList.add(it.billCode)
                 }
             }
@@ -58,6 +62,8 @@ data class BarcodeInfoVO(
                             name = dto.materialInfo.materialName.orEmpty(),
                             spec = dto.materialInfo.materialSpec.orEmpty(),
                             unit = dto.materialInfo.materialUnit.orEmpty(),
+                            conformityCount = conformityCount,
+                            imperfectionsCount = imperfectionsCount,
                             color = color,
                             batchCode = batchCode,
                             bomCode = bomCode,
