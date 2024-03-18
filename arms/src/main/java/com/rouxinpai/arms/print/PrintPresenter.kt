@@ -12,6 +12,7 @@ import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.barcode.model.BillTypeEnum
 import com.rouxinpai.arms.base.presenter.BasePresenter
+import com.rouxinpai.arms.extension.format
 import com.rouxinpai.arms.extension.toRequestBody
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
@@ -88,7 +89,7 @@ class PrintPresenter @Inject constructor() :
                     addProperty("materialUnit", material.unit)
                     addProperty("spec", material.spec)
                     addProperty("materialColor", barcodeInfo.bomVO?.color)
-                    barcodeInfo.material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.toString() + material.unit) }
+                    barcodeInfo.material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.format() + material.unit.orEmpty()) }
                     addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
                     addProperty("printTime", TimeUtils.getNowString())
                     addProperty("warehouseName", barcodeInfo.material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，"))

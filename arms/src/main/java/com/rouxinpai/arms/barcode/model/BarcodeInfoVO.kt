@@ -52,9 +52,9 @@ data class BarcodeInfoVO(
                             code = dto.materialInfo.materialCode,
                             name = dto.materialInfo.materialName.orEmpty(),
                             spec = dto.materialInfo.materialSpec.orEmpty(),
-                            unit = DictUtil.getInstance().convertMaterialUnit(unit)?.value,
+                            unit = DictUtil.getInstance().convertMaterialUnit(unit)?.value ?: unit,
                             supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) },
-                            materialStockDetailVoList = dto.materialStockDetailVoList?.map { MaterialStockDetailVO.fromDto(it) }
+                            materialStockDetailVoList = dto.materialStockDetailVOList?.map { MaterialStockDetailVO.fromDto(it) }
                         )
                     }
                     // 库位条码
