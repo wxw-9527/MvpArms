@@ -10,7 +10,7 @@ data class BomDTO(
     val bomId: String,
     val bomCode: String,
     val masterMaterialCode: String,
-    val color: String,
+    val color: String?,
     val rootVersion: String,
     val masterVersion: String,
     val state: Int,

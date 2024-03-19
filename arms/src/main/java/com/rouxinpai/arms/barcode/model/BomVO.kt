@@ -11,7 +11,7 @@ import com.rouxinpai.arms.dict.util.DictUtil
 data class BomVO(
     val bomId: String,
     val bomCode: String,
-    val color: String,
+    val color: String?,
 ) {
 
     companion object {
