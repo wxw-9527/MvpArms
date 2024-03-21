@@ -11,7 +11,7 @@ data class MaterialStockDetailVO(
     val barCode: String,
     val materialId: String,
     val materialCode: String,
-    val warehouseId: String,
+    val warehouseId: String?,
     val warehouseCode: String,
     val warehouseName: String?,
     val storageQuantity: Float,
