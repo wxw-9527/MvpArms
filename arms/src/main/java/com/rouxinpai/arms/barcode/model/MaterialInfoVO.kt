@@ -13,13 +13,26 @@ class MaterialInfoVO(
     val spec: String,
     val unit: String?,
     val supplier: SupplierVO?,
+    val inboundOrderDetailRecordVo: InboundOrderDetailRecordVO?,
     val materialStockDetailVoList: List<MaterialStockDetailVO>?,
-    val outboundOrderDetailRecordVo: OutboundOrderDetailRecordVO?
+    val outboundOrderDetailRecordVo: OutboundOrderDetailRecordVO?,
 ) {
 
     /**
-     * 物料总库存
+     * 收货数
+     */
+    val receiveQuantity: Float?
+        get() = inboundOrderDetailRecordVo?.actualQuantity
+
+    /**
+     * 物料库存总数
      */
     val totalStorageQuantity: Float?
         get() = materialStockDetailVoList?.map { it.storageQuantity }?.sum()
+
+    /**
+     * 拣货数量
+     */
+    val pickQuantity: Float?
+        get() = outboundOrderDetailRecordVo?.actualQuantity
 }

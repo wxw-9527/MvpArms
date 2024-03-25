@@ -84,17 +84,25 @@ class PrintPresenter @Inject constructor() :
                     }
                     addProperty("sn", barcodeInfo.barcode)
                     addProperty("barCode", barcodeInfo.barcode)
-                    addProperty("materialCode", material.code)
-                    addProperty("materialName", material.name)
-                    addProperty("materialUnit", material.unit)
-                    addProperty("spec", material.spec)
-                    addProperty("materialColor", barcodeInfo.bomVO?.color)
-                    material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.format() + material.unit.orEmpty()) }
-                    addProperty("supplier", material.supplier?.supplierName)
-                    addProperty("printTime", TimeUtils.getNowString())
-                    addProperty("warehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，"))
-                    addProperty("outboundTime", material.outboundOrderDetailRecordVo?.outboundTime)
-                    addProperty("outboundQuantity", material.outboundOrderDetailRecordVo?.actualQuantity)
+                    addProperty("materialCode", material.code) // 物料编码
+                    addProperty("materialName", material.name) // 物料名称
+                    addProperty("materialUnit", material.unit) // 物料单位
+                    addProperty("spec", material.spec) // 规格型号
+                    addProperty("materialColor", barcodeInfo.bomVO?.color) // 颜色
+                    addProperty("supplier", material.supplier?.supplierName) // 供应商名称
+                    addProperty("printTime", TimeUtils.getNowString()) // 打印时间
+                    addProperty("warehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，")) // 仓库名称
+                    val receiveQuantity = material.receiveQuantity
+                    if (receiveQuantity != null) {
+                        addProperty("receiveQuantity", material.receiveQuantity) // 收货数量
+                        addProperty("receivedQuantityUnit", receiveQuantity.format() + material.unit.orEmpty()) // 收货数量及单位
+                    }
+                    val pickQuantity = material.pickQuantity
+                    if (pickQuantity != null) {
+                        addProperty("outboundQuantity", pickQuantity.format()) // 出库数量
+                        addProperty("outboundQuantityUnit", pickQuantity.format() + material.unit.orEmpty()) // 出库数量及单位
+                    }
+                    addProperty("outboundTime", material.outboundOrderDetailRecordVo?.outboundTime) // 出库时间
                 }
                 add("printDataObject", printDataObject) // 排产数量(template_arrange_number)、排产批次号(template_arrange_batch_num)字段暂无
             }.toRequestBody()
