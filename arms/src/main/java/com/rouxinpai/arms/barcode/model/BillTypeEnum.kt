@@ -116,5 +116,10 @@ enum class BillTypeEnum(val billTypeCode: String) {
     /**
      * 库存数量
      */
-    QUANTITY("quantity");
+    QUANTITY("quantity"),
+
+    /**
+     * 拣货数量
+     */
+    PICK_QUANTITY("pickQuantity");
 }

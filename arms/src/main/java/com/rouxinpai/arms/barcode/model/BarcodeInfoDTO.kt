@@ -18,4 +18,5 @@ data class BarcodeInfoDTO(
     val warehouseInfo: WarehouseInfoDTO,
     val supplierVO: SupplierDTO?,
     val bomList: List<BomDTO>?,
+    val outboundOrderDetailRecordVO: OutboundOrderDetailRecordDTO?
 )

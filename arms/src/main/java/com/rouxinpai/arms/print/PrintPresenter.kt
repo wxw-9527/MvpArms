@@ -89,10 +89,12 @@ class PrintPresenter @Inject constructor() :
                     addProperty("materialUnit", material.unit)
                     addProperty("spec", material.spec)
                     addProperty("materialColor", barcodeInfo.bomVO?.color)
-                    barcodeInfo.material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.format() + material.unit.orEmpty()) }
-                    addProperty("supplier", barcodeInfo.material.supplier?.supplierName)
+                    material.totalStorageQuantity?.let { addProperty("receivedQuantityUnit", it.format() + material.unit.orEmpty()) }
+                    addProperty("supplier", material.supplier?.supplierName)
                     addProperty("printTime", TimeUtils.getNowString())
-                    addProperty("warehouseName", barcodeInfo.material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，"))
+                    addProperty("warehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，"))
+                    addProperty("outboundTime", material.outboundOrderDetailRecordVo?.outboundTime)
+                    addProperty("outboundQuantity", material.outboundOrderDetailRecordVo?.actualQuantity)
                 }
                 add("printDataObject", printDataObject) // 排产数量(template_arrange_number)、排产批次号(template_arrange_batch_num)字段暂无
             }.toRequestBody()

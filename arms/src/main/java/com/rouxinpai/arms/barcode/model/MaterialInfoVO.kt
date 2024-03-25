@@ -14,6 +14,7 @@ class MaterialInfoVO(
     val unit: String?,
     val supplier: SupplierVO?,
     val materialStockDetailVoList: List<MaterialStockDetailVO>?,
+    val outboundOrderDetailRecordVo: OutboundOrderDetailRecordVO?
 ) {
 
     /**
