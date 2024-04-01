@@ -19,6 +19,15 @@
     <string name="upgrade__start">开始</string>
     <string name="upgrade__download_fail">下载失败：%1$s</string>
 
+    <!-- 选择条码 -->
+    <string name="select_barcode">选择条码</string>
+    <string name="select_barcode__select_all">全选</string>
+    <string name="select_barcode__print">打印</string>
+    <string name="select_barcode__barcode">条码</string>
+    <string name="select_barcode__copies">份数</string>
+    <string name="select_barcode__unselected_barcode">未选中任何条码，无法打印</string>
+    <string name="select_barcode__miss_copies">条码【%1$s】未填写打印份数</string>
+
     <!-- 便携式打印 -->
     <string name="print">打印</string>
     <string name="print__title">条码明细</string>

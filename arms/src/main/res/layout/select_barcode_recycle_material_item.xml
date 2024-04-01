@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_barcode__shape_ffffffff_r6dp">
+
+    <!-- 物料编码 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_material_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:singleLine="true"
+        android:textColor="#FF23325F"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="T1054-PWCY(G4)-E18H" />
+
+    <!-- 供应商名称 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_supplier_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="end"
+        android:singleLine="true"
+        android:textColor="#FF333333"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_material_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_material_code"
+        app:layout_constraintTop_toTopOf="@+id/tv_material_code"
+        tools:text="易枭科技" />
+
+    <!-- 物料名称 -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_material_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="6dp"
+        android:singleLine="true"
+        android:textColor="#FFA7AAB4"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/cb_select_all"
+        app:layout_constraintStart_toStartOf="@+id/tv_material_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_material_code"
+        tools:text="支架（LH）COMP" />
+
+    <!-- 全选按钮 -->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/select_barcode__selector_check_box"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingVertical="6dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="0dp"
+        android:text="@string/select_barcode__select_all"
+        android:textColor="#FF333333"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_material_name"
+        app:layout_constraintEnd_toEndOf="@+id/tv_supplier_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_material_name" />
+
+    <!-- 条码列表-表头 -->
+    <LinearLayout
+        android:id="@+id/llyt_header"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/select_barcode__shape_fff7f9ff_r4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/tv_supplier_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_material_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_material_name">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:text="@string/select_barcode__barcode"
+            android:textColor="#FF000000"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="@string/select_barcode__copies"
+            android:textColor="#FF000000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- 条码列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_barcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_supplier_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_material_code"
+        app:layout_constraintTop_toBottomOf="@+id/llyt_header"
+        tools:itemCount="1"
+        tools:listitem="@layout/select_barcode_recycle_barcode_item" />
+</androidx.constraintlayout.widget.ConstraintLayout>

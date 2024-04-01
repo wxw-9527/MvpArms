@@ -47,7 +47,15 @@ class PrintPresenter @Inject constructor() :
             val barCodes = JsonArray().apply { barcodeList.forEach { barcode -> add(barcode) } }
             add("barCodes", barCodes)
             add("billTypes", JsonArray().apply {
-                BillTypeEnum.entries.forEach { add(it.billTypeCode) }
+                add(BillTypeEnum.PURCHASE_CODE.billTypeCode)
+                add(BillTypeEnum.SUPPLIER_CODE.billTypeCode)
+                add(BillTypeEnum.BATCH_CODE.billTypeCode)
+                add(BillTypeEnum.BOM_CODE.billTypeCode)
+                add(BillTypeEnum.WAREHOUSE_CODE.billTypeCode)
+                add(BillTypeEnum.CONFORMITY_COUNT.billTypeCode)
+                add(BillTypeEnum.QUANTITY.billTypeCode)
+                add(BillTypeEnum.RECEIVE_QUANTITY.billTypeCode)
+                add(BillTypeEnum.PICK_QUANTITY.billTypeCode)
             })
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
@@ -79,7 +87,7 @@ class PrintPresenter @Inject constructor() :
             return JsonObject().apply {
                 addProperty("printTemplateId", template.id)
                 val printDataObject = JsonObject().apply {
-                    template.sourceKeyList.forEach { // batch_code、material_code、warehouse_code、purchase_code、conformity_count
+                    template.sourceKeyList.forEach { // batch_code、warehouse_code、purchase_code、conformity_count
                         addProperty(it, barcodeInfo.barContextDataMap[it])
                     }
                     addProperty("sn", barcodeInfo.barcode)

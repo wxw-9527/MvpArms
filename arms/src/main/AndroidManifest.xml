@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="DiscouragedApi">
 
     <!-- PictureSelector Permission Start -->
     <!-- 存储权限 -->
@@ -62,6 +63,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
+
+        <!-- 选择条码 -->
+        <activity
+            android:name=".print.SelectBarcodeActivity"
+            android:label="@string/select_barcode"
+            android:screenOrientation="portrait" />
 
         <!-- 打印 -->
         <activity

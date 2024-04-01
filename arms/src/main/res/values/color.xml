@@ -9,4 +9,6 @@
     <color name="cl_dropdown_button_selected_item">@color/black10</color>
     <!-- 消息列表分割线颜色 -->
     <color name="message_list__divider">#0D000000</color>
+    <!-- 选择条码分割线颜色 -->
+    <color name="select_barcode__divider_color">#FFF5F5F5</color>
 </resources>

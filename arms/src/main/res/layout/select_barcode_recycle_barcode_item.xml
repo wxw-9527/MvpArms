@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/flyt_barcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/flyt_copies"
+        app:layout_constraintHorizontal_weight="8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:button="@drawable/select_barcode__selector_check_box"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp"
+            android:textColor="#FF35436C"
+            android:textSize="14sp"
+            tools:text="1002980111100223" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flyt_copies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flyt_barcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="5"
+        app:layout_constraintStart_toEndOf="@+id/flyt_barcode"
+        app:layout_constraintTop_toTopOf="@+id/flyt_barcode">
+
+        <com.rouxinpai.stepper.Stepper
+            android:id="@+id/stepper_copies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:stepper_button_size="24sp"
+            app:stepper_data_element="INT"
+            app:stepper_input_height="28dp"
+            app:stepper_input_text_size="16sp"
+            app:stepper_input_width="52dp"
+            app:stepper_padding_input_button="4dp" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
