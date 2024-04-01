@@ -66,9 +66,9 @@ dependencies {
     // 网络请求
     api 'com.squareup.okhttp3:okhttp:4.12.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    api 'com.squareup.retrofit2:retrofit:2.10.0'
-    api 'com.squareup.retrofit2:converter-gson:2.10.0'
-    api 'com.squareup.retrofit2:adapter-rxjava3:2.10.0'
+    api 'com.squareup.retrofit2:retrofit:2.11.0'
+    api 'com.squareup.retrofit2:converter-gson:2.11.0'
+    api 'com.squareup.retrofit2:adapter-rxjava3:2.11.0'
     api 'com.google.code.gson:gson:2.10.1'
     // 图片缓存
     api 'com.github.bumptech.glide:glide:4.16.0'

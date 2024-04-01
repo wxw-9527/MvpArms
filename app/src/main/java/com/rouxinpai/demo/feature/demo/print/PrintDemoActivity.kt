@@ -2,7 +2,6 @@ package com.rouxinpai.demo.feature.demo.print
 
 import android.os.Bundle
 import com.rouxinpai.arms.base.activity.BaseActivity
-import com.rouxinpai.arms.print.PrintActivity
 import com.rouxinpai.arms.print.SelectBarcodeActivity
 import com.rouxinpai.demo.databinding.PrintDemoActivityBinding
 
