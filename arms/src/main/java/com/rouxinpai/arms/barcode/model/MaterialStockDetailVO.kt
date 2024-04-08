@@ -30,7 +30,7 @@ data class MaterialStockDetailVO(
                 materialCode = dto.materialCode,
                 warehouseId = dto.warehouseId,
                 warehouseCode = dto.warehouseCode,
-                warehouseName = dto.warehouseName,
+                warehouseName = dto.warehouseVO?.name,
                 storageQuantity = dto.storageQuantity,
             )
         }
