@@ -99,16 +99,22 @@ class PrintPresenter @Inject constructor() :
                     addProperty("materialColor", barcodeInfo.bomVO?.color) // 颜色
                     addProperty("supplier", material.supplier?.supplierName) // 供应商名称
                     addProperty("printTime", TimeUtils.getNowString()) // 打印时间
-                    addProperty("warehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，")) // 仓库名称
+                    addProperty("currentWarehouseCode", material.materialStockDetailVoList?.joinToString("，") { it.warehouseCode }) // 物料当前存放库位编码
+                    addProperty("currentWarehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，")) // 物料当前存放库位名
+                    // 收货相关
                     val receiveQuantity = material.receiveQuantity
                     if (receiveQuantity != null) {
                         addProperty("receiveQuantity", material.receiveQuantity) // 收货数量
                         addProperty("receivedQuantityUnit", receiveQuantity.format() + material.unit.orEmpty()) // 收货数量及单位
                     }
-                    val pickQuantity = material.pickQuantity
-                    if (pickQuantity != null) {
+                    // 拣货出库相关
+                    val outboundOrderDetailRecordVo = material.outboundOrderDetailRecordVo
+                    if (outboundOrderDetailRecordVo != null) {
+                        val pickQuantity = outboundOrderDetailRecordVo.actualQuantity
                         addProperty("outboundQuantity", pickQuantity.format()) // 出库数量
                         addProperty("outboundQuantityUnit", pickQuantity.format() + material.unit.orEmpty()) // 出库数量及单位
+                        addProperty("pickedFromWarehouseCode", outboundOrderDetailRecordVo.warehouseCode) // 拣出库位编码
+                        addProperty("pickedFromWarehouseName", outboundOrderDetailRecordVo.warehouseName) // 拣出库位名
                     }
                     addProperty("outboundTime", material.outboundOrderDetailRecordVo?.outboundTime) // 出库时间
                 }

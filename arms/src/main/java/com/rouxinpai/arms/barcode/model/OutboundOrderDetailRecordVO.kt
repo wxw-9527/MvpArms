@@ -13,7 +13,9 @@ data class OutboundOrderDetailRecordVO(
     val barCode: String,
     val materialCode: String,
     val outboundTime: String,
-    val actualQuantity: Float
+    val actualQuantity: Float,
+    val warehouseCode: String?,
+    val warehouseName: String?,
 ) {
 
     companion object {
@@ -29,7 +31,10 @@ data class OutboundOrderDetailRecordVO(
                 barCode = dto.barCode,
                 materialCode = dto.materialCode,
                 outboundTime = dto.outboundTime,
-                actualQuantity = dto.actualQuantity            )
+                actualQuantity = dto.actualQuantity,
+                warehouseCode = dto.warehouseVO?.code,
+                warehouseName = dto.warehouseVO?.name
+            )
         }
     }
 }

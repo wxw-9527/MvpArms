@@ -14,4 +14,5 @@ data class OutboundOrderDetailRecordDTO(
     val materialCode: String,
     val outboundTime: String,
     val actualQuantity: Float,
+    val warehouseVO: WarehouseInfoDTO?
 )
