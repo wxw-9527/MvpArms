@@ -150,10 +150,13 @@ class PrintConfigDialog(
         // 渲染下拉框数据
         binding.spinnerTemplate.setItems(templateList.map { it.name })
         // 设置默认选中
-        mTemplate = PrintUtil.getTemplate()
-        if (mTemplate != null) {
-            val index = templateList.indexOf(mTemplate)
-            binding.spinnerTemplate.selectItemByIndex(index)
+        val template = PrintUtil.getTemplate()
+        if (template != null) {
+            mTemplate = template
+            val index = templateList.indexOfFirst { template.id == it.id }
+            if (index > -1) {
+                binding.spinnerTemplate.selectItemByIndex(index)
+            }
         }
     }
 
