@@ -12,7 +12,6 @@ import okhttp3.internal.and
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
-import java.util.Arrays
 import java.util.Locale
 import kotlin.text.Charsets.UTF_16
 import kotlin.text.Charsets.UTF_8
@@ -55,7 +54,7 @@ object NfcUtil {
         // 判断TNF
         if (ndefRecord.tnf != NdefRecord.TNF_WELL_KNOWN) return null
         // 判断可变的长度的类型
-        if (!Arrays.equals(ndefRecord.type, NdefRecord.RTD_TEXT)) return null
+        if (!ndefRecord.type.contentEquals(NdefRecord.RTD_TEXT)) return null
         // 获得字节数组，然后进行分析
         val payload = ndefRecord.payload
         // 下面开始NDEF文本数据第一个字节，状态字节

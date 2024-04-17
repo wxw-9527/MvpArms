@@ -69,7 +69,9 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
 
     override fun onResume() {
         super.onResume()
-        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(BarcodeScanningReceiverEnabled::class.java)
+        mBarcodeScanningReceiverEnabled = javaClass.isAnnotationPresent(
+            BarcodeScanningReceiverEnabled::class.java
+        )
         if (mBarcodeScanningReceiverEnabled) {
             // 初始化NFC相关
             mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
@@ -140,17 +142,19 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
     }
 
     override fun showUpdateInfo(updateInfo: UpdateInfo) {
-        MessageDialog
-            .show(
-                updateInfo.clientVersion,
-                updateInfo.clientLog,
-            )
-            .setCancelable(false)
-            .setCancelButton(R.string.upgrade__cancel)
-            .setOkButton(R.string.upgrade__start) { _, _ ->
+        MessageDialog.build().apply {
+            isCancelable = false
+            title = updateInfo.clientVersion
+            message = updateInfo.clientLog
+            if (!updateInfo.isForceUpgrade) {
+                setCancelButton(R.string.upgrade__cancel)
+            }
+            setOkButton(R.string.upgrade__start) { _, _ ->
                 startDownload(updateInfo.apkFileUrl)
                 false
             }
+            show()
+        }
     }
 
     // 下载安装包

@@ -66,7 +66,7 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    implementation 'com.github.wxw-9527:MvpArms:2.8.6.01'
+    implementation 'com.github.wxw-9527:MvpArms:2.8.7.00'
 }
 ```
 
