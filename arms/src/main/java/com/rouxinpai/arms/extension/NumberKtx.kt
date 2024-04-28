@@ -21,6 +21,13 @@ fun BigDecimal.format(): String {
 }
 
 /**
+ * 修复Float相加计算精度丢失的问题
+ */
+infix fun Float?.add(that: Float?): Float {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).add(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+}
+
+/**
  * 修复Float相减计算精度丢失的问题
  */
 infix fun Float?.subtract(that: Float?): Float {
@@ -28,10 +35,45 @@ infix fun Float?.subtract(that: Float?): Float {
 }
 
 /**
+ * 修复Float相乘计算精度丢失的问题
+ */
+infix fun Float?.multiply(that: Float?): Float {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).multiply(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+}
+
+/**
+ * 修复Float相除计算精度丢失的问题
+ */
+infix fun Float?.divide(that: Float?): Float {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).divide(that?.toBigDecimal() ?: BigDecimal.ONE).toFloat()
+}
+
+/**
+ * 修复Double相加计算精度丢失的问题
+ */
+infix fun Double?.add(that: Double?): Double {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).add(that?.toBigDecimal() ?: BigDecimal.ZERO).toDouble()
+}
+
+/**
  * 修复Double相减计算精度丢失的问题
  */
 infix fun Double?.subtract(that: Double?): Float {
     return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+}
+
+/**
+ * 修复Double相乘计算精度丢失的问题
+ */
+infix fun Double?.multiply(that: Double?): Double {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).multiply(that?.toBigDecimal() ?: BigDecimal.ZERO).toDouble()
+}
+
+/**
+ * 修复Double相除计算精度丢失的问题
+ */
+infix fun Double?.divide(that: Double?): Double {
+    return (this?.toBigDecimal() ?: BigDecimal.ZERO).divide(that?.toBigDecimal() ?: BigDecimal.ONE).toDouble()
 }
 
 /**
