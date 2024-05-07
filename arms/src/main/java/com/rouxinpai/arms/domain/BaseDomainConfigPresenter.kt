@@ -30,9 +30,9 @@ class BaseDomainConfigPresenter @Inject constructor() :
         view?.showProgress()
         val disposable = retrofit.create<DomainApi>()
             .getDomainConfiguration(getDomainConfigurationUrl + invitationCode)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { data -> DomainConfigurationVO.fromDTO(data) }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<DomainConfigurationVO>(view) {
 
                 override fun onData(t: DomainConfigurationVO) {

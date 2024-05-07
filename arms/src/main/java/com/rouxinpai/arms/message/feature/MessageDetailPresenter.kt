@@ -22,9 +22,9 @@ class MessageDetailPresenter @Inject constructor() : BasePresenter<MessageDetail
         view?.showProgress()
         val disposable = retrofit.create<MessageApi>()
             .getMessage(messageId = id)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { dto -> MessageVO.fromDto(dto) }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<MessageVO>(view) {
 
                 override fun onData(t: MessageVO) {

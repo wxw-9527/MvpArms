@@ -60,10 +60,10 @@ class PrintPresenter @Inject constructor() :
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
             .listBarcodeInfos(body = body)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { data -> data.map { PrintResultVO.fail(BarcodeInfoVO.convertFromDTO(it)) } }
             .map { data -> barcodeList.mapNotNull { barcode -> data.find { barcode == it.barcodeInfo.barcode } } }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<PrintResultVO>>(view) {
 
                 override fun onData(t: List<PrintResultVO>) {
@@ -127,10 +127,11 @@ class PrintPresenter @Inject constructor() :
             val body = createRequestBody(barcodeInfo)
             retrofit.create<PrintApi>()
                 .genImage(body = body)
-                .compose(schedulersTransformer())
                 .compose(responseTransformer())
         }
-        val disposable = Observable.concat(observableList)
+        val disposable = Observable
+            .concat(observableList)
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<String>(view, false) {
 
                 override fun onData(t: String) {

@@ -83,7 +83,6 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         }.toRequestBody()
         val dictObserver = retrofit.create<DictApi>()
             .listDictItems(body = dictBody)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { list -> list.map { dto -> DictItemVO.fromDto(dto) } }
         // 客户自定义字典数据
@@ -97,7 +96,6 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         }.toRequestBody()
         val customerDictObserver = retrofit.create<DictApi>()
             .listCustomerDictItems(body = customerDictBody)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { data -> data.map { CustomerDictItemVO.fromDto(it) } }
         // 合并请求
@@ -106,17 +104,19 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             customerDictObserver
         ) { dictList, customerDictList ->
             Pair(dictList, customerDictList)
-        }.subscribeWith(object :
-            DefaultObserver<Pair<List<DictItemVO>, List<CustomerDictItemVO>>>(view) {
+        }
+            .compose(schedulersTransformer())
+            .subscribeWith(object :
+                DefaultObserver<Pair<List<DictItemVO>, List<CustomerDictItemVO>>>(view) {
 
-            override fun onData(t: Pair<List<DictItemVO>, List<CustomerDictItemVO>>) {
-                super.onData(t)
-                handleDictData(t.first)
-                handleCustomerDictData(t.second)
-                // 关闭进度条
-                if (showProgress) view?.dismissProgress()
-            }
-        })
+                override fun onData(t: Pair<List<DictItemVO>, List<CustomerDictItemVO>>) {
+                    super.onData(t)
+                    handleDictData(t.first)
+                    handleCustomerDictData(t.second)
+                    // 关闭进度条
+                    if (showProgress) view?.dismissProgress()
+                }
+            })
         addDisposable(disposable)
     }
 
@@ -141,9 +141,9 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             view?.showProgress()
             val disposable = retrofit.create<BarcodeApi>()
                 .getBarcodeInfo(body = genGetBarcodeInfoBody(barcode))
-                .compose(schedulersTransformer())
                 .compose(responseTransformer())
                 .map { BarcodeInfoVO.convertFromDTO(it) }
+                .compose(schedulersTransformer())
                 .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
 
                     override fun onData(t: BarcodeInfoVO) {
@@ -167,8 +167,8 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                 clientType = clientType.value,
                 clientName = clientName.value
             )
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<UpdateInfo>(view, false) {
 
                 override fun onData(t: UpdateInfo) {

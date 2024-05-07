@@ -35,7 +35,6 @@ class SelectBarcodePresenter @Inject constructor() : BasePresenter<SelectBarcode
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
             .listBarcodeInfos(body = body)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { dtoList ->
                 val materialVoList = arrayListOf<MaterialVO>()
@@ -54,6 +53,7 @@ class SelectBarcodePresenter @Inject constructor() : BasePresenter<SelectBarcode
                     }
                 materialVoList.sortedBy { it.code } // 重新排序
             }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<MaterialVO>>(view) {
 
                 override fun onData(t: List<MaterialVO>) {

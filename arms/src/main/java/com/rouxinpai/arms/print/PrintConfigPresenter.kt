@@ -23,9 +23,9 @@ class PrintConfigPresenter @Inject constructor() : BasePresenter<PrintConfigCont
         view?.showProgress()
         val disposable = retrofit.create<PrintApi>()
             .listTemplates()
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { list -> list.map { dto -> TemplateVO.fromDto(dto) } }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<TemplateVO>>(view, false) {
 
                 override fun onData(t: List<TemplateVO>) {

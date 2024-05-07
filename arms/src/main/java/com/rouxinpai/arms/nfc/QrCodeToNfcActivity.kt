@@ -13,6 +13,8 @@ import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.databinding.QrCodeToNfcActivityBinding
+import com.rouxinpai.arms.empty.EmptyContract
+import com.rouxinpai.arms.empty.EmptyPresenter
 import com.rouxinpai.arms.nfc.util.NfcUtil
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,8 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @BarcodeScanningReceiverEnabled
 @EventBusEnabled
 class QrCodeToNfcActivity :
-    BaseMvpActivity<QrCodeToNfcActivityBinding, QrCodeToNfcContract.View, QrCodeToNfcPresenter>(),
-    QrCodeToNfcContract.View,
+    BaseMvpActivity<QrCodeToNfcActivityBinding, EmptyContract.View, EmptyPresenter>(),
+    EmptyContract.View,
     OnClickListener {
 
     companion object {

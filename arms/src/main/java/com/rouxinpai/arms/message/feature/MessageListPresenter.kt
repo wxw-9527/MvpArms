@@ -42,9 +42,9 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
         val body = genBody(title, status) // 拼装请求参数
         val disposable = retrofit.create<MessageApi>()
             .listMessages(body = body)
-            .compose(schedulersTransformer())
             .compose(pagingResponseTransformer())
             .map(::convert)
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MessageVO>>>(view) {
 
                 override fun onData(t: PagingData<List<MessageVO>>) {
@@ -72,9 +72,9 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
         val body = genBody(title, status) // 拼装请求参数
         val disposable = retrofit.create<MessageApi>()
             .listMessages(body = body)
-            .compose(schedulersTransformer())
             .compose(pagingResponseTransformer())
             .map(::convert)
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MessageVO>>>(view, false) {
 
                 override fun onData(t: PagingData<List<MessageVO>>) {
@@ -140,9 +140,9 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
         }.toRequestBody()
         val disposable = retrofit.create<MessageApi>()
             .listMessages(body = body)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
             .map { list -> MessageVO.fromDto(list.first()) }
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<MessageVO>(view, false) {
 
                 override fun onData(t: MessageVO) {
@@ -164,8 +164,8 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
         }.toRequestBody()
         val disposable = retrofit.create<MessageApi>()
             .updateStatus(body = body)
-            .compose(schedulersTransformer())
             .compose(responseTransformer())
+            .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<String>(view, false) {
 
                 override fun onEmpty() {
