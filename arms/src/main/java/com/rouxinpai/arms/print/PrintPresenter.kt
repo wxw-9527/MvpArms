@@ -90,8 +90,8 @@ class PrintPresenter @Inject constructor() :
                     template.sourceKeyList.forEach { // batch_code、warehouse_code、purchase_code、conformity_count
                         addProperty(it, barcodeInfo.barContextDataMap[it])
                     }
-                    addProperty("sn", barcodeInfo.barcode)
                     addProperty("barCode", barcodeInfo.barcode)
+                    addProperty("sn", barcodeInfo.extendData ?: barcodeInfo.barcode)
                     addProperty("materialCode", material.code) // 物料编码
                     addProperty("materialName", material.name) // 物料名称
                     addProperty("materialUnit", material.unit) // 物料单位

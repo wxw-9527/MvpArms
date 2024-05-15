@@ -15,6 +15,7 @@ data class BarcodeInfoVO(
     val uniqueIdent: String,
     val barTypeEnum: BarTypeEnum,
     val snList: List<String>,
+    val extendData: String?,
     val barContextDataMap: Map<String, String>,
     val bomVO: BomVO?,
 ) {
@@ -40,6 +41,7 @@ data class BarcodeInfoVO(
                 uniqueIdent = dto.uniqueIdent,
                 barTypeEnum = BarTypeEnum.getBarTypeEnum(dto.barType),
                 snList = snList,
+                extendData = dto.extendData,
                 barContextDataMap = map,
                 bomVO = dto.bomList?.firstOrNull()?.let { BomVO.fromDto(it) },
             ).apply {

@@ -281,7 +281,7 @@ class PrintActivity : BaseMvpActivity<PrintActivityBinding, PrintContract.View, 
                 // TODO: 其他类型条码待实现
             }
             // 条码
-            binding.tvBarcode.text = barcodeInfo.barcode
+            binding.tvBarcode.text = barcodeInfo.extendData ?: barcodeInfo.barcode
             // 状态
             binding.tvStatus.setText(if (item.printSuccess) R.string.print__printed else R.string.print__unprinted)
         }

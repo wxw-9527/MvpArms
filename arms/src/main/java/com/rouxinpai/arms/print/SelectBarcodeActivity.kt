@@ -293,7 +293,7 @@ class SelectBarcodeActivity :
             item: BarcodeVO,
         ) {
             // 条码
-            binding.cbBarcode.text = item.barcode
+            binding.cbBarcode.text = item.extendData ?: item.barcode
             binding.cbBarcode.isChecked = item.isChecked
             // 打印份数
             with(binding.stepperCopies) {
