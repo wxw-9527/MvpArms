@@ -99,7 +99,7 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         onParseNfcIntent(intent)
     }

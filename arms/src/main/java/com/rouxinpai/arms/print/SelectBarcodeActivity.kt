@@ -150,7 +150,7 @@ class SelectBarcodeActivity :
         }
         if (missCopiesBarcode != null) {
             showWarningTip(
-                getString(R.string.select_barcode__miss_copies, missCopiesBarcode.barcode)
+                getString(R.string.select_barcode__miss_copies, missCopiesBarcode.displayBarcode)
             )
             return
         }
@@ -293,7 +293,7 @@ class SelectBarcodeActivity :
             item: BarcodeVO,
         ) {
             // 条码
-            binding.cbBarcode.text = item.extendData ?: item.barcode
+            binding.cbBarcode.text = item.displayBarcode
             binding.cbBarcode.isChecked = item.isChecked
             // 打印份数
             with(binding.stepperCopies) {

@@ -91,7 +91,7 @@ class PrintPresenter @Inject constructor() :
                         addProperty(it, barcodeInfo.barContextDataMap[it])
                     }
                     addProperty("barCode", barcodeInfo.barcode)
-                    addProperty("sn", barcodeInfo.extendData ?: barcodeInfo.barcode)
+                    addProperty("sn", barcodeInfo.displayBarcode)
                     addProperty("materialCode", material.code) // 物料编码
                     addProperty("materialName", material.name) // 物料名称
                     addProperty("materialUnit", material.unit) // 物料单位

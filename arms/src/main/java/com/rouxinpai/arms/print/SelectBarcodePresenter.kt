@@ -44,7 +44,7 @@ class SelectBarcodePresenter @Inject constructor() : BasePresenter<SelectBarcode
                     .filter { dto -> dto.barType in materialBarTypeSet } // 过滤物料条码
                     .forEach { dto ->
                         val key = Pair(dto.materialInfo.materialCode, dto.supplierVO?.supplierCode)
-                        val barcodeVo = BarcodeVO(dto.barCode, dto.extendData)
+                        val barcodeVo = BarcodeVO.fromDto(dto)
                         val materialVo = materialMap.getOrPut(key) {
                             // 如果Map中不存在，则创建新的MaterialVO并加入到Map和List中
                             MaterialVO.fromDto(dto).also { materialVoList.add(it) }

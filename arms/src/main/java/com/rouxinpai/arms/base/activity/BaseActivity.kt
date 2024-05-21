@@ -83,11 +83,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IView, OnRe
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (intent != null) {
-            onParseData(intent)
-        }
+        onParseData(intent)
     }
 
     // 处理双击退出程序的回调
