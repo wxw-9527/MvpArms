@@ -12,7 +12,7 @@ data class BarcodeInfoVO(
     val contextId: String,
     val batchCode: String,
     val barcode: String,
-    val displayBarcode: String?,
+    val displayBarcode: String,
     val uniqueIdent: String,
     val barTypeEnum: BarTypeEnum,
     val snList: List<String>,

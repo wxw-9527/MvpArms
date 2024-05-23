@@ -22,7 +22,7 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
     /**
      * 缓存字典数据
      */
-    fun listDictItems(showProgress: Boolean = false)
+    fun listDictItems(showProgress: Boolean = false, onFail: ((e: Throwable) -> Unit)? = null)
 
     /**
      * 解析条码数据
@@ -36,5 +36,5 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
      * @param clientName 项目名称
      * @param channel 渠道名
      */
-    fun getUpdateInfo(clientType: ClientTypeEnum, clientName: ClientNameEnum, channel: String)
+    fun getUpdateInfo(clientType: ClientTypeEnum, clientName: ClientNameEnum, channel: String, onFail: ((e: Throwable) -> Unit)? = null)
 }

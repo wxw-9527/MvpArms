@@ -15,7 +15,9 @@ class DictPresenter @Inject constructor() : BasePresenter<DictContract.View>(),
     DictContract.Presenter {
 
     override fun onCreate(owner: LifecycleOwner) {
-        listDictItems()
+        listDictItems() { e ->
+            view?.showSuccessTip(e.message)
+        }
     }
 
     override fun handleCustomerDictData(items: List<CustomerDictItemVO>) {

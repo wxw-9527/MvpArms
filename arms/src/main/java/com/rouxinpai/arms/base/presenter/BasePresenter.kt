@@ -68,7 +68,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         mDisposable.add(disposable)
     }
 
-    override fun listDictItems(showProgress: Boolean) {
+    override fun listDictItems(showProgress: Boolean, onFail: ((e: Throwable) -> Unit)?) {
         if (showProgress) view?.showProgress()
         // 系统字典数据
         val dictBody = JsonObject().apply {
@@ -116,6 +116,14 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                     // 关闭进度条
                     if (showProgress) view?.dismissProgress()
                 }
+
+                override fun onFail(e: Throwable) {
+                    if (onFail != null) {
+                        onFail.invoke(e)
+                        return
+                    }
+                    super.onFail(e)
+                }
             })
         addDisposable(disposable)
     }
@@ -160,6 +168,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         clientType: ClientTypeEnum,
         clientName: ClientNameEnum,
         channel: String,
+        onFail: ((e: Throwable) -> Unit)?
     ) {
         val disposable = retrofit.create<UpdateApi>()
             .getUpdateInfo(
@@ -175,7 +184,13 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                     handleUpgradeInfo(channel, t)
                 }
 
-                override fun onFail(e: Throwable) {}
+                override fun onFail(e: Throwable) {
+                    if (onFail != null) {
+                        onFail.invoke(e)
+                        return
+                    }
+                    super.onFail(e)
+                }
             })
         addDisposable(disposable)
     }
