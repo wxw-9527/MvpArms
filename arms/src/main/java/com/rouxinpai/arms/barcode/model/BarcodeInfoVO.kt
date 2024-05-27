@@ -15,8 +15,7 @@ data class BarcodeInfoVO(
     val displayBarcode: String,
     val uniqueIdent: String,
     val barTypeEnum: BarTypeEnum,
-    val snList: List<String>,
-    val barContextDataMap: Map<String, String>,
+    val barContextDataList: List<Pair<String, String>>,
     val bomVO: BomVO?,
 ) {
 
@@ -26,14 +25,7 @@ data class BarcodeInfoVO(
          *
          */
         fun convertFromDTO(dto: BarcodeInfoDTO): BarcodeInfoVO {
-            val snList = dto.barContextDataList
-                ?.filter { it.billTypeCode == BillTypeEnum.SN.billTypeCode }
-                ?.map { it.billCode }
-                ?.toMutableList() ?: mutableListOf()
-            val map = dto.barContextDataList
-                ?.filter { it.billTypeCode != BillTypeEnum.SN.billTypeCode }
-                ?.associateBy({ it.billTypeCode }, { it.billCode })
-                ?.toMutableMap() ?: mutableMapOf()
+            val list = dto.barContextDataList?.map { it.billTypeCode to it.billCode }.orEmpty()
             return BarcodeInfoVO(
                 contextId = dto.contextId,
                 batchCode = dto.batchCode,
@@ -41,8 +33,7 @@ data class BarcodeInfoVO(
                 displayBarcode = dto.extendData ?: dto.barCode,
                 uniqueIdent = dto.uniqueIdent,
                 barTypeEnum = BarTypeEnum.getBarTypeEnum(dto.barType),
-                snList = snList,
-                barContextDataMap = map,
+                barContextDataList = list,
                 bomVO = dto.bomList?.firstOrNull()?.let { BomVO.fromDto(it) },
             ).apply {
                 when {
@@ -102,6 +93,27 @@ data class BarcodeInfoVO(
      * 获取枚举对应的上下文数据
      */
     fun getBarContextData(enum: BillTypeEnum): String? {
-        return barContextDataMap[enum.billTypeCode]
+        return barContextDataList.find { enum.billTypeCode == it.first }?.first
+    }
+
+    /**
+     * 获取枚举对应的上下文数据
+     */
+    fun listBarContextData(enum: BillTypeEnum): List<String> {
+        return barContextDataList.filter { enum.billTypeCode == it.first }.map { it.second }
+    }
+
+    /**
+     * 获取枚举对应的上下文数据
+     */
+    fun getBarContextData(billTypeCode: String): String? {
+        return barContextDataList.find { billTypeCode == it.first }?.first
+    }
+
+    /**
+     * 获取枚举对应的上下文数据
+     */
+    fun listBarContextData(billTypeCode: String): List<String> {
+        return barContextDataList.filter { billTypeCode == it.first }.map { it.second }
     }
 }

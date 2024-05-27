@@ -88,7 +88,7 @@ class PrintPresenter @Inject constructor() :
                 addProperty("printTemplateId", template.id)
                 val printDataObject = JsonObject().apply {
                     template.sourceKeyList.forEach { // batch_code、warehouse_code、purchase_code、conformity_count
-                        addProperty(it, barcodeInfo.barContextDataMap[it])
+                        addProperty(it, barcodeInfo.getBarContextData(it))
                     }
                     addProperty("barCode", barcodeInfo.barcode)
                     addProperty("sn", barcodeInfo.displayBarcode)

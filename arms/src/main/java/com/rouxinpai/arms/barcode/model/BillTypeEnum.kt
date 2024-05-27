@@ -24,6 +24,11 @@ enum class BillTypeEnum(val billTypeCode: String) {
     STATION_TASK_CODE("stationTaskNo"),
 
     /**
+     *
+     */
+    RECEIVE_CODE("receiveCode"),
+
+    /**
      * 交货单号
      */
     INBOUND_CODE("inboundCode"),
