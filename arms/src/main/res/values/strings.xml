@@ -61,9 +61,9 @@
     <string name="print_config__vertical">纵向</string>
     <string name="print_config__cancel">取消</string>
     <string name="print_config__ok">打印</string>
-    <string name="print_config__hcctg">华辰联创</string>
-    <string name="print_config__hrpt">汉印</string>
-    <string name="print_config__ibowlder">鹏研科技</string>
+    <string name="print_config__hcctg">L51</string> <!-- 华晨联创 -->
+    <string name="print_config__hrpt">HM-A400</string> <!-- 汉印 -->
+    <string name="print_config__ibowlder">PTM30-3524</string> <!-- 鹏研科技 -->
 
     <!-- 连接便携式打印机 -->
     <string name="connect_portable_printer">连接打印机</string>
