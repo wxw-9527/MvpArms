@@ -106,7 +106,7 @@ dependencies {
     // 步进器
     api 'com.github.wxw-9527:Stepper:1.1.4'
     // 图片查看库
-    implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.2.1'
+    implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.2.2'
     // 蓝牙打印机
     implementation files('libs/HCCTG_printersdkv5.7.0.jar') // 华晨联创
     implementation files('libs/HPRT_CPCL_SDK_V1.22.01.jar') // 汉印
@@ -133,7 +133,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '2.9.3.01'
+                version = '2.9.3.02'
             }
         }
     }
