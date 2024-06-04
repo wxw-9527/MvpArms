@@ -93,7 +93,7 @@ data class BarcodeInfoVO(
      * 获取枚举对应的上下文数据
      */
     fun getBarContextData(enum: BillTypeEnum): String? {
-        return barContextDataList.find { enum.billTypeCode == it.first }?.first
+        return barContextDataList.find { enum.billTypeCode == it.first }?.second
     }
 
     /**
@@ -107,7 +107,7 @@ data class BarcodeInfoVO(
      * 获取枚举对应的上下文数据
      */
     fun getBarContextData(billTypeCode: String): String? {
-        return barContextDataList.find { billTypeCode == it.first }?.first
+        return barContextDataList.find { billTypeCode == it.first }?.second
     }
 
     /**
