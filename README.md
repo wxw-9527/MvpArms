@@ -101,7 +101,10 @@ override fun onDestroy() {
 
 #### 2、实现`showBarcodeInfo(barcodeInfo: BarcodeInfoVO)`方法处理条码数据
 
-#### 3、高阶使用
+#### 3、按需查询
+默认全量查询，但是由于涉及到数据库的多张表，全量查询的速度可能会比较慢。如果需要按需查询，可在需要条码扫描功能的页面的`Presenter`类上添加`@BillType()`注解，该注解有一个可变参数，可传入需要查询的类型枚举。
+
+#### 4、高阶使用
 
 1) 覆写Activity或Fragment中`的onBarcodeEvent(event: BarcodeEvent)`方法可自行处理条码内容
 2) 覆写Presenter中的`getBarcodeInfo(barcode: String)`方法可自行处理条码解析方法

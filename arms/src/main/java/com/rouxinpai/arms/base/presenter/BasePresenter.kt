@@ -7,6 +7,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rouxinpai.arms.barcode.api.BarcodeApi
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
+import com.rouxinpai.arms.barcode.model.BillType
 import com.rouxinpai.arms.barcode.model.BillTypeEnum
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.di.qualifier.GetUpgradeUrl
@@ -207,10 +208,12 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
      * 生成获取条码上下文信息入参
      */
     open fun genGetBarcodeInfoBody(barcode: String): RequestBody {
+        val annotation = this::class.java.getAnnotation(BillType::class.java)
+        val billTypes = annotation?.billTypeEnums?.asList() ?: BillTypeEnum.entries
         val jsonObject = JsonObject().apply {
             addProperty("barCode", barcode)
             add("billTypes", JsonArray().apply {
-                BillTypeEnum.entries.forEach { add(it.billTypeCode) }
+                billTypes.forEach { add(it.billTypeCode) }
             })
         }
         return jsonObject.toRequestBody()
