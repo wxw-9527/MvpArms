@@ -7,6 +7,24 @@
 
     <include layout="@layout/include_toolbar" />
 
+    <!-- 全选按钮 -->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_select_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/select_barcode__selector_check_box"
+        android:clickable="false"
+        android:gravity="center"
+        android:paddingHorizontal="7dp"
+        android:paddingVertical="6dp"
+        android:text="@string/select_barcode__select_all"
+        android:textColor="#FF333333"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+    <!-- 条码列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_material"
         android:layout_width="match_parent"

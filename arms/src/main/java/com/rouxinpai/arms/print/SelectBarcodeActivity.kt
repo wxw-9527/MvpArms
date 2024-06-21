@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.collection.arrayMapOf
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.rouxinpai.arms.R
@@ -98,10 +99,17 @@ class SelectBarcodeActivity :
             .addTo(binding.rvMaterial)
         binding.rvMaterial.addItemDecoration(OffsetDecoration(64f, TypedValue.COMPLEX_UNIT_DIP))
         // 添加监听事件
+        binding.cbSelectAll.setOnClickListener(this)
         binding.btnPrint.setOnClickListener(this)
         mMaterialAdapter.addOnItemChildClickListener(R.id.cb_select_all, this)
+        mMaterialAdapter.registerAdapterDataObserver(mAdapterDataObserver)
         // 获取数据
         presenter.listBarcodeInfos(mBarcodeList)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMaterialAdapter.unregisterAdapterDataObserver(mAdapterDataObserver)
     }
 
     override fun showMaterialList(list: List<MaterialVO>) {
@@ -123,8 +131,29 @@ class SelectBarcodeActivity :
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            binding.cbSelectAll.id -> onSelectAllClick()
             binding.btnPrint.id -> onPrintClick()
         }
+    }
+
+    // 全选
+    private fun onSelectAllClick() {
+        // 获取列表
+        val items = mMaterialAdapter.items
+        // 获取目标选择状态
+        val isChecked = !items.all { it.isChecked }
+        // 渲染权限按钮选中状态
+        binding.cbSelectAll.isChecked = isChecked
+        // 取消注册列表数据观察者，避免下一步更新列表状态触发回调，重复变更全选按钮状态
+        mMaterialAdapter.unregisterAdapterDataObserver(mAdapterDataObserver)
+        // 更新条码列表状态
+        mMaterialAdapter.items.forEachIndexed { index, item ->
+            item.isChecked = isChecked
+            item.barcodeList.forEach { it.isChecked = isChecked }
+            mMaterialAdapter.refreshSelectAllCheckBox(index)
+        }
+        // 重新注册列表数据观察者
+        mMaterialAdapter.registerAdapterDataObserver(mAdapterDataObserver)
     }
 
     // 打印
@@ -166,8 +195,15 @@ class SelectBarcodeActivity :
         PrintActivity.start(this, mLauncher, printDataList, true)
     }
 
-    private val mLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val mLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
+    // 列表数据观察者
+    private val mAdapterDataObserver = object : AdapterDataObserver() {
+
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+            super.onItemRangeChanged(positionStart, itemCount)
+            binding.cbSelectAll.isChecked = mMaterialAdapter.items.all { it.isChecked }
+        }
     }
 
     /**
@@ -194,7 +230,7 @@ class SelectBarcodeActivity :
         /**
          * 刷新选中框的选中效果
          */
-        fun refreshCheckBox(position: Int) {
+        private fun refreshCheckBox(position: Int) {
             notifyItemChanged(position, REFRESH_CHECKBOX)
         }
 
