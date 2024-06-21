@@ -104,7 +104,7 @@ class PrintPresenter @Inject constructor() :
                     // 收货相关
                     val receiveQuantity = material.receiveQuantity
                     if (receiveQuantity != null) {
-                        addProperty("receiveQuantity", material.receiveQuantity) // 收货数量
+                        addProperty("receiveQuantity", receiveQuantity.format()) // 收货数量
                         addProperty("receivedQuantityUnit", receiveQuantity.format() + material.unit.orEmpty()) // 收货数量及单位
                     }
                     // 拣货出库相关
