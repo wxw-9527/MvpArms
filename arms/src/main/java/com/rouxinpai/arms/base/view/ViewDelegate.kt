@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import com.kongzue.dialogx.dialogs.PopTip
 import com.kongzue.dialogx.dialogs.WaitDialog
-import com.rouxinpai.arms.base.application.IApplication
+import com.rouxinpai.arms.base.application.BaseApplication
 import com.view.multistatepage.intf.OnRetryClickListener
 import com.view.multistatepage.state.EmptyState
 import com.view.multistatepage.state.ErrorState
@@ -12,6 +12,8 @@ import com.view.multistatepage.state.LoadingState
 import com.zy.multistatepage.MultiStateContainer
 import com.zy.multistatepage.bindMultiState
 import com.zy.multistatepage.state.SuccessState
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.concurrent.thread
 
 /**
  * author : Saxxhw
@@ -19,11 +21,8 @@ import com.zy.multistatepage.state.SuccessState
  * time   : 2023/6/12 15:15
  * desc   :
  */
-class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnRetryClickListener) :
+class ViewDelegate(private val context: Context, stateLayout: View?, retryClickListener: OnRetryClickListener, ) :
     IView {
-
-    // 上下文对象
-    private var mContext: Context
 
     // 缺省页状态管理实例
     private var mLoadState: MultiStateContainer? = null
@@ -32,13 +31,12 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     private var mOnRetryClickListener: OnRetryClickListener? = null
 
     init {
-        mContext = context
         mLoadState = stateLayout?.bindMultiState()
         mOnRetryClickListener = retryClickListener
     }
 
     override fun showSuccessTip(messageId: Int) {
-        val message = mContext.getString(messageId)
+        val message = context.getString(messageId)
         showSuccessTip(message)
     }
 
@@ -49,7 +47,7 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     }
 
     override fun showWarningTip(messageId: Int) {
-        val message = mContext.getString(messageId)
+        val message = context.getString(messageId)
         showWarningTip(message)
     }
 
@@ -60,7 +58,7 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     }
 
     override fun showErrorTip(messageId: Int) {
-        val message = mContext.getString(messageId)
+        val message = context.getString(messageId)
         showErrorTip(message)
     }
 
@@ -71,7 +69,7 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     }
 
     override fun showProgress(messageId: Int?) {
-        val message = messageId?.let { mContext.getString(it) }
+        val message = messageId?.let { context.getString(it) }
         showProgress(message)
     }
 
@@ -91,12 +89,12 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
         val loadState = this.mLoadState ?: return
         if (loadState.currentState is SuccessState) return
         val loadingMsg = when {
-            msgId != null -> mContext.getString(msgId)
+            msgId != null -> context.getString(msgId)
             msg != null -> msg
             else -> null
         }
         val loadingDesc = when {
-            descId != null -> mContext.getString(descId)
+            descId != null -> context.getString(descId)
             desc != null -> desc
             else -> null
         }
@@ -113,7 +111,7 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     override fun showEmptyPage(msgId: Int?, msg: String?) {
         val loadState = this.mLoadState ?: return
         val emptyMsg = when {
-            msgId != null -> mContext.getString(msgId)
+            msgId != null -> context.getString(msgId)
             msg != null -> msg
             else -> null
         }
@@ -128,12 +126,12 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
     override fun showErrorPage(msgId: Int?, msg: String?, descId: Int?, desc: String?) {
         val loadState = this.mLoadState ?: return
         val errorMsg = when {
-            msgId != null -> mContext.getString(msgId)
+            msgId != null -> context.getString(msgId)
             msg != null -> msg
             else -> null
         }
         val errorDesc = when {
-            descId != null -> mContext.getString(descId)
+            descId != null -> context.getString(descId)
             desc != null -> desc
             else -> null
         }
@@ -154,8 +152,26 @@ class ViewDelegate(context: Context, stateLayout: View?, retryClickListener: OnR
         loadState.show<SuccessState>()
     }
 
+    // 原子布尔值，用于确保线程安全
+    private val mIsHandlingTokenTimeout = AtomicBoolean(false)
+    // 记录上次调用的时间
+    private var mLastTimeoutTime: Long = 0L
+    // 节流时间，单位是毫秒
+    private val mThrottleTime = 2_000L
+
     override fun tokenTimeout() {
-        val application = mContext.applicationContext as? IApplication ?: return
-        application.onTokenTimeout()
+        val currentTime = System.currentTimeMillis()
+        if (mIsHandlingTokenTimeout.compareAndSet(false, true) && (currentTime - mLastTimeoutTime > mThrottleTime)) {
+            thread {
+                try {
+                    val baseApp = (context.applicationContext as? BaseApplication)
+                    baseApp?.onTokenTimeout()
+                    Thread.sleep(mThrottleTime)
+                } finally {
+                    // 重置标志位
+                    mIsHandlingTokenTimeout.set(false)
+                }
+            }
+        }
     }
 }
