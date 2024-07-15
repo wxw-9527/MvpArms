@@ -1,4 +1,4 @@
-package com.rouxinpai.arms.di
+package com.rouxinpai.arms.di.module
 
 import android.content.Context
 import com.google.gson.Gson

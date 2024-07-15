@@ -1,5 +1,6 @@
 package com.rouxinpai.arms.update.api
 
+import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.update.model.UpdateInfo
 import io.reactivex.rxjava3.core.Observable
@@ -20,7 +21,7 @@ interface UpdateApi {
      */
     @GET
     fun getUpdateInfo(
-        @Url url: String,
+        @Url url: String = "${DomainUtils.getDomain()}system/client/info",
         @Query("clientType") clientType: String,
         @Query("clientName") clientName: String
     ): Observable<ApiResponse<UpdateInfo>>

@@ -10,12 +10,7 @@ package com.rouxinpai.arms.di
 interface IUrlModule {
 
     /**
-     * 获取域名配置地址
+     * 主租户域名
      */
-    fun provideDomainConfigurationUrl(): String
-
-    /**
-     * 获取版本更新地址
-     */
-    fun provideUpgradeUrl(): String
+    fun provideDomainUrl(): String
 }

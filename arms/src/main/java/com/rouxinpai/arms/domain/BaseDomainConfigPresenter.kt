@@ -2,10 +2,11 @@ package com.rouxinpai.arms.domain
 
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.presenter.BasePresenter
-import com.rouxinpai.arms.di.qualifier.GetDomainConfigurationUrl
+import com.rouxinpai.arms.di.qualifier.GetDomainUrl
 import com.rouxinpai.arms.domain.api.DomainApi
 import com.rouxinpai.arms.domain.model.DomainConfigurationVO
 import com.rouxinpai.arms.domain.util.DomainUtils
+import com.rouxinpai.arms.extension.urlEncode
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
@@ -22,14 +23,23 @@ class BaseDomainConfigPresenter @Inject constructor() :
     BasePresenter<BaseDomainConfigContract.View>(),
     BaseDomainConfigContract.Presenter {
 
+    companion object {
+
+        // 接口地址
+        private const val URL_FORMAT = "%ssystem/customer/validCode/%s"
+    }
+
     @Inject
-    @GetDomainConfigurationUrl
-    lateinit var getDomainConfigurationUrl: String
+    @GetDomainUrl
+    lateinit var mGetDomainUrl: String
 
     override fun getDomainConfiguration(invitationCode: String) {
         view?.showProgress()
+
         val disposable = retrofit.create<DomainApi>()
-            .getDomainConfiguration(getDomainConfigurationUrl + invitationCode)
+            .getDomainConfiguration(
+                String.format(URL_FORMAT, mGetDomainUrl, invitationCode.urlEncode())
+            )
             .compose(responseTransformer())
             .map { data -> DomainConfigurationVO.fromDTO(data) }
             .compose(schedulersTransformer())

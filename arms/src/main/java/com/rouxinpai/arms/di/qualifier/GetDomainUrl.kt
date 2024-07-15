@@ -10,4 +10,4 @@ import javax.inject.Qualifier
  */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class GetUpgradeUrl
+annotation class GetDomainUrl
