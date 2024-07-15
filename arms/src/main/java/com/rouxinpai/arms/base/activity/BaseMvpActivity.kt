@@ -85,7 +85,11 @@ abstract class BaseMvpActivity<VB : ViewBinding, V : IView, P : IPresenter<V>> :
                 BarcodeScanningReceiver.sActions.forEach { action -> addAction(action) }
             }
             mReceiver = BarcodeScanningReceiver()
-            registerReceiver(mReceiver, intentFilter)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(mReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(mReceiver, intentFilter)
+            }
         }
     }
 

@@ -110,7 +110,11 @@ class ConnectPortablePrinterActivity : BaseActivity<ConnectPortablePrinterActivi
             // 蓝牙断开连接相关
             addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
         }
-        registerReceiver(mBluetoothReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(mBluetoothReceiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(mBluetoothReceiver, filter)
+        }
         // 绑定适配器
         binding.rvBluetoothDevice.adapter = mBluetoothDeviceAdapter
         // 绑定监听事件
