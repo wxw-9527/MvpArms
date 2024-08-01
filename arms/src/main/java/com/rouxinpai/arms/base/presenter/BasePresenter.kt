@@ -10,6 +10,7 @@ import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.barcode.model.BillType
 import com.rouxinpai.arms.barcode.model.BillTypeEnum
 import com.rouxinpai.arms.base.view.IView
+import com.rouxinpai.arms.di.qualifier.GetDomainUrl
 import com.rouxinpai.arms.dict.api.DictApi
 import com.rouxinpai.arms.dict.model.CustomerDictEnum
 import com.rouxinpai.arms.dict.model.CustomerDictItemVO
@@ -47,9 +48,19 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     @Inject
     lateinit var retrofit: Retrofit
 
+    @Inject
+    @GetDomainUrl
+    lateinit var mGetDomainUrl: String
+
     private var mLifecycle: Lifecycle? = null
 
     private val mDisposable = CompositeDisposable()
+
+    companion object {
+
+        // 接口地址
+        private const val URL_FORMAT = "%ssystem/client/info"
+    }
 
     var view: V? = null
         private set
@@ -168,6 +179,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
     ) {
         val disposable = retrofit.create<UpdateApi>()
             .getUpdateInfo(
+                url = String.format(URL_FORMAT, mGetDomainUrl),
                 clientType = clientType.value,
                 clientName = clientName.value
             )

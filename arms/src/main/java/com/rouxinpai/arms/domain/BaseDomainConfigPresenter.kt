@@ -2,7 +2,6 @@ package com.rouxinpai.arms.domain
 
 import com.rouxinpai.arms.R
 import com.rouxinpai.arms.base.presenter.BasePresenter
-import com.rouxinpai.arms.di.qualifier.GetDomainUrl
 import com.rouxinpai.arms.domain.api.DomainApi
 import com.rouxinpai.arms.domain.model.DomainConfigurationVO
 import com.rouxinpai.arms.domain.util.DomainUtils
@@ -28,10 +27,6 @@ class BaseDomainConfigPresenter @Inject constructor() :
         // 接口地址
         private const val URL_FORMAT = "%ssystem/customer/validCode/%s"
     }
-
-    @Inject
-    @GetDomainUrl
-    lateinit var mGetDomainUrl: String
 
     override fun getDomainConfiguration(invitationCode: String) {
         view?.showProgress()
