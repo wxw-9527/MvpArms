@@ -28,7 +28,7 @@ interface IPresenter<V : IView> : DefaultLifecycleObserver {
      * 解析条码数据
      * @param barcode 条码
      */
-    fun getBarcodeInfo(barcode: String)
+    fun getBarcodeInfo(barcode: String, onFail: ((e: Throwable) -> Unit)? = null)
 
     /**
      * 获取版本更新信息

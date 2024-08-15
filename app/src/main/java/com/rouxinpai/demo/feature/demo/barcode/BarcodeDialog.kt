@@ -2,7 +2,6 @@ package com.rouxinpai.demo.feature.demo.barcode
 
 import android.app.Activity
 import com.kongzue.dialogx.dialogs.BottomDialog
-import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.dialog.BaseMvpOnBindView
 import com.rouxinpai.demo.R
@@ -16,7 +15,6 @@ import dagger.hilt.android.EntryPointAccessors
  * time   : 2023/10/9 11:30
  * desc   :
  */
-@EventBusEnabled
 class BarcodeDialog :
     BaseMvpOnBindView<BottomDialog, BarcodeDialogBinding, BarcodeContract.View, BarcodePresenter>(
         R.layout.barcode_dialog

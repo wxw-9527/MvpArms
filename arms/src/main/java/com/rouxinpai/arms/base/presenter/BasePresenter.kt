@@ -151,7 +151,7 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
         DictUtil.getInstance().putCustomerDictData(items)
     }
 
-    override fun getBarcodeInfo(barcode: String) {
+    override fun getBarcodeInfo(barcode: String, onFail: ((e: Throwable) -> Unit)?) {
         if (false == view?.isProgressShowing()) {
             view?.showProgress()
             val disposable = retrofit.create<BarcodeApi>()
@@ -163,6 +163,14 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
 
                     override fun onData(t: BarcodeInfoVO) {
                         handleBarcodeInfo(t)
+                    }
+
+                    override fun onFail(e: Throwable) {
+                        if (onFail != null) {
+                            onFail.invoke(e)
+                            return
+                        }
+                        super.onFail(e)
                     }
                 })
             addDisposable(disposable)

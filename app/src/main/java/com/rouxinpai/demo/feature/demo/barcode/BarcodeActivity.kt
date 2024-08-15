@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rouxinpai.arms.annotation.BarcodeScanningReceiverEnabled
 import com.rouxinpai.arms.annotation.EventBusEnabled
+import com.rouxinpai.arms.barcode.event.BarcodeEvent
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.activity.BaseMvpActivity
 import com.rouxinpai.arms.base.adapter.BaseSimpleFragmentStateAdapter
+import com.rouxinpai.arms.model.bean.exception.TokenTimeoutException
 import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.BarcodeActivityBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +55,26 @@ class BarcodeActivity :
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBarcodeEvent(event: BarcodeEvent) {
+        if (event.removeStickyEvent()) {
+            presenter.getBarcodeInfo(event.barcode) {
+                val errorMsg = it.message
+                if (true == errorMsg?.contains("未获取到上下文信息")) {
+                    dismissProgress()
+                    showSuccessTip("这是个第三方编码")
+                } else {
+                    dismissProgress()
+                    showErrorTip(errorMsg)
+                    if (it is TokenTimeoutException) {
+                        tokenTimeout()
+                    }
+                }
+            }
+        }
+    }
+
     override fun showBarcodeInfo(barcodeInfo: BarcodeInfoVO) {
+        showSuccessTip(barcodeInfo.material.name)
         dismissProgress()
     }
 
