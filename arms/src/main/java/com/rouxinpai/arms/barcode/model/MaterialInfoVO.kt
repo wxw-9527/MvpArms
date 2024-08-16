@@ -12,6 +12,8 @@ class MaterialInfoVO(
     val name: String,
     val spec: String,
     val unit: String?,
+    val materialCraftVersion: String?,
+    val receiver: String?,
     val supplier: SupplierVO?,
     val inboundOrderDetailRecordVo: InboundOrderDetailRecordVO?,
     val materialStockDetailVoList: List<MaterialStockDetailVO>?,

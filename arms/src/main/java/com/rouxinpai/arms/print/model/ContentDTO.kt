@@ -17,6 +17,7 @@ data class ContentDTO(
     val width: Float,
     val height: Float,
     val paramsTop: String,
-    val text: String,
+    val text: String?,
     val aligning: String,
+    val staticType: String?,
 )

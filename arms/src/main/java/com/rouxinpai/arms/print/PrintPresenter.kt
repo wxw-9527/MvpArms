@@ -18,6 +18,7 @@ import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
 import com.rouxinpai.arms.print.api.PrintApi
+import com.rouxinpai.arms.print.model.ContentTypeEnum.*
 import com.rouxinpai.arms.print.model.DirectionEnum
 import com.rouxinpai.arms.print.model.PrintResultVO
 import com.rouxinpai.arms.print.model.TemplateVO
@@ -87,8 +88,12 @@ class PrintPresenter @Inject constructor() :
             return JsonObject().apply {
                 addProperty("printTemplateId", template.id)
                 val printDataObject = JsonObject().apply {
-                    template.sourceKeyList.forEach { // batch_code、warehouse_code、purchase_code、conformity_count
-                        addProperty(it, barcodeInfo.getBarContextData(it))
+                    template.contentList.forEach { content ->
+                        when (content.typeEnum) {
+                            STATIC_TEXT -> addProperty(content.sourceKey, content.text) // 填充静态文本
+                            TEXT -> addProperty(content.sourceKey, barcodeInfo.getBarContextData(content.sourceKey)) // batch_code、warehouse_code、purchase_code、conformity_count
+                            QRCODE -> Unit // 不处理
+                        }
                     }
                     addProperty("barCode", barcodeInfo.barcode)
                     addProperty("sn", barcodeInfo.displayBarcode)
@@ -99,8 +104,11 @@ class PrintPresenter @Inject constructor() :
                     addProperty("materialColor", barcodeInfo.bomVO?.color) // 颜色
                     addProperty("supplier", material.supplier?.supplierName) // 供应商名称
                     addProperty("printTime", TimeUtils.getNowString()) // 打印时间
+                    addProperty("printDate", TimeUtils.millis2String(TimeUtils.getNowMills(), "yyyy/MM/dd")) // 打印日期
                     addProperty("currentWarehouseCode", material.materialStockDetailVoList?.joinToString("，") { it.warehouseCode }) // 物料当前存放库位编码
                     addProperty("currentWarehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，")) // 物料当前存放库位名
+                    addProperty("materialCraftVersion", material.materialCraftVersion) // 物料图纸版本
+                    addProperty("receiver", material.receiver) // 收货方
                     // 收货相关
                     val receiveQuantity = material.receiveQuantity
                     if (receiveQuantity != null) {
