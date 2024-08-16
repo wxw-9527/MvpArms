@@ -46,6 +46,8 @@ data class BarcodeInfoVO(
                             name = dto.materialInfo.materialName.orEmpty(),
                             spec = dto.materialInfo.materialSpec.orEmpty(),
                             unit = DictUtil.getInstance().convertMaterialUnit(unit)?.value ?: unit,
+                            materialCraftVersion = dto.materialInfo.materialCraftVersion,
+                            receiver = dto.materialInfo.receiver,
                             supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) },
                             inboundOrderDetailRecordVo = dto.inboundOrderDetailRecordVO?.let { InboundOrderDetailRecordVO.fromDto(it) },
                             materialStockDetailVoList = dto.materialStockDetailVOList?.map { MaterialStockDetailVO.fromDto(it) },

@@ -20,7 +20,7 @@ data class TemplateVO(
     val printHeight: Float,
     val offsetX: Int,
     val offsetY: Int,
-    val sourceKeyList: List<String>
+    val contentList: List<ContentVO>
 ) : Parcelable {
 
     companion object {
@@ -30,7 +30,6 @@ data class TemplateVO(
          */
         fun fromDto(dto: TemplateDTO): TemplateVO {
             val templateData = GsonUtils.fromJson(dto.data, TemplateDataDTO::class.java)
-            val sourceKeyList = templateData.contents.map { it.sourceKey }
             return TemplateVO(
                 id = dto.id,
                 name = dto.name,
@@ -40,7 +39,7 @@ data class TemplateVO(
                 printHeight = (dto.mediaSizeHeight * 10) * 0.724f,
                 offsetX = ((864 - 8 * dto.mediaSizeWidth) / 2).toInt(),
                 offsetY = ((864 - 8 * dto.mediaSizeHeight) / 2).toInt(),
-                sourceKeyList = sourceKeyList
+                contentList = templateData.contents.map { ContentVO.fromDto(it) }
             )
         }
     }
