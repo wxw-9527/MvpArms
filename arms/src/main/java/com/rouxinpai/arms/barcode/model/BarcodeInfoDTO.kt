@@ -21,4 +21,5 @@ data class BarcodeInfoDTO(
     val bomList: List<BomDTO>?,
     val outboundOrderDetailRecordVO: OutboundOrderDetailRecordDTO?,
     val inboundOrderDetailRecordVO: InboundOrderDetailRecordDTO?,
+    val inboundOrderDetailVO: InboundOrderDetailDTO?,
 )

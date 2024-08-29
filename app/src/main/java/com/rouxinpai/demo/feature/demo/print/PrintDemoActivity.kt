@@ -39,7 +39,8 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
                     "10124060400000000",
                     "10124060400000001",
                     "10124051500001205",
-                    "BR24051506861"
+                    "BR24051506861",
+                    "10124082900000073",
                 )
             )
 //            PrintActivity.start(

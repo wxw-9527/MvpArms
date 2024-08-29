@@ -57,6 +57,7 @@ class PrintPresenter @Inject constructor() :
                 add(BillTypeEnum.QUANTITY.billTypeCode)
                 add(BillTypeEnum.RECEIVE_QUANTITY.billTypeCode)
                 add(BillTypeEnum.PICK_QUANTITY.billTypeCode)
+                add(BillTypeEnum.INBOUND_ORDER.billTypeCode)
             })
         }.toRequestBody()
         val disposable = retrofit.create<BarcodeApi>()
@@ -109,6 +110,7 @@ class PrintPresenter @Inject constructor() :
                     addProperty("currentWarehouseName", material.materialStockDetailVoList?.mapNotNull { it.warehouseName }?.joinToString("，")) // 物料当前存放库位名
                     addProperty("materialCraftVersion", material.materialCraftVersion) // 物料图纸版本
                     addProperty("receiver", material.receiver) // 收货方
+                    addProperty("furnaceNum", material.inboundOrderDetailVO?.furnaceNo) // 炉号
                     // 收货相关
                     val receiveQuantity = material.receiveQuantity
                     if (receiveQuantity != null) {

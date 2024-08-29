@@ -51,7 +51,8 @@ data class BarcodeInfoVO(
                             supplier = dto.supplierVO?.let { SupplierVO.fromDTO(it) },
                             inboundOrderDetailRecordVo = dto.inboundOrderDetailRecordVO?.let { InboundOrderDetailRecordVO.fromDto(it) },
                             materialStockDetailVoList = dto.materialStockDetailVOList?.map { MaterialStockDetailVO.fromDto(it) },
-                            outboundOrderDetailRecordVo = dto.outboundOrderDetailRecordVO?.let { OutboundOrderDetailRecordVO.fromDto(it) }
+                            outboundOrderDetailRecordVo = dto.outboundOrderDetailRecordVO?.let { OutboundOrderDetailRecordVO.fromDto(it) },
+                            inboundOrderDetailVO = dto.inboundOrderDetailVO?.let { InboundOrderDetailVO.fromDto(it) },
                         )
                     }
                     // 库位条码
