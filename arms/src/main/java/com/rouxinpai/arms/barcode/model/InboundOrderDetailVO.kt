@@ -6,14 +6,7 @@ package com.rouxinpai.arms.barcode.model
  * time   : 2024/8/29 下午2:20
  * desc   :
  */
-data class InboundOrderDetailVO(
-    val id: String,
-    val inboundOrderId: String,
-    val materialId: String,
-    val materialCode: String,
-    val batchCode: String,
-    val furnaceNo: String?,
-) {
+data class InboundOrderDetailVO(val furnaceNo: String?) {
 
     companion object {
 
@@ -22,11 +15,6 @@ data class InboundOrderDetailVO(
          */
         fun fromDto(dto: InboundOrderDetailDTO): InboundOrderDetailVO {
             return InboundOrderDetailVO(
-                id = dto.id,
-                inboundOrderId = dto.inboundOrderId,
-                materialId = dto.materialId,
-                materialCode = dto.materialCode,
-                batchCode = dto.batchCode,
                 furnaceNo = dto.furnaceNo,
             )
         }
