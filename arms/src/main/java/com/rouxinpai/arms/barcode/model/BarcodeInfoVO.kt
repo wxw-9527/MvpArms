@@ -93,6 +93,12 @@ data class BarcodeInfoVO(
     lateinit var warehouse: WarehouseInfoVO
 
     /**
+     * 成品包装编码
+     */
+    val isFinishedProductPackCode: Boolean
+        get() = BarTypeEnum.FINISHED_PRODUCT_PACKAGE == barTypeEnum
+
+    /**
      * 获取枚举对应的上下文数据
      */
     fun getBarContextData(enum: BillTypeEnum): String? {

@@ -7,11 +7,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.kongzue.dialogx.interfaces.BaseDialog
-import com.kongzue.dialogx.interfaces.OnBindView
+import com.kongzue.dialogx.interfaces.OnBindingView
 import com.rouxinpai.arms.annotation.EventBusEnabled
 import com.rouxinpai.arms.base.view.IView
 import com.rouxinpai.arms.base.view.ViewDelegate
-import com.rouxinpai.arms.util.BindingReflex
 import com.view.multistatepage.intf.OnRetryClickListener
 import org.greenrobot.eventbus.EventBus
 
@@ -21,10 +20,7 @@ import org.greenrobot.eventbus.EventBus
  * time   : 2023/8/16 15:00
  * desc   :
  */
-abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
-    layoutResId: Int,
-    async: Boolean = false
-) : OnBindView<D>(layoutResId, async),
+abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding> : OnBindingView<D, VB>(),
     DefaultLifecycleObserver,
     IView,
     OnRetryClickListener {
@@ -34,9 +30,6 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
 
     // 对话框实例
     lateinit var dialog: D
-
-    // 视图绑定实例
-    lateinit var binding: VB
 
     // 是否使用事件发布-订阅总线
     private var mEventBusEnabled: Boolean = false
@@ -55,11 +48,10 @@ abstract class BaseOnBindView<D : BaseDialog, VB : ViewBinding>(
     val context: Context
         get() = dialog.ownActivity
 
-    override fun onBind(dialog: D, v: View) {
+    override fun onBind(dialog: D, v: View?, binding: VB) {
         // 初始化
         this.lifecycle = dialog.lifecycle
         this.dialog = dialog
-        this.binding = BindingReflex.reflexViewBinding(this::class.java, v)
         // 绑定生命周期方法
         lifecycle.addObserver(this)
         // 初始化代理类

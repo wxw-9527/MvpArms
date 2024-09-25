@@ -6,7 +6,6 @@ import androidx.core.os.postDelayed
 import androidx.lifecycle.LifecycleOwner
 import com.kongzue.dialogx.dialogs.BottomDialog
 import com.rouxinpai.arms.base.dialog.BaseOnBindView
-import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.SimpleCustomViewDialogBinding
 
 /**
@@ -16,7 +15,7 @@ import com.rouxinpai.demo.databinding.SimpleCustomViewDialogBinding
  * desc   :
  */
 class SimpleCustomViewDialog :
-    BaseOnBindView<BottomDialog, SimpleCustomViewDialogBinding>(R.layout.simple_custom_view_dialog) {
+    BaseOnBindView<BottomDialog, SimpleCustomViewDialogBinding>() {
 
     companion object {
 

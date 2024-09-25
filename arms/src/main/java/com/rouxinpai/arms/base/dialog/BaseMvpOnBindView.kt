@@ -21,10 +21,7 @@ import org.greenrobot.eventbus.ThreadMode
  * time   : 2023/8/16 16:48
  * desc   :
  */
-abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P : IPresenter<V>>(
-    layoutResId: Int,
-    async: Boolean = false,
-) : BaseOnBindView<D, VB>(layoutResId, async), ILoadMore {
+abstract class BaseMvpOnBindView<D : BaseDialog, VB : ViewBinding, V : IView, P : IPresenter<V>>: BaseOnBindView<D, VB>(), ILoadMore {
 
     // P层实例
     lateinit var presenter: P

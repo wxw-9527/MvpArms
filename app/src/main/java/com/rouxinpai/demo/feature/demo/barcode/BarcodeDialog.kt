@@ -4,7 +4,6 @@ import android.app.Activity
 import com.kongzue.dialogx.dialogs.BottomDialog
 import com.rouxinpai.arms.barcode.model.BarcodeInfoVO
 import com.rouxinpai.arms.base.dialog.BaseMvpOnBindView
-import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.BarcodeDialogBinding
 import com.rouxinpai.demo.di.DialogPresenterEntryPoint
 import dagger.hilt.android.EntryPointAccessors
@@ -16,9 +15,7 @@ import dagger.hilt.android.EntryPointAccessors
  * desc   :
  */
 class BarcodeDialog :
-    BaseMvpOnBindView<BottomDialog, BarcodeDialogBinding, BarcodeContract.View, BarcodePresenter>(
-        R.layout.barcode_dialog
-    ), BarcodeContract.View {
+    BaseMvpOnBindView<BottomDialog, BarcodeDialogBinding, BarcodeContract.View, BarcodePresenter>(), BarcodeContract.View {
 
     companion object {
 

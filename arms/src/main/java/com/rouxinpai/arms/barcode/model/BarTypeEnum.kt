@@ -41,6 +41,11 @@ enum class BarTypeEnum(val barType: Int) {
     FINISHED_PRODUCT_CHILD_BATCH(12),
 
     /**
+     * 成品包装编码
+     */
+    FINISHED_PRODUCT_PACKAGE(13),
+
+    /**
      * 原材料序列号
      */
     RAW_MATERIAL_SN(20),

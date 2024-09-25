@@ -18,7 +18,6 @@ import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
-import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.CustomViewDialogBinding
 import com.rouxinpai.demo.model.entity.login.CaptchaDTO
 import com.rouxinpai.demo.model.remote.Api
@@ -36,9 +35,7 @@ import javax.inject.Inject
  * desc   :
  */
 class CustomViewDialog :
-    BaseMvpOnBindView<BottomDialog, CustomViewDialogBinding, CustomViewContract.View, CustomViewPresenter>(
-        R.layout.custom_view_dialog
-    ), CustomViewContract.View {
+    BaseMvpOnBindView<BottomDialog, CustomViewDialogBinding, CustomViewContract.View, CustomViewPresenter>(), CustomViewContract.View {
 
     companion object {
 
