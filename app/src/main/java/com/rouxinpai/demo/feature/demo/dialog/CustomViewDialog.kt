@@ -9,7 +9,8 @@ import android.util.Base64
 import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.LifecycleOwner
-import com.kongzue.dialogx.dialogs.BottomDialog
+import com.blankj.utilcode.util.ColorUtils
+import com.kongzue.dialogx.dialogs.CustomDialog
 import com.rouxinpai.arms.base.dialog.BaseMvpOnBindView
 import com.rouxinpai.arms.base.presenter.BasePresenter
 import com.rouxinpai.arms.base.presenter.IPresenter
@@ -18,6 +19,7 @@ import com.rouxinpai.arms.domain.util.DomainUtils
 import com.rouxinpai.arms.model.DefaultObserver
 import com.rouxinpai.arms.model.responseTransformer
 import com.rouxinpai.arms.model.schedulersTransformer
+import com.rouxinpai.demo.R
 import com.rouxinpai.demo.databinding.CustomViewDialogBinding
 import com.rouxinpai.demo.model.entity.login.CaptchaDTO
 import com.rouxinpai.demo.model.remote.Api
@@ -35,7 +37,9 @@ import javax.inject.Inject
  * desc   :
  */
 class CustomViewDialog :
-    BaseMvpOnBindView<BottomDialog, CustomViewDialogBinding, CustomViewContract.View, CustomViewPresenter>(), CustomViewContract.View {
+    BaseMvpOnBindView<CustomDialog, CustomViewDialogBinding, CustomViewContract.View, CustomViewPresenter>(
+        R.layout.custom_view_dialog
+    ), CustomViewContract.View {
 
     companion object {
 
@@ -43,8 +47,10 @@ class CustomViewDialog :
          * 展示简单自定义弹窗
          */
         fun showBottomDialog() {
-            BottomDialog.build()
+            CustomDialog.build()
+                .setCancelable(true)
                 .setCustomView(CustomViewDialog())
+                .setEnableImmersiveMode(false)
                 .show()
         }
     }
@@ -64,11 +70,9 @@ class CustomViewDialog :
     }
 
     override fun onCreate(owner: LifecycleOwner) {
+        dialog.setMaskColor(ColorUtils.getColor(com.kongzue.dialogx.R.color.black30))
         super.onCreate(owner)
         presenter.getCaptchaImage()
-        dialog.setOkButton("确认") { _, _ ->
-            false
-        }
     }
 
     override fun showCaptcha(bitmap: Bitmap) {

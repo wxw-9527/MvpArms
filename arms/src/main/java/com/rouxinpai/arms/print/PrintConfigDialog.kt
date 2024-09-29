@@ -38,7 +38,7 @@ import org.greenrobot.eventbus.ThreadMode
 class PrintConfigDialog(
     private val activity: AppCompatActivity,
     private val success: (template: TemplateVO, copies: Int, direction: DirectionEnum) -> Unit,
-) : BaseMvpOnBindView<BottomDialog, PrintConfigDialogBinding, PrintConfigContract.View, PrintConfigPresenter>(), PrintConfigContract.View,
+) : BaseMvpOnBindView<BottomDialog, PrintConfigDialogBinding, PrintConfigContract.View, PrintConfigPresenter>(R.layout.print_config_dialog), PrintConfigContract.View,
     OnClickListener {
 
     companion object {
