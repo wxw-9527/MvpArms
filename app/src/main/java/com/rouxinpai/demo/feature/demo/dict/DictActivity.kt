@@ -43,6 +43,16 @@ class DictActivity : BaseMvpActivity<DictActivityBinding, DictContract.View, Dic
             appendLine()
             appendLine()
             appendLine()
+            // 物料类型字段
+            appendLine("物料类型字典")
+            appendLine()
+            DictUtil.getInstance().materialTypeList.forEach {
+                appendLine(it.dictLabel)
+            }
+            appendLine()
+            appendLine()
+            appendLine()
+            appendLine()
             // 物料单位字典
             appendLine("物料单位字典")
             appendLine()

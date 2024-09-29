@@ -127,6 +127,25 @@ class DictUtil {
         return codingRuleList.find { rule == it.dictValue }
     }
 
+    /**
+     * 物料类型字典
+     */
+    val materialTypeList: List<DictItemVO> by lazy(LazyThreadSafetyMode.NONE) {
+        mDictBox
+            .query(DictItemVO_.dictType equal DictEnum.MATERIAL_TYPE.code)
+            .build()
+            .find()
+    }
+
+    /**
+     * 转换物料类型
+     */
+    fun convertMaterialType(type: String?): DictItemVO? {
+        if (type == null) return null
+        return materialTypeList.find { type == it.dictValue }
+    }
+
+
     /* *************************************** 客户自定义字典 *************************************** */
 
     // 客户自定义数据字典

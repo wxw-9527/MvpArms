@@ -22,4 +22,9 @@ enum class DictEnum(val code: String) {
      * 赋码规则
      */
     CODING_RULE("coding_rule"), // 仓储
+
+    /**
+     * 物料类型
+     */
+    MATERIAL_TYPE("materiel_type"), // 仓储
 }
