@@ -26,5 +26,6 @@ object UrlModule : IUrlModule {
         return "http://test.zk-work.com/stage-api/"
         // return "https://admin.yzkcloud.com/stage-api/"
         // return "http://admin.manufacture.beststory.com.cn/stage-api/"
+        // return "http://172.16.2.201/stage-api/"
     }
 }

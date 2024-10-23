@@ -41,6 +41,8 @@ class PrintDemoActivity : BaseActivity<PrintDemoActivityBinding>() {
                     "10124051500001205",
                     "BR24051506861",
                     "10124082900000073",
+//                    // 星微测试数据
+//                    "10124110500000238"
                 )
             )
 //            PrintActivity.start(

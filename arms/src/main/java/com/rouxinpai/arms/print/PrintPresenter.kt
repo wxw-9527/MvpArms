@@ -92,7 +92,7 @@ class PrintPresenter @Inject constructor() :
                     template.contentList.forEach { content ->
                         when (content.typeEnum) {
                             STATIC_TEXT -> addProperty(content.sourceKey, content.text) // 填充静态文本
-                            TEXT -> addProperty(content.sourceKey, barcodeInfo.getBarContextData(content.sourceKey)) // batch_code、warehouse_code、purchase_code、conformity_count
+                            TEXT -> addProperty(content.sourceKey, content.sourceKey?.let { barcodeInfo.getBarContextData(it) }) // batch_code、warehouse_code、purchase_code、conformity_count
                             QRCODE -> Unit // 不处理
                         }
                     }

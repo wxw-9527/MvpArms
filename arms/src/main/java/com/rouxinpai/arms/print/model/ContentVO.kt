@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class ContentVO(
-    val sourceKey: String,
+    val sourceKey: String?,
     val text: String?,
     val typeEnum: ContentTypeEnum,
 ): Parcelable {

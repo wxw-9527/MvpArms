@@ -7,7 +7,7 @@ package com.rouxinpai.arms.print.model
  * desc   :
  */
 data class ContentDTO(
-    val sourceKey: String,
+    val sourceKey: String?,
     val font: String,
     val fontSize: Float,
     val isCenter: Boolean,
