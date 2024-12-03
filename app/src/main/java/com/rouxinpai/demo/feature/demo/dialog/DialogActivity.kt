@@ -34,6 +34,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
         binding.btnSelectDateRange.setOnClickListener(this)
         binding.btnShowSimpleCustomViewDialog.setOnClickListener(this)
         binding.btnShowCustomViewDialog.setOnClickListener(this)
+        binding.btnShowSimpleDialogFragment.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -46,6 +47,7 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
             R.id.btn_select_date_range -> showSelectDateRangeDialog()
             R.id.btn_show_simple_custom_view_dialog -> showSimpleCustomViewDialog()
             R.id.btn_show_custom_view_dialog -> showCustomViewDialog()
+            R.id.btn_show_simple_dialog_fragment -> showSimpleDialogFragment()
         }
     }
 
@@ -144,5 +146,12 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
 
     private fun showCustomViewDialog() {
         CustomViewDialog.showBottomDialog()
+    }
+
+    private fun showSimpleDialogFragment() {
+        SimpleDialogFragment
+            .builder()
+            .build()
+            .show(supportFragmentManager)
     }
 }

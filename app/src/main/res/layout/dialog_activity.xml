@@ -67,5 +67,12 @@
             android:layout_height="wrap_content"
             android:text="展示复杂自定义弹窗"
             android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_show_simple_dialog_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="展示简单DialogFragment弹窗"
+            android:textAllCaps="false" />
     </LinearLayout>
 </ScrollView>
