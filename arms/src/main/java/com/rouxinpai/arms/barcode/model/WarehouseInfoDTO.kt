@@ -12,4 +12,5 @@ data class WarehouseInfoDTO(
     val name: String,
     val type: Int,
     val purpose: Int,
+    val parentId: String,
 )

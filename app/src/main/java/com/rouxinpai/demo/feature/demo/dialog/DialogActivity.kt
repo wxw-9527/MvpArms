@@ -149,9 +149,6 @@ class DialogActivity : BaseActivity<DialogActivityBinding>(), OnClickListener {
     }
 
     private fun showSimpleDialogFragment() {
-        SimpleDialogFragment
-            .builder()
-            .build()
-            .show(supportFragmentManager)
+
     }
 }

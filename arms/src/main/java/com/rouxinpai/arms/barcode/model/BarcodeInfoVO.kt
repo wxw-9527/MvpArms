@@ -62,7 +62,8 @@ data class BarcodeInfoVO(
                             code = dto.warehouseInfo.code,
                             name = dto.warehouseInfo.name,
                             purpose = dto.warehouseInfo.purpose,
-                            type = dto.warehouseInfo.type
+                            type = dto.warehouseInfo.type,
+                            parentId = dto.warehouseInfo.parentId,
                         )
                     }
                 }

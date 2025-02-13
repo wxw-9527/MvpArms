@@ -61,7 +61,7 @@ dependencies {
     ksp 'com.google.dagger:hilt-compiler:2.52'
     // RxJava
     api 'io.reactivex.rxjava3:rxandroid:3.0.2'
-    api 'io.reactivex.rxjava3:rxjava:3.1.8'
+    api 'io.reactivex.rxjava3:rxjava:3.1.10'
     api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
     // 网络请求
     api 'com.squareup.okhttp3:okhttp:4.12.0'
@@ -98,13 +98,13 @@ dependencies {
     api 'io.github.lucksiege:pictureselector:v3.11.2'
     api 'io.github.lucksiege:compress:v3.11.2'
     // 对话框相关
-    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta22'
+    api 'com.github.kongzue.DialogX:DialogX:0.0.50.beta33'
     api 'com.github.kongzue.DialogXSample:DatePicker:0.0.14'
     api 'com.github.kongzue.DialogXSample:CustomWheelPicker:0.0.14'
     // 缺省页
     api 'com.github.wxw-9527:MultiStatePage:1.0.3'
     // 步进器
-    api 'com.github.wxw-9527:Stepper:1.1.5'
+    api 'com.github.wxw-9527:Stepper:1.1.6'
     // 图片查看库
     implementation 'io.github.FlyJingFish.OpenImage:OpenImageGlideLib:2.2.8'
     // 蓝牙打印机
@@ -133,7 +133,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.wxw-9527'
                 artifactId = 'MvpArms'
-                version = '3.0.3.00'
+                version = '3.0.4.00'
             }
         }
     }

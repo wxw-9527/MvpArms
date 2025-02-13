@@ -6,4 +6,4 @@ package com.rouxinpai.arms.barcode.model
  * time   : 2023/3/24 17:49
  * desc   :
  */
-data class WarehouseInfoVO(val id: String, val code: String, val name: String, val purpose: Int, val type: Int)
+data class WarehouseInfoVO(val id: String, val code: String, val name: String, val purpose: Int, val type: Int, val parentId: String)
