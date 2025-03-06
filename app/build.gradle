@@ -16,7 +16,7 @@ android {
     compileSdk 35
     defaultConfig {
         applicationId "com.rouxinpai.demo"
-        minSdk 21
+        minSdk 22
         targetSdk 34
         versionCode 10000
         versionName "1.0.0.00"
