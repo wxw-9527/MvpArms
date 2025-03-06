@@ -2,7 +2,6 @@ package com.rouxinpai.arms.model
 
 import com.rouxinpai.arms.model.bean.ApiResponse
 import com.rouxinpai.arms.model.bean.PagingData
-import com.rouxinpai.arms.model.bean.exception.EmptyException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer
@@ -21,30 +20,34 @@ fun <T : Any> schedulersTransformer() = ObservableTransformer<T, T> { upstream -
 
 fun <T : Any> responseTransformer() = ObservableTransformer<ApiResponse<T>, T> { upstream ->
     upstream.flatMap { response ->
-        if (response.success) {
-            val data = response.data
-            if (data != null) {
-                Observable.just(data)
+        Observable.create {
+            if (response.success) {
+                val data = response.data
+                if (data != null) {
+                    it.onNext(data)
+                } else {
+                    it.onComplete()
+                }
             } else {
-                Observable.error(EmptyException())
+                it.onError(response.apiException)
             }
-        } else {
-            Observable.error(response.apiException)
         }
     }
 }
 
 fun <T : Collection<*>> pagingResponseTransformer() = ObservableTransformer<ApiResponse<T>, PagingData<T>> { upstream ->
         upstream.flatMap { response ->
-            if (response.success) {
-                val data = response.data
-                if (data != null) {
-                    Observable.just(PagingData(response.total, data))
+            Observable.create {
+                if (response.success) {
+                    val data = response.data
+                    if (data != null) {
+                        it.onNext(PagingData(response.total, data))
+                    } else {
+                        it.onComplete()
+                    }
                 } else {
-                    Observable.error(EmptyException())
+                    it.onError(response.apiException)
                 }
-            } else {
-                Observable.error(response.apiException)
             }
         }
     }

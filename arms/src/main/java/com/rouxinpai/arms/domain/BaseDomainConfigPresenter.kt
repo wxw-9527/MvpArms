@@ -40,8 +40,7 @@ class BaseDomainConfigPresenter @Inject constructor() :
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<DomainConfigurationVO>(view) {
 
-                override fun onData(t: DomainConfigurationVO) {
-                    super.onData(t)
+                override fun onNext(t: DomainConfigurationVO) {
                     // 缓存域名配置信息
                     DomainUtils.setDomainConfiguration(t)
                     // 跳转到登录页面
@@ -49,8 +48,7 @@ class BaseDomainConfigPresenter @Inject constructor() :
                     view?.toLoginPage()
                 }
 
-                override fun onEmpty() {
-                    super.onEmpty()
+                override fun onComplete() {
                     view?.dismissProgress()
                     view?.showErrorTip(R.string.base_domain_config__invitation_code_invalid)
                 }

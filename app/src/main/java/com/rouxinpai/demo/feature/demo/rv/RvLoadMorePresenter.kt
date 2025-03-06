@@ -42,8 +42,7 @@ class RvLoadMorePresenter @Inject constructor() : BasePresenter<RvLoadMoreContra
             .compose(pagingResponseTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MaterialDTO>>>(view) {
 
-                override fun onData(t: PagingData<List<MaterialDTO>>) {
-                    super.onData(t)
+                override fun onNext(t: PagingData<List<MaterialDTO>>) {
                     val list = t.list
                     if (list.isEmpty()) {
                         view?.showEmptyPage()
@@ -71,8 +70,7 @@ class RvLoadMorePresenter @Inject constructor() : BasePresenter<RvLoadMoreContra
             .compose(pagingResponseTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MaterialDTO>>>(view, false) {
 
-                override fun onData(t: PagingData<List<MaterialDTO>>) {
-                    super.onData(t)
+                override fun onNext(t: PagingData<List<MaterialDTO>>) {
                     val list = t.list
                     view?.showMoreMaterialList(list)
                     val noMore = PAGE_SIZE * (mPageNum - 1) + list.size >= t.total
@@ -83,8 +81,7 @@ class RvLoadMorePresenter @Inject constructor() : BasePresenter<RvLoadMoreContra
                     }
                 }
 
-                override fun onFail(e: Throwable) {
-                    super.onFail(e)
+                override fun onError(e: Throwable) {
                     mPageNum--
                     view?.loadMoreFail(e)
                 }

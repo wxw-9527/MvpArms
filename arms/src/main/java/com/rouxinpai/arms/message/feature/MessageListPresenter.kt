@@ -47,8 +47,7 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MessageVO>>>(view) {
 
-                override fun onData(t: PagingData<List<MessageVO>>) {
-                    super.onData(t)
+                override fun onNext(t: PagingData<List<MessageVO>>) {
                     val list = t.list
                     if (list.isEmpty()) {
                         view?.showEmptyPage()
@@ -77,8 +76,7 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<PagingData<List<MessageVO>>>(view, false) {
 
-                override fun onData(t: PagingData<List<MessageVO>>) {
-                    super.onData(t)
+                override fun onNext(t: PagingData<List<MessageVO>>) {
                     val list = t.list
                     view?.showMoreMessageList(list)
                     val noMore = PAGE_SIZE * (mPageNum - 1) + list.size >= t.total
@@ -89,8 +87,8 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
                     }
                 }
 
-                override fun onFail(e: Throwable) {
-                    super.onFail(e)
+                override fun onError(e: Throwable) {
+                    super.onError(e)
                     mPageNum--
                     view?.loadMoreFail(e)
                 }
@@ -145,8 +143,7 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<MessageVO>(view, false) {
 
-                override fun onData(t: MessageVO) {
-                    super.onData(t)
+                override fun onNext(t: MessageVO) {
                     view?.refreshItemData(position, t)
                 }
             })
@@ -168,8 +165,7 @@ class MessageListPresenter @Inject constructor() : BasePresenter<MessageListCont
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<String>(view, false) {
 
-                override fun onEmpty() {
-                    super.onEmpty()
+                override fun onNext(t: String) {
                     // 关闭进度条
                     view?.dismissProgress()
                     // 更新消息状态

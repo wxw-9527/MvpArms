@@ -27,8 +27,7 @@ class MessageDetailPresenter @Inject constructor() : BasePresenter<MessageDetail
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<MessageVO>(view) {
 
-                override fun onData(t: MessageVO) {
-                    super.onData(t)
+                override fun onNext(t: MessageVO) {
                     view?.dismissProgress()
                     view?.showMessage(t)
                 }

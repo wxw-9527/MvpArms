@@ -116,20 +116,19 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             .subscribeWith(object :
                 DefaultObserver<Pair<List<DictItemVO>, List<CustomerDictItemVO>>>(view) {
 
-                override fun onData(t: Pair<List<DictItemVO>, List<CustomerDictItemVO>>) {
-                    super.onData(t)
+                override fun onNext(t: Pair<List<DictItemVO>, List<CustomerDictItemVO>>) {
                     handleDictData(t.first)
                     handleCustomerDictData(t.second)
                     // 关闭进度条
                     if (showProgress) view?.dismissProgress()
                 }
 
-                override fun onFail(e: Throwable) {
+                override fun onError(e: Throwable) {
                     if (onFail != null) {
                         onFail.invoke(e)
                         return
                     }
-                    super.onFail(e)
+                    super.onError(e)
                 }
             })
         addDisposable(disposable)
@@ -161,16 +160,16 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
                 .compose(schedulersTransformer())
                 .subscribeWith(object : DefaultObserver<BarcodeInfoVO>(view, false) {
 
-                    override fun onData(t: BarcodeInfoVO) {
+                    override fun onNext(t: BarcodeInfoVO) {
                         handleBarcodeInfo(t)
                     }
 
-                    override fun onFail(e: Throwable) {
+                    override fun onError(e: Throwable) {
                         if (onFail != null) {
                             onFail.invoke(e)
                             return
                         }
-                        super.onFail(e)
+                        super.onError(e)
                     }
                 })
             addDisposable(disposable)
@@ -195,16 +194,16 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<UpdateInfo>(view, false) {
 
-                override fun onData(t: UpdateInfo) {
+                override fun onNext(t: UpdateInfo) {
                     handleUpgradeInfo(channel, t)
                 }
 
-                override fun onFail(e: Throwable) {
+                override fun onError(e: Throwable) {
                     if (onFail != null) {
                         onFail.invoke(e)
                         return
                     }
-                    super.onFail(e)
+                    super.onError(e)
                 }
             })
         addDisposable(disposable)

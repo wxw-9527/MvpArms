@@ -68,8 +68,7 @@ class PrintPresenter @Inject constructor() :
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<PrintResultVO>>(view) {
 
-                override fun onData(t: List<PrintResultVO>) {
-                    super.onData(t)
+                override fun onNext(t: List<PrintResultVO>) {
                     view?.showBarcodeInfos(t)
                     view?.showSuccessPage()
                 }
@@ -144,8 +143,7 @@ class PrintPresenter @Inject constructor() :
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<String>(view, false) {
 
-                override fun onData(t: String) {
-                    super.onData(t)
+                override fun onNext(t: String) {
                     base64List.add(t)
                 }
 

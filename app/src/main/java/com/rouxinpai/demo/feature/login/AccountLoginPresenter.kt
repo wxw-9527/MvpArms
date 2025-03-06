@@ -49,8 +49,7 @@ class AccountLoginPresenter @Inject constructor() : BasePresenter<AccountLoginCo
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<CaptchaDTO>(view) {
 
-                override fun onData(t: CaptchaDTO) {
-                    super.onData(t)
+                override fun onNext(t: CaptchaDTO) {
                     mUuid = t.uuid
                     val byteArray = Base64.decode(t.img, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
@@ -79,8 +78,7 @@ class AccountLoginPresenter @Inject constructor() : BasePresenter<AccountLoginCo
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<AccessTokenDTO>(view) {
 
-                override fun onData(t: AccessTokenDTO) {
-                    super.onData(t)
+                override fun onNext(t: AccessTokenDTO) {
                     // 缓存token
                     DomainUtils.setAccessToken(t.accessToken)
                     // 登录成功
@@ -88,8 +86,8 @@ class AccountLoginPresenter @Inject constructor() : BasePresenter<AccountLoginCo
                     view?.loginSuccessful()
                 }
 
-                override fun onFail(e: Throwable) {
-                    super.onFail(e)
+                override fun onError(e: Throwable) {
+                    super.onError(e)
                     getCaptcha()
                     view?.loginFailed()
                 }

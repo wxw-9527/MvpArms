@@ -116,8 +116,7 @@ class UnreadMessagesCountImageView @JvmOverloads constructor(
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<Int>(null) {
 
-                override fun onData(t: Int) {
-                    super.onData(t)
+                override fun onNext(t: Int) {
                     when {
                         t in 1..99 -> showTextBadge(t.toString())
                         t > 99 -> showTextBadge("99+")

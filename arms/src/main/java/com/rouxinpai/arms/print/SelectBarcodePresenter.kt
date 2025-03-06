@@ -56,8 +56,7 @@ class SelectBarcodePresenter @Inject constructor() : BasePresenter<SelectBarcode
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<MaterialVO>>(view) {
 
-                override fun onData(t: List<MaterialVO>) {
-                    super.onData(t)
+                override fun onNext(t: List<MaterialVO>) {
                     if (t.isEmpty()) {
                         view?.showEmptyPage()
                         return

@@ -102,8 +102,7 @@ class CustomViewPresenter @Inject constructor() : BasePresenter<CustomViewContra
             .compose(responseTransformer())
             .subscribeWith(object : DefaultObserver<CaptchaDTO>(view) {
 
-                override fun onData(t: CaptchaDTO) {
-                    super.onData(t)
+                override fun onNext(t: CaptchaDTO) {
                     val byteArray = Base64.decode(t.img, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                     view?.showCaptcha(bitmap)

@@ -28,8 +28,7 @@ class PrintConfigPresenter @Inject constructor() : BasePresenter<PrintConfigCont
             .compose(schedulersTransformer())
             .subscribeWith(object : DefaultObserver<List<TemplateVO>>(view, false) {
 
-                override fun onData(t: List<TemplateVO>) {
-                    super.onData(t)
+                override fun onNext(t: List<TemplateVO>) {
                     if (t.isEmpty()) {
                         view?.dismissProgress()
                         view?.showWarningTip(R.string.print__template_not_found)
