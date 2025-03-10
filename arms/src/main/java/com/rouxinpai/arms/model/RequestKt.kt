@@ -25,9 +25,8 @@ fun <T : Any> responseTransformer() = ObservableTransformer<ApiResponse<T>, T> {
                 val data = response.data
                 if (data != null) {
                     it.onNext(data)
-                } else {
-                    it.onComplete()
                 }
+                it.onComplete()
             } else {
                 it.onError(response.apiException)
             }
@@ -42,9 +41,8 @@ fun <T : Collection<*>> pagingResponseTransformer() = ObservableTransformer<ApiR
                     val data = response.data
                     if (data != null) {
                         it.onNext(PagingData(response.total, data))
-                    } else {
-                        it.onComplete()
                     }
+                    it.onComplete()
                 } else {
                     it.onError(response.apiException)
                 }
