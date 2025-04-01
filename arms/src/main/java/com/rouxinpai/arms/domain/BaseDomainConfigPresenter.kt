@@ -28,6 +28,9 @@ class BaseDomainConfigPresenter @Inject constructor() :
         private const val URL_FORMAT = "%ssystem/customer/validCode/%s"
     }
 
+    // 是否执行了onNext方法标识
+    private var isExecutedOnNext = false
+
     override fun getDomainConfiguration(invitationCode: String) {
         view?.showProgress()
 
@@ -41,6 +44,8 @@ class BaseDomainConfigPresenter @Inject constructor() :
             .subscribeWith(object : DefaultObserver<DomainConfigurationVO>(view) {
 
                 override fun onNext(t: DomainConfigurationVO) {
+                    // 执行了onNext方法
+                    isExecutedOnNext = true
                     // 缓存域名配置信息
                     DomainUtils.setDomainConfiguration(t)
                     // 跳转到登录页面
@@ -49,8 +54,10 @@ class BaseDomainConfigPresenter @Inject constructor() :
                 }
 
                 override fun onComplete() {
-                    view?.dismissProgress()
-                    view?.showErrorTip(R.string.base_domain_config__invitation_code_invalid)
+                    if (!isExecutedOnNext) {
+                        view?.dismissProgress()
+                        view?.showErrorTip(R.string.base_domain_config__invitation_code_invalid)
+                    }
                 }
             })
         addDisposable(disposable)
